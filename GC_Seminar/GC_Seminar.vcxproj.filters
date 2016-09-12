@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{46441392-0966-463e-80c5-7c7840da5fb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StateMachine">
+      <UniqueIdentifier>{a8c4b005-2b9f-492c-a3f8-ba9e10ab5960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behaviors">
+      <UniqueIdentifier>{26177e39-6cb3-4851-b795-27c1ad283b7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -38,6 +47,18 @@
     </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vec2.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviors\Hittable.cpp">
+      <Filter>Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviors\Movable.cpp">
+      <Filter>Behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviors\TargetSystem.cpp">
+      <Filter>Behaviors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,5 +86,31 @@
     <ClInclude Include="World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Math\MathBase.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vec2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine\StateMachine.h">
+      <Filter>StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\Hittable.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\Interfaces.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\Movable.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\TargetSystem.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Math\Vec2.inl">
+      <Filter>Math</Filter>
+    </None>
   </ItemGroup>
 </Project>

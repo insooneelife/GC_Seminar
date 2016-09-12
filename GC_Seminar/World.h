@@ -12,8 +12,8 @@
 
 #include <vector>
 #include <memory>
+#include "Entity.h"
 
-class Entity;
 class World
 {
 public:
@@ -23,6 +23,8 @@ public:
 
 	void update();
 	void render();
+
+	Entity* getClosestEntityFromPos(Entity& entity, float& distance);
 
 private:
 	std::vector<std::unique_ptr<Entity> > _entities;

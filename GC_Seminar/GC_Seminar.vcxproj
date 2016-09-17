@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Behaviors\AttackSystem.cpp" />
     <ClCompile Include="Behaviors\Hittable.cpp" />
     <ClCompile Include="Behaviors\Movable.cpp" />
     <ClCompile Include="Behaviors\TargetSystem.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vec2.cpp" />
@@ -33,12 +35,14 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Behaviors\AttackSystem.h" />
     <ClInclude Include="Behaviors\Hittable.h" />
     <ClInclude Include="Behaviors\Interfaces.h" />
     <ClInclude Include="Behaviors\Movable.h" />
     <ClInclude Include="Behaviors\TargetSystem.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="GraphicsDriver.h" />
     <ClInclude Include="Math\MathBase.h" />
     <ClInclude Include="Math\Vec2.h" />

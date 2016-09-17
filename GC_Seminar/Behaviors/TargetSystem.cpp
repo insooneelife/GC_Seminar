@@ -1,6 +1,7 @@
 #include "TargetSystem.h"
-#include "..\World.h"
+#include "../World.h"
 #include "../Entity.h"
+#include "../EntityManager.h"
 
 
 TargetSystem::TargetSystem(
@@ -18,7 +19,7 @@ TargetSystem::TargetSystem(
 
 Entity* TargetSystem::updateTarget()
 {
-	Entity* targetEnt = nullptr;//_entity.getEngine().EntityMgr.GetEntity(_targetId);
+	Entity* targetEnt = EntityManager::instance->getEntity(_targetId);
 
 	// If target presents..
 	if (targetEnt != nullptr && targetEnt->isAlive())

@@ -50,7 +50,8 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 
 	// Add font for use texts.
 	TTF_Init();
-	_font = TTF_OpenFont("../Assets/Carlito-Regular.TTF", 36);
+	const int FontSize = 15;
+	_font = TTF_OpenFont("../Assets/Carlito-Regular.TTF", FontSize);
 
 	if (_font == nullptr)
 	{

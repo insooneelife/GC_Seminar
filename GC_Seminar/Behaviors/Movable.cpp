@@ -47,7 +47,7 @@ void Movable::updateMovement()
 {
 	Vec2 oldPos = Vec2(_owner.getPos().x, _owner.getPos().y);
 
-	Vec2 heading = (_destination - _owner.getPos());
+	Vec2 heading = (_destination - _owner.getPos()).getNormalized();
 	_owner.setHeading(heading);
 
 	Vec2 velocity = heading * _moveSpeed;

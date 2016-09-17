@@ -31,7 +31,7 @@ public:
 	inline void setDestination(Vec2 value)		{ _destination = value; }
 
 	inline bool getHasDestination() const		{ return _hasDestination; }
-	inline void getHasDestination(bool value)	{ _hasDestination = value; }
+	inline void setHasDestination(bool value)	{ _hasDestination = value; }
 
 	Movable(IMovable& entity, float moveSpeed, const Vec2& destination, bool hasDestination);
 

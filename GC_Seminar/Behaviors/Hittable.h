@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------
 #pragma once
 
+class Entity;
 class IHittable;
 class Hittable
 {
@@ -20,13 +21,13 @@ public:
 	inline int	getMaxHp() const		{ return _max_hp; }
 	inline void setMaxHp(int max_hp)	{ _max_hp = max_hp; }
 
-	Hittable(IHittable& entity, int max_hp);
+	Hittable(Entity& entity, int max_hp);
 
-	virtual void HasDamaged(int damage);
+	virtual void takeDamaged(int damage);
 
 private:
 
-	IHittable& _owner;
+	Entity& _owner;
 	int _hp;
 	int _max_hp;
 };

@@ -36,13 +36,13 @@ namespace
 		template <class Event, class FSM>
 		void on_entry(Event const&, FSM&)
 		{
-			std::cout << "enter: [Wolf FSM]" << std::endl;
+			std::cout << "enter: [Entity FSM]" << std::endl;
 		}
 
 		template <class Event, class FSM>
 		void on_exit(Event const&, FSM&)
 		{
-			std::cout << "exit: [Wolf FSM]" << std::endl;
+			std::cout << "exit: [Entity FSM]" << std::endl;
 		}
 
 		// Events
@@ -128,10 +128,10 @@ namespace
 		struct Patrol : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { std::cout << "enter: [Patrol]" << std::endl; }
+			void on_entry(Event const&, FSM&) {}
 
 			template <class Event, class FSM>
-			void on_exit(Event const&, FSM&) { std::cout << "exit: [Patrol]" << std::endl; }
+			void on_exit(Event const&, FSM&) {}
 
 			void accept(Entity& owner) 
 			{
@@ -155,67 +155,160 @@ namespace
 		struct AttackToDestination : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { std::cout << "enter: [AttackToDestination]" << std::endl; }
+			void on_entry(Event const&, FSM&) {}
 
 			template <class Event, class FSM>
-			void on_exit(Event const&, FSM&) { std::cout << "exit: [AttackToDestination]" << std::endl; }
+			void on_exit(Event const&, FSM&) {}
 
-			void accept(Entity& owner) { std::cout << "accept: [AttackToDestination]" << std::endl; }
+			void accept(Entity& owner) 
+			{
+				std::cout << "accept: [AttackToDestination]" << std::endl;
+
+				float arriveExpected = owner.getBRadius() * 2;
+				if (owner.getMove().getDestination().distance(owner.getPos()) < arriveExpected)
+				{
+					owner.getMove().setHasDestination(false);
+					//_animate.SetAction("Idle");
+					owner.getFsm().process_event(arrive<Entity>(owner));
+					return;
+				}
+
+				Entity* target = owner.getTargetSys().updateTarget();
+
+				if (owner.getTargetSys().isViewable())
+				{
+					owner.getMove().setDestination(target->getPos());
+					//_animate.SetAction("Walk");
+					owner.getFsm().process_event(enemyInView<Entity>(owner));
+					return;
+				}
+
+				//_animate.UpdateAnimation(_owner.Renderer);
+				owner.getMove().updateMovement();
+			}
+
+		private:
+			Vec2 _lastDestination;
 		};
+
 
 		struct ChaseEnemy : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { std::cout << "enter: [ChaseEnemy]" << std::endl; }
+			void on_entry(Event const&, FSM&) {}
 
 			template <class Event, class FSM>
-			void on_exit(Event const&, FSM&) { std::cout << "exit: [ChaseEnemy]" << std::endl; }
+			void on_exit(Event const&, FSM&) {}
 
-			void accept(Entity& owner) { std::cout << "accept: [ChaseEnemy]" << std::endl; }
+			void accept(Entity& owner) 
+			{
+				std::cout << "accept: [ChaseEnemy]" << std::endl; 
+
+				Entity* target = owner.getTargetSys().updateTarget();
+
+				if (owner.getTargetSys().isAttackable())
+				{
+					//_animate.SetAction("Attack");
+					owner.getFsm().process_event(enemyInRange<Entity>(owner));
+					return;
+				}
+
+				if (!owner.getTargetSys().isViewable())
+				{
+					//_animate.SetAction("Walk");
+					owner.getFsm().process_event(enemyOutView<Entity>(owner));
+					return;
+				}
+				else 
+					owner.getMove().setDestination(target->getPos());
+
+				//_animate.UpdateAnimation(_owner.Renderer);
+				owner.getMove().updateMovement();
+			}
 		};
 
 		struct Attack : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { std::cout << "enter: [Attack]" << std::endl; }
+			void on_entry(Event const&, FSM&) {}
 
 			template <class Event, class FSM>
-			void on_exit(Event const&, FSM&) { std::cout << "exit: [Attack]" << std::endl; }
+			void on_exit(Event const&, FSM&) {}
 
-			void accept(Entity& owner) { std::cout << "accept: [Attack]" << std::endl; }
+			void accept(Entity& owner) 
+			{
+				std::cout << "accept: [Attack]" << std::endl; 
+
+				owner.getAttackSys().updateAttack();
+				owner.getFsm().process_event(doneAttack<Entity>(owner));
+			}
 		};
 
 		struct WaitForNextAttack : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { std::cout << "enter: [WaitForNextAttack]" << std::endl; }
+			void on_entry(Event const&, FSM&) {}
 
 			template <class Event, class FSM>
-			void on_exit(Event const&, FSM&) { std::cout << "exit: [WaitForNextAttack]" << std::endl; }
+			void on_exit(Event const&, FSM&) {}
 
-			void accept(Entity& owner) { std::cout << "accept: [WaitForNextAttack]" << std::endl; }
+			void accept(Entity& owner) 
+			{
+				std::cout << "accept: [WaitForNextAttack]" << std::endl; 
+
+				//if (_animate.UpdateAnimation(_owner.Renderer))
+				{
+					owner.getTargetSys().updateTarget();
+					if (owner.getTargetSys().isAttackable())
+					{
+						//_animate.SetAction("Attack");
+						owner.getFsm().process_event(readyToAttack<Entity>(owner));
+					}
+					else
+					{
+						//_animate.SetAction("Idle");
+						owner.getFsm().process_event(enemyOutRange<Entity>(owner));
+					}
+				}
+			}
 		};
 
 		struct Dying : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { std::cout << "enter: [Dying]" << std::endl; }
+			void on_entry(Event const&, FSM&) { _frame = 50; }
 
 			template <class Event, class FSM>
-			void on_exit(Event const&, FSM&) { std::cout << "exit: [Dying]" << std::endl; }
+			void on_exit(Event const&, FSM&) {}
 
-			void accept(Entity& owner) { std::cout << "accept: [Dying]" << std::endl; }
+			void accept(Entity& owner) 
+			{
+				std::cout << "accept: [Dying]" << std::endl;
+				if (_frame-- < 0)
+					owner.getFsm().process_event(hasToDead<Entity>(owner));
+			}
+
+		private:
+			int _frame;
 		};
 
 		struct Dead : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { std::cout << "enter: [Dead]" << std::endl; }
+			void on_entry(Event const&, FSM&) { _frame = 50; }
 
 			template <class Event, class FSM>
-			void on_exit(Event const&, FSM&) { std::cout << "exit: [Dead]" << std::endl; }
+			void on_exit(Event const&, FSM&) {}
 
-			void accept(Entity& owner) { std::cout << "accept: [Dead]" << std::endl; }
+			void accept(Entity& owner) 
+			{
+				std::cout << "accept: [Dead]" << std::endl; 
+				if (_frame-- < 0)
+					owner.setGarbage();
+			}
+
+		private:
+			int _frame;
 		};
 
 		// Initial state
@@ -265,7 +358,7 @@ namespace
 	};
 
 	template<typename T>
-	const char* toString(const T& s)
+	const char* stateToString(const T& s)
 	{
 		return state_names[s.current_state()[0]];
 	}

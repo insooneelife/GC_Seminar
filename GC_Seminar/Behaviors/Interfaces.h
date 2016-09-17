@@ -25,6 +25,7 @@ class IRenderable
 {
 public:
 	virtual Renderable& getRenderable() const = 0;
+	virtual void setRenderable(Renderable* const render) = 0;
 	virtual Vec2 getPos() const = 0;
 };
 
@@ -41,6 +42,7 @@ class IMovable
 {
 public:
 	virtual Movable& getMove() const = 0;
+	virtual void setMove(Movable* const move) = 0;
 	virtual Vec2 getPos() const = 0;
 	virtual void setPos(const Vec2& pos) = 0;
 	virtual Vec2 getHeading() const = 0;
@@ -48,33 +50,29 @@ public:
 };
 
 class Hittable;
-class IHittable : public IMessageHandler, public IAnimation
+class IHittable : public IMessageHandler
 {
 public:
 	virtual Hittable& getHittable() const = 0;
+	virtual void setHittable(Hittable* const hit) = 0;
 	virtual bool isAlive() const = 0;
-	virtual void setDying() = 0;
 };
-
 
 class TargetSystem;
 class ITargetable
 {
 	virtual TargetSystem& getTargetSys() const = 0;
+	virtual void setTargetSys(TargetSystem* const target) = 0;
+};
+
+class AttackSystem;
+class IAttackable : public ITargetable, public IMessageHandler
+{
+	virtual AttackSystem& getAttackSys() const = 0;
+	virtual void setAttackSys(AttackSystem* const target) = 0;
 };
 
 /*
-class IAttackable : ITargetable, IMessageHandler
-{
-	AttackSystem AttackSys{ get; set; }
-}
-
-class IMovable
-{
-	Movable Move{ get; set; }
-	Point2D Pos{ get; }
-}
-
 class ITrainable
 {
 	TrainSystem TrainSys{ get; set; }
@@ -91,5 +89,4 @@ class IClickable
 	void EventOnDeselected();
 	void EventOnTrySelected(bool onOff);
 }
-
 */

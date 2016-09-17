@@ -1,24 +1,39 @@
 #include "World.h"
 #include "Entity.h"
+#include "EntityManager.h"
+#include "Utils.h"
 #include <iostream>
 
 World::World()
 {
-	// unique_ptr needs to be initialized by emplace_back.
-	_entities.emplace_back(new Entity(*this, 1, "aa", Vec2(100, 100)));
-	_entities.emplace_back(new Entity(*this, 2, "bb", Vec2(200, 200)));
-	_entities.emplace_back(new Entity(*this, 3, "cc", Vec2(300, 200)));
-	_entities.emplace_back(new Entity(*this, 4, "dd", Vec2(400, 200)));
-	_entities.emplace_back(new Entity(*this, 5, "ee", Vec2(500, 200)));
+	for (int i = 0; i < 15; i++)
+	{
+		float x = random(0, 1280);
+		float y = random(0, 720);
+		createEntity(Vec2(x, y));
+	}
 }
+
 World::~World()
 {}
 
 void World::update()
 {
-	for (auto e = std::begin(_entities); e != std::end(_entities); e++)
+	// Update entities
+	auto e = std::begin(_entities);
+	while (e != std::end(_entities))
 	{
-		(*e)->update();
+		// Test for any dead entities and remove them if necessary.
+		if (!(*e)->isGarbage())
+		{
+			(*e)->update();
+			++e;
+		}
+		else
+		{
+			(*e).reset();
+			e = _entities.erase(e);
+		}
 	}
 }
 
@@ -30,13 +45,19 @@ void World::render()
 	}
 }
 
+void World::createEntity(const Vec2& pos)
+{
+	_entities.emplace_back(Entity::create(*this, pos));
+}
+
+
 Entity* World::getClosestEntityFromPos(Entity& entity, float& distance)
 {
 	float min_dis = std::numeric_limits<float>::max();
 	Entity* min_dis_ent = nullptr;
 	for(auto e = std::begin(_entities); e != std::end(_entities); e++)
 	{
-		if ((*e)->getID() == entity.getID())
+		if ((*e)->getID() == entity.getID() || !(*e)->isAlive())
 			continue;
 
 		float dis = (*e)->getPos().distance(entity.getPos());

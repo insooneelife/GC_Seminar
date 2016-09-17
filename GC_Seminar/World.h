@@ -24,6 +24,8 @@ public:
 	void update();
 	void render();
 
+	void createEntity(const Vec2& pos);
+
 	Entity* getClosestEntityFromPos(Entity& entity, float& distance);
 
 private:

@@ -60,6 +60,12 @@
     <ClCompile Include="Behaviors\TargetSystem.cpp">
       <Filter>Behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviors\AttackSystem.cpp">
+      <Filter>Behaviors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -105,6 +111,12 @@
       <Filter>Behaviors</Filter>
     </ClInclude>
     <ClInclude Include="Behaviors\TargetSystem.h">
+      <Filter>Behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviors\AttackSystem.h">
       <Filter>Behaviors</Filter>
     </ClInclude>
   </ItemGroup>

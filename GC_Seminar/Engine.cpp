@@ -3,6 +3,10 @@
 #include "GraphicsDriver.h"
 #include "Entity.h"
 #include "World.h"
+#include "EntityManager.h"
+#include <Windows.h>
+#include <chrono>
+#include <algorithm>
 
 Engine::Engine()
 {}
@@ -41,6 +45,8 @@ bool Engine::init()
 	{
 		return false;
 	}
+
+	EntityManager::staticInit();
 
 	_world.reset(new World());
 	return true;
@@ -81,8 +87,15 @@ int Engine::run()
 
 void Engine::update()
 {
+	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
+
 	_world->update();
 	GraphicsDriver::instance->clear();
 	_world->render();
 	GraphicsDriver::instance->present();
+
+	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+	std::chrono::milliseconds sec = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+	Sleep(max((50 - sec.count()), 0));
 }

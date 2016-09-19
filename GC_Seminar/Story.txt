@@ -1,0 +1,12 @@
+1. Message handling
+	(1) Observer pattern에 대한 개념
+	(2) 모든 entity들이 서로에 대한 reference를 얻어올 수 있는 장치가 필요하다.
+	(3) Entity들 간의 message를 주고받도록 하는 수단이 필요하다.
+
+	EntityManager class 정의
+	
+
+2. Behaviors(Components)
+	(1) Entity 설계에 있어서 is-a 관계가 적절한가?
+	(2) has-a 관계가 적절한가?
+	(3) Components

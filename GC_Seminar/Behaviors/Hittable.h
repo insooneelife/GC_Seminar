@@ -1,3 +1,4 @@
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:		Hittable.h
@@ -7,10 +8,8 @@
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-#pragma once
 
 class Entity;
-class IHittable;
 class Hittable
 {
 public:
@@ -24,6 +23,7 @@ public:
 	Hittable(Entity& entity, int max_hp);
 
 	virtual void takeDamaged(int damage);
+	virtual void render();
 
 private:
 

@@ -1,9 +1,22 @@
 #pragma once
 
+//------------------------------------------------------------------------
+//
+//  Name:		Utils.h
+//
+//  Desc:		Targeting system for entities to target each other,
+//				so that, they can attack or run away from each other.
+//
+//  Author:		Insub Im (insooneelife@naver.com)
+//
+//------------------------------------------------------------------------
+
 class Entity;
 class TargetSystem
 {
 public:
+	inline Entity* getTarget() const				{ return _targetEnt; }
+
 	inline unsigned int getTargetID() const			{ return _targetId; }
 	inline void setTargetID(unsigned int value)		{ _targetId = value; }
 
@@ -25,9 +38,11 @@ public:
 		float viewRange);
 
 	Entity* updateTarget();
+	virtual void render();
 
 private:
-	Entity& _entity;
+	Entity& _owner;
+	Entity* _targetEnt;
 	unsigned int _targetId;
 	bool _attackable;
 	bool _viewable;

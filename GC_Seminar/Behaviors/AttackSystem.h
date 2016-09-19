@@ -1,5 +1,15 @@
 #pragma once
 
+//------------------------------------------------------------------------
+//
+//  Name:		AttackSystem.h
+//
+//  Desc:		Defines attacking behaviors.
+//
+//  Author:		Insub Im (insooneelife@naver.com)
+//
+//------------------------------------------------------------------------
+
 class Entity;
 class AttackSystem
 {

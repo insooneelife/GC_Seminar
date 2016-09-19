@@ -104,9 +104,6 @@
     <ClInclude Include="Behaviors\Hittable.h">
       <Filter>Behaviors</Filter>
     </ClInclude>
-    <ClInclude Include="Behaviors\Interfaces.h">
-      <Filter>Behaviors</Filter>
-    </ClInclude>
     <ClInclude Include="Behaviors\Movable.h">
       <Filter>Behaviors</Filter>
     </ClInclude>
@@ -124,5 +121,10 @@
     <None Include="Math\Vec2.inl">
       <Filter>Math</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Story.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

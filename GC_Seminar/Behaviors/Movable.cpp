@@ -1,5 +1,5 @@
 #include "Movable.h"
-#include "Interfaces.h"
+#include "../Entity.h"
 
 int Movable::makeDirection(int x, int y, int nu, int de)
 {
@@ -35,7 +35,7 @@ int Movable::makeDirection(int x, int y, int nu, int de)
 }
 
 	
-Movable::Movable(IMovable& entity, float moveSpeed, const Vec2& destination, bool hasDestination)
+Movable::Movable(Entity& entity, float moveSpeed, const Vec2& destination, bool hasDestination)
 	:
 	_owner(entity),
 	_moveSpeed(moveSpeed),
@@ -45,17 +45,9 @@ Movable::Movable(IMovable& entity, float moveSpeed, const Vec2& destination, boo
 
 void Movable::updateMovement()
 {
-	Vec2 oldPos = Vec2(_owner.getPos().x, _owner.getPos().y);
-
 	Vec2 heading = (_destination - _owner.getPos()).getNormalized();
 	_owner.setHeading(heading);
 
 	Vec2 velocity = heading * _moveSpeed;
 	_owner.setPos(_owner.getPos() + velocity);
-
-	/*if (_owner.Queryable != null)
-	{
-	Physics.EnforceNonPenetrationCellSpace(_owner, _owner.Engine.World.CellSpace);
-	_owner.Queryable.UpdateCellSpace(_owner.Engine.World.CellSpace, oldPos);
-	}*/
 }

@@ -1,3 +1,4 @@
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:		World.h
@@ -7,8 +8,6 @@
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-
-#pragma once
 
 #include <vector>
 #include <memory>
@@ -24,7 +23,7 @@ public:
 	void update();
 	void render();
 
-	void createEntity(const Vec2& pos);
+	void createEntity(const Vec2& pos, const std::string& type);
 
 	Entity* getClosestEntityFromPos(Entity& entity, float& distance);
 

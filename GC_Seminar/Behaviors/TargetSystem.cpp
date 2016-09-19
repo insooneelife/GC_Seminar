@@ -2,14 +2,15 @@
 #include "../World.h"
 #include "../Entity.h"
 #include "../EntityManager.h"
-
+#include "../GraphicsDriver.h"
 
 TargetSystem::TargetSystem(
 	Entity& entity,
 	float attackRange,
 	float viewRange)
 	:
-	_entity(entity),
+	_owner(entity),
+	_targetEnt(nullptr),
 	_targetId(0),
 	_attackable(false),
 	_viewable(false),
@@ -19,44 +20,54 @@ TargetSystem::TargetSystem(
 
 Entity* TargetSystem::updateTarget()
 {
-	Entity* targetEnt = EntityManager::instance->getEntity(_targetId);
+	_targetEnt = EntityManager::instance->getEntity(_targetId);
 
 	// If target presents..
-	if (targetEnt != nullptr && targetEnt->isAlive())
+	if (_targetEnt != nullptr && _targetEnt->isAlive())
 	{
-		_attackable = (_entity.getPos() - targetEnt->getPos()).length() <= _attackRange;
-		_viewable = (_entity.getPos() - targetEnt->getPos()).length() <= _viewRange;
+		_attackable = (_owner.getPos() - _targetEnt->getPos()).length() <= _attackRange;
+		_viewable = (_owner.getPos() - _targetEnt->getPos()).length() <= _viewRange;
 
-		return targetEnt;
+		if (_viewable)
+			return _targetEnt;
+		else
+			return _targetEnt = nullptr;
 	}
+
 	// Otherwise, we have to set a new target.
 	else
 	{
 		float distance = -1;
-		targetEnt = _entity.getWorld()
-			.getClosestEntityFromPos(_entity, distance);
+		_targetEnt = _owner.getWorld()
+			.getClosestEntityFromPos(_owner, distance);
 
-		if (targetEnt == nullptr)
+		if (_targetEnt == nullptr)
 		{
 			_attackable = false;
 			_viewable = false;
 			_targetId = 0;
 			return nullptr;
 		}
-
-		if (distance < sqrt(_viewRange * _viewRange))
+		else if (distance < sqrt(_viewRange * _viewRange))
 		{
-			_targetId = targetEnt->getID();
-			_attackable = (_entity.getPos() - targetEnt->getPos()).length() <= _attackRange;
-			_viewable = (_entity.getPos() - targetEnt->getPos()).length() <= _viewRange;
-			return targetEnt;
+			_targetId = _targetEnt->getID();
+			_attackable = true;
+			_viewable = true;
+			return _targetEnt;
 		}
 		else
 		{
+			_targetEnt = nullptr;
 			_attackable = false;
 			_viewable = false;
 			_targetId = 0;
 			return nullptr;
 		}
 	}
+}
+
+void TargetSystem::render()
+{
+	if(_viewable)
+		GraphicsDriver::instance->drawLine(_owner.getPos(), _targetEnt->getPos(), GraphicsDriver::red);
 }

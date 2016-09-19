@@ -70,14 +70,15 @@ public:
 	static std::unique_ptr<EntityManager> instance;
 
 	EntityManager();
-
 	unsigned int genID();
+
+	// Methods related with entity querying.
 	Entity* getEntity(unsigned int id) const;
 	bool exists(unsigned int id) const;
-
 	void registerEntity(Entity* entity);
 	void unregisterEntity(Entity* entity);
 
+	// Methods related with message dispatching.
 	void dispatchMsg(
 		unsigned int senderId,
 		unsigned int receiverId,
@@ -86,7 +87,7 @@ public:
 
 	// This method is utilized by DispatchMsg or DispatchDelayedMessages.
 	// This method calls the message handling member function of the receiving
-	// entity, pReceiver, with the newly created telegram
+	// entity, pReceiver, with the newly created message
 	void discharge(Entity* receiver, const Message& msg);
 
 private:

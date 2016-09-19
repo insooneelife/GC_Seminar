@@ -147,8 +147,6 @@ namespace
 					owner.getMove().setDestination(target->getPos());
 					owner.getFsm().process_event(enemyInView<Entity>(owner));
 				}
-
-				std::cout << "accept: [Patrol]" << std::endl; 
 			}
 		};
 
@@ -162,13 +160,10 @@ namespace
 
 			void accept(Entity& owner) 
 			{
-				std::cout << "accept: [AttackToDestination]" << std::endl;
-
 				float arriveExpected = owner.getBRadius() * 2;
 				if (owner.getMove().getDestination().distance(owner.getPos()) < arriveExpected)
 				{
 					owner.getMove().setHasDestination(false);
-					//_animate.SetAction("Idle");
 					owner.getFsm().process_event(arrive<Entity>(owner));
 					return;
 				}
@@ -178,12 +173,9 @@ namespace
 				if (owner.getTargetSys().isViewable())
 				{
 					owner.getMove().setDestination(target->getPos());
-					//_animate.SetAction("Walk");
 					owner.getFsm().process_event(enemyInView<Entity>(owner));
 					return;
 				}
-
-				//_animate.UpdateAnimation(_owner.Renderer);
 				owner.getMove().updateMovement();
 			}
 
@@ -202,27 +194,22 @@ namespace
 
 			void accept(Entity& owner) 
 			{
-				std::cout << "accept: [ChaseEnemy]" << std::endl; 
-
 				Entity* target = owner.getTargetSys().updateTarget();
 
 				if (owner.getTargetSys().isAttackable())
 				{
-					//_animate.SetAction("Attack");
 					owner.getFsm().process_event(enemyInRange<Entity>(owner));
 					return;
 				}
 
 				if (!owner.getTargetSys().isViewable())
 				{
-					//_animate.SetAction("Walk");
 					owner.getFsm().process_event(enemyOutView<Entity>(owner));
 					return;
 				}
 				else 
 					owner.getMove().setDestination(target->getPos());
 
-				//_animate.UpdateAnimation(_owner.Renderer);
 				owner.getMove().updateMovement();
 			}
 		};
@@ -237,8 +224,6 @@ namespace
 
 			void accept(Entity& owner) 
 			{
-				std::cout << "accept: [Attack]" << std::endl; 
-
 				owner.getAttackSys().updateAttack();
 				owner.getFsm().process_event(doneAttack<Entity>(owner));
 			}
@@ -254,21 +239,14 @@ namespace
 
 			void accept(Entity& owner) 
 			{
-				std::cout << "accept: [WaitForNextAttack]" << std::endl; 
-
-				//if (_animate.UpdateAnimation(_owner.Renderer))
+				owner.getTargetSys().updateTarget();
+				if (owner.getTargetSys().isAttackable())
 				{
-					owner.getTargetSys().updateTarget();
-					if (owner.getTargetSys().isAttackable())
-					{
-						//_animate.SetAction("Attack");
-						owner.getFsm().process_event(readyToAttack<Entity>(owner));
-					}
-					else
-					{
-						//_animate.SetAction("Idle");
-						owner.getFsm().process_event(enemyOutRange<Entity>(owner));
-					}
+					owner.getFsm().process_event(readyToAttack<Entity>(owner));
+				}
+				else
+				{
+					owner.getFsm().process_event(enemyOutRange<Entity>(owner));
 				}
 			}
 		};
@@ -276,14 +254,13 @@ namespace
 		struct Dying : public msm::front::state<AbstState<Entity>>
 		{
 			template <class Event, class FSM>
-			void on_entry(Event const&, FSM&) { _frame = 50; }
+			void on_entry(Event const& evt, FSM&) { _frame = 50; evt.owner.setAlive(false); }
 
 			template <class Event, class FSM>
 			void on_exit(Event const&, FSM&) {}
 
 			void accept(Entity& owner) 
 			{
-				std::cout << "accept: [Dying]" << std::endl;
 				if (_frame-- < 0)
 					owner.getFsm().process_event(hasToDead<Entity>(owner));
 			}
@@ -302,7 +279,6 @@ namespace
 
 			void accept(Entity& owner) 
 			{
-				std::cout << "accept: [Dead]" << std::endl; 
 				if (_frame-- < 0)
 					owner.setGarbage();
 			}

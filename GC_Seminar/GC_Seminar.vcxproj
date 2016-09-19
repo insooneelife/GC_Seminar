@@ -37,7 +37,6 @@
   <ItemGroup>
     <ClInclude Include="Behaviors\AttackSystem.h" />
     <ClInclude Include="Behaviors\Hittable.h" />
-    <ClInclude Include="Behaviors\Interfaces.h" />
     <ClInclude Include="Behaviors\Movable.h" />
     <ClInclude Include="Behaviors\TargetSystem.h" />
     <ClInclude Include="Engine.h" />
@@ -55,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\Vec2.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Story.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7C61BF33-2F86-47B2-B0CC-C75FCB3D91C7}</ProjectGuid>

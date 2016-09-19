@@ -1,15 +1,13 @@
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:		GraphicsDriver.h
 //
-//  Desc:		Utility class for wrapping SDL graphic tools
+//  Desc:		Utility class for wrapping SDL graphic tools.
 //
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-
-
-#pragma once
 
 #include <SDL/SDL.h>
 #include <SDL\SDL_ttf.h>
@@ -27,6 +25,8 @@ public:
 	static SDL_Color red;
 	static SDL_Color blue;
 	static SDL_Color yellow;
+	static SDL_Color white;
+	static SDL_Color black;
 
 
 	void			clear();
@@ -36,7 +36,7 @@ public:
 
 	void			drawLine(Vec2 a, Vec2 b, SDL_Color color = red);
 	void			drawRect(Vec2 p, float w, float h, SDL_Color color = red);
-	void			drawCircle(Vec2 p, float r, float fragment = 15, SDL_Color color = red);
+	void			drawCircle(Vec2 p, float r, SDL_Color color = black, float fragment = 15.0f);
 	void			drawText(const std::string& inStr, const Vec2& origin, const SDL_Color& inColor = red);
 
 	~GraphicsDriver();

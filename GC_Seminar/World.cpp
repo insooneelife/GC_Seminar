@@ -10,7 +10,14 @@ World::World()
 	{
 		float x = random(0, 1280);
 		float y = random(0, 720);
-		createEntity(Vec2(x, y));
+		createEntity(Vec2(x, y), "Unit");
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		float x = random(0, 1280);
+		float y = random(0, 720);
+		createEntity(Vec2(x, y), "Structure");
 	}
 }
 
@@ -45,9 +52,16 @@ void World::render()
 	}
 }
 
-void World::createEntity(const Vec2& pos)
+void World::createEntity(const Vec2& pos, const std::string& type)
 {
-	_entities.emplace_back(Entity::create(*this, pos));
+	if (type == "Unit")
+	{
+		_entities.emplace_back(Entity::createUnit(*this, pos));
+	}
+	else if (type == "Structure")
+	{
+		_entities.emplace_back(Entity::createStructure(*this, pos));
+	}
 }
 
 
@@ -57,7 +71,10 @@ Entity* World::getClosestEntityFromPos(Entity& entity, float& distance)
 	Entity* min_dis_ent = nullptr;
 	for(auto e = std::begin(_entities); e != std::end(_entities); e++)
 	{
-		if ((*e)->getID() == entity.getID() || !(*e)->isAlive())
+		//if ((*e)->getID() == entity.getID() || !(*e)->isAlive())
+		if ((*e)->getID() == entity.getID() ||
+			!(*e)->isAlive() ||
+			(*e)->getType() == Entity::kStructure)
 			continue;
 
 		float dis = (*e)->getPos().distance(entity.getPos());

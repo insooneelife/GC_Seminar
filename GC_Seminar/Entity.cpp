@@ -4,23 +4,23 @@
 #include "World.h"
 #include "EntityManager.h"
 
-Entity* Entity::create(World& world, const Vec2& pos)
+Entity* Entity::createUnit(World& world, const Vec2& pos)
 {
 	unsigned int id = EntityManager::instance->genID();
 
 	std::stringstream ss;
 	ss << id;
-	std::string name = "monster" + ss.str();
+	std::string name = "unit" + ss.str();
 
 	const float bounding_radius = 15;
 	const float move_speed = 1.0f;
 	const float attack_range = 50;
-	const float view_range = 1500;
+	const float view_range = 300;
 	const int max_hp = 100;
 	const int damage = 10;
 	const int attackFrameDelay = 1;
 
-	Entity* ent = new Entity(world, id, name, pos, bounding_radius);
+	Entity* ent = new Entity(world, id, name, pos, bounding_radius, kEntity);
 	Fsm* fsm = new Fsm();
 	Movable* move = new Movable(*ent, move_speed, Vec2(), false);
 	TargetSystem* targetSys = new TargetSystem(*ent, attack_range, view_range);
@@ -35,12 +35,27 @@ Entity* Entity::create(World& world, const Vec2& pos)
 	return ent;
 }
 
+Entity* Entity::createStructure(World& world, const Vec2& pos)
+{
+	unsigned int id = EntityManager::instance->genID();
+
+	std::stringstream ss;
+	ss << id;
+	std::string name = "structure" + ss.str();
+	const float bounding_radius = 35;
+
+	Entity* ent = new Entity(world, id, name, pos, bounding_radius, kStructure);
+
+	return ent;
+}
+
 Entity::Entity(
 	World& world,
 	unsigned int id,
 	const std::string& name,
 	const Vec2& pos,
-	float bounding_radius)
+	float bounding_radius,
+	int type)
 	:
 	// Data
 	_world(world),
@@ -48,9 +63,10 @@ Entity::Entity(
 	_name(name),
 	_pos(pos),
 	_bounding_radius(bounding_radius),
+	_type(type),
 	_heading(),
-	_mask(kEntity),
 	_is_garbage(false),
+	_alive(true),
 	
 	// Components
 	_fsm(nullptr),
@@ -69,23 +85,29 @@ Entity::~Entity()
 
 void Entity::update()
 {
-	_fsm->visit_current_states(boost::ref(*this));
+	if(_fsm)
+		_fsm->visit_current_states(boost::ref(*this));
 }
 
 void Entity::render()
 {
-	std::stringstream ss;
-	ss << _hit->getHp();
-	GraphicsDriver::instance->drawCircle(_pos, _bounding_radius);
+	GraphicsDriver::instance->drawCircle(_pos, _bounding_radius, GraphicsDriver::black);
 	GraphicsDriver::instance->drawText(_name , _pos, GraphicsDriver::blue);
-	GraphicsDriver::instance->drawText(stateToString(*_fsm), _pos + Vec2(0, 20), GraphicsDriver::blue);
-	GraphicsDriver::instance->drawText(ss.str(), _pos + Vec2(0, 40), GraphicsDriver::blue);
+	
+	if(_fsm)
+		GraphicsDriver::instance->drawText(
+			stateToString(*_fsm), _pos + Vec2(0, 20), GraphicsDriver::blue);
+	
+	if(_hit)
+		_hit->render();
+
+	if(_targetSys)
+		_targetSys->render();
 }
 
 
 bool Entity::handleMessage(const Message& msg)
 {
-	std::cout << (int)msg.getMsg() << std::endl;;
 	switch (msg.getMsg())
 	{
 	case Message::MsgType::None:
@@ -94,6 +116,10 @@ bool Entity::handleMessage(const Message& msg)
 	}
 	case Message::MsgType::Damage:
 	{
+		// For Structures
+		if (!_hit)
+			return true;
+
 		int damage = Message::voidToType<int>(msg.getExtraInfo());
 		_hit->takeDamaged(damage);
 		return true;

@@ -6,6 +6,8 @@ std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
 SDL_Color GraphicsDriver::red;
 SDL_Color GraphicsDriver::blue;
 SDL_Color GraphicsDriver::yellow;
+SDL_Color GraphicsDriver::white;
+SDL_Color GraphicsDriver::black;
 
 bool GraphicsDriver::staticInit(SDL_Window* wnd)
 {
@@ -25,7 +27,8 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 	red.r = 255;	red.g = 0;		red.b = 0;
 	blue.r = 0;		blue.g = 0;		blue.b = 255;
 	yellow.r = 255;	yellow.g = 237;	yellow.b = 0;
-
+	white.r = 255;	white.g = 255;	white.b = 255;
+	black.r = 0;	black.g = 0;	black.b = 0;
 
 	
 
@@ -121,7 +124,7 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
 }
 
 
-void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color)
+void GraphicsDriver::drawCircle(Vec2 p, float r, SDL_Color color, float fragment)
 {
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 
@@ -136,7 +139,7 @@ void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color
 
 		end = Vec2(r*cos(rad), r*sin(rad)) + p;
 
-		drawLine(start, end);
+		drawLine(start, end, color);
 		start = end;
 	}
 }

@@ -12,7 +12,7 @@
 
 #include "../Math/Vec2.h"
 
-class IMovable;
+class Entity;
 class Movable
 {
 public:
@@ -33,12 +33,12 @@ public:
 	inline bool getHasDestination() const		{ return _hasDestination; }
 	inline void setHasDestination(bool value)	{ _hasDestination = value; }
 
-	Movable(IMovable& entity, float moveSpeed, const Vec2& destination, bool hasDestination);
+	Movable(Entity& entity, float moveSpeed, const Vec2& destination, bool hasDestination);
 
 	void updateMovement();
 
 private:
-	IMovable& _owner;
+	Entity& _owner;
 	float _moveSpeed;
 	Vec2 _destination;
 	bool _hasDestination;

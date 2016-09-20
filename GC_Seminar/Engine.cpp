@@ -61,6 +61,7 @@ int Engine::run()
 
 	while (!quit)
 	{
+		// Input
 		if (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT ||
@@ -97,5 +98,5 @@ void Engine::update()
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	std::chrono::milliseconds sec = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-	Sleep(max((50 - sec.count()), 0));
+	Sleep(max((150 - sec.count()), 0));
 }

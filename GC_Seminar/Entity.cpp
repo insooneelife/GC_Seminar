@@ -26,7 +26,7 @@ Entity* Entity::createUnit(World& world, const Vec2& pos)
 	TargetSystem* targetSys = new TargetSystem(*ent, attack_range, view_range);
 	Hittable* hit = new Hittable(*ent, max_hp);
 	AttackSystem* attack = new MeleeAttack(*ent, damage, attackFrameDelay);
-	
+
 	ent->setFsm(fsm);
 	ent->setMove(move);
 	ent->setTargetSys(targetSys);
@@ -87,6 +87,8 @@ void Entity::update()
 {
 	if(_fsm)
 		_fsm->visit_current_states(boost::ref(*this));
+	//
+
 }
 
 void Entity::render()

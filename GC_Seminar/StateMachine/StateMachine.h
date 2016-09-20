@@ -210,6 +210,7 @@ namespace
 				else 
 					owner.getMove().setDestination(target->getPos());
 
+				
 				owner.getMove().updateMovement();
 			}
 		};
@@ -286,6 +287,9 @@ namespace
 		private:
 			int _frame;
 		};
+
+
+
 
 		// Initial state
 		typedef Patrol initial_state;

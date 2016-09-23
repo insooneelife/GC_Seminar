@@ -45,6 +45,9 @@
     <ClCompile Include="Math\Vec2.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="Math\Transformations.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

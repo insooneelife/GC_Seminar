@@ -13,6 +13,7 @@
 #include "Math\Vec2.h"
 #include "Engine.h"
 
+class Message;
 class World;
 class Entity
 {
@@ -30,6 +31,8 @@ public:
 	virtual void update();
 
 	virtual void render();
+
+	virtual bool handleMessage(const Message& msg);
 
 private:
 

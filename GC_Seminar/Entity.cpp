@@ -2,6 +2,7 @@
 #include <sstream>
 #include "Entity.h"
 #include "GraphicsDriver.h"
+#include "EntityManager.h"
 
 Entity::Entity(World& world, unsigned int id, const Vec2& pos, float radius)
 	:
@@ -24,3 +25,7 @@ void Entity::render()
 	GraphicsDriver::instance->drawLine(_pos, _pos + _heading * _radius * 2);
 }
 
+bool Entity::handleMessage(const Message& msg) 
+{
+	return false; 
+}

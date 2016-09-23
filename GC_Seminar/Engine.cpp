@@ -84,5 +84,6 @@ void Engine::update()
 	_world->update();
 	GraphicsDriver::instance->clear();
 	_world->render();
+	GraphicsDriver::instance->render();
 	GraphicsDriver::instance->present();
 }

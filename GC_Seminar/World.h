@@ -18,6 +18,8 @@ class World
 {
 public:
 
+	//inline const std::vector<std::unique_ptr<Entity> >& 
+
 	World();
 	~World();
 

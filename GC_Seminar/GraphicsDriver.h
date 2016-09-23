@@ -27,8 +27,11 @@ public:
 	static SDL_Color red;
 	static SDL_Color blue;
 	static SDL_Color yellow;
+	static SDL_Color black;
+	static SDL_Color white;
 
 
+	void			render();
 	void			clear();
 	void			present();
 	SDL_Rect&		getLogicalViewport();

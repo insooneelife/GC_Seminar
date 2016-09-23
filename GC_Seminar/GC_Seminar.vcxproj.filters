@@ -77,10 +77,21 @@
     <ClInclude Include="Math\Vec2.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Math\C2DMatrix.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Transformations.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\Vec2.inl">
       <Filter>Math</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Practices.txt">
+      <Filter>Math</Filter>
+    </Text>
   </ItemGroup>
 </Project>

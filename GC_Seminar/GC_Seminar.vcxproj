@@ -33,7 +33,9 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GraphicsDriver.h" />
+    <ClInclude Include="Math\C2DMatrix.h" />
     <ClInclude Include="Math\MathBase.h" />
+    <ClInclude Include="Math\Transformations.h" />
     <ClInclude Include="Math\Vec2.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
@@ -43,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\Vec2.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Practices.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7C61BF33-2F86-47B2-B0CC-C75FCB3D91C7}</ProjectGuid>

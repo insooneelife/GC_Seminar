@@ -32,3 +32,9 @@ void World::render()
 		(*e)->render();
 	}
 }
+
+
+const std::vector<std::unique_ptr<Entity> >& World::getEntities() const
+{
+	return _entities;
+}

@@ -18,7 +18,7 @@ class World
 {
 public:
 
-	//inline const std::vector<std::unique_ptr<Entity> >& 
+	const std::vector<std::unique_ptr<Entity> >& getEntities() const;
 
 	World();
 	~World();

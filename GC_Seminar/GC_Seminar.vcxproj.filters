@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{31e5a024-7be5-4c7c-8d4c-9b41c2c7efba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -38,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vec2.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,5 +71,16 @@
     <ClInclude Include="World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Math\MathBase.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vec2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Math\Vec2.inl">
+      <Filter>Math</Filter>
+    </None>
   </ItemGroup>
 </Project>

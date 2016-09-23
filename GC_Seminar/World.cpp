@@ -5,11 +5,11 @@
 World::World()
 {
 	// unique_ptr needs to be initialized by emplace_back.
-	_entities.emplace_back(new Entity(*this, Vec2(100, 100)));
-	_entities.emplace_back(new Entity(*this, Vec2(200, 200)));
-	_entities.emplace_back(new Entity(*this, Vec2(300, 200)));
-	_entities.emplace_back(new Entity(*this, Vec2(400, 200)));
-	_entities.emplace_back(new Entity(*this, Vec2(500, 200)));
+	_entities.emplace_back(new Entity(*this, Vec2(100, 100), 1));
+	_entities.emplace_back(new Entity(*this, Vec2(250, 200), 2));
+	_entities.emplace_back(new Entity(*this, Vec2(100, 200), 3));
+	_entities.emplace_back(new Entity(*this, Vec2(400, 400), 4));
+	_entities.emplace_back(new Entity(*this, Vec2(500, 200), 5));
 }
 World::~World()
 {}

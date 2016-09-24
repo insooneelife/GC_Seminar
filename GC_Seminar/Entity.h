@@ -28,6 +28,8 @@ public:
 
 	Entity(World& world, unsigned int id, const Vec2& pos, float radius);
 
+	virtual ~Entity();
+
 	virtual void update();
 
 	virtual void render();

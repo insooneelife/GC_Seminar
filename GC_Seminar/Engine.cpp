@@ -2,6 +2,7 @@
 #include "WindowManager.h"
 #include "GraphicsDriver.h"
 #include "Entity.h"
+#include "EntityManager.h"
 #include "World.h"
 
 Engine::Engine()
@@ -41,6 +42,8 @@ bool Engine::init()
 	{
 		return false;
 	}
+	
+	EntityManager::staticInit();
 
 	_world.reset(new World());
 	return true;

@@ -11,7 +11,14 @@ Entity::Entity(World& world, unsigned int id, const Vec2& pos, float radius)
 	_pos(pos),
 	_radius(radius),
 	_heading(1, 0)
-	{}
+{
+	EntityManager::instance->registerEntity(this);
+}
+
+Entity::~Entity()
+{
+	EntityManager::instance->unregisterEntity(this);
+}
 
 void Entity::update()
 {}

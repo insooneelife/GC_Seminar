@@ -1,4 +1,5 @@
 #include "GraphicsDriver.h"
+#include "EntityManager.h"
 #include <iostream>
 
 std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
@@ -79,7 +80,11 @@ GraphicsDriver::~GraphicsDriver()
 
 void GraphicsDriver::render()
 {
+	Entity* ent1 = EntityManager::instance->getEntity(1);
+	Entity* ent2 = EntityManager::instance->getEntity(2);
 
+	if(ent1 && ent2)
+		GraphicsDriver::instance->drawLine(ent1->getPos(), ent2->getPos());
 }
 
 void GraphicsDriver::clear()

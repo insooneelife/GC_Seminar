@@ -7,14 +7,13 @@
 //
 //  Desc:   2D Matrix class 
 //
-//  Author: Mat Buckland 2002
+//  Author: Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
 
 #include <math.h>
 #include <vector>
-#include "cocos2d.h"
-
+#include "Vec2.h"
 
 class C2DMatrix
 {
@@ -61,13 +60,13 @@ public:
 	inline void  Rotate(double rotation);
 
 	//create a rotation matrix from a fwd and side 2D vector
-	inline void  Rotate(const cocos2d::Vec2 &fwd, const cocos2d::Vec2 &side);
+	inline void  Rotate(const Vec2 &fwd, const Vec2 &side);
 
 	//applys a transformation matrix to a std::vector of points
-	inline void TransformVector2Ds(std::vector<cocos2d::Vec2> &vPoints);
+	inline void TransformVector2Ds(std::vector<Vec2> &vPoints);
 
 	//applys a transformation matrix to a point
-	inline void TransformVector2Ds(cocos2d::Vec2 &vPoint);
+	inline void TransformVector2Ds(Vec2 &vPoint);
 
 	//accessors to the matrix elements
 	void _11(double val) { m_Matrix._11 = val; }
@@ -110,7 +109,7 @@ inline void C2DMatrix::MatrixMultiply(Matrix &mIn)
 }
 
 //applies a 2D transformation matrix to a std::vector of Vector2Ds
-inline void C2DMatrix::TransformVector2Ds(std::vector<cocos2d::Vec2> &vPoint)
+inline void C2DMatrix::TransformVector2Ds(std::vector<Vec2> &vPoint)
 {
 	for (unsigned int i = 0; i < vPoint.size(); ++i)
 	{
@@ -126,7 +125,7 @@ inline void C2DMatrix::TransformVector2Ds(std::vector<cocos2d::Vec2> &vPoint)
 }
 
 //applies a 2D transformation matrix to a single Vector2D
-inline void C2DMatrix::TransformVector2Ds(cocos2d::Vec2 &vPoint)
+inline void C2DMatrix::TransformVector2Ds(Vec2 &vPoint)
 {
 
 	double tempX = (m_Matrix._11*vPoint.x) + (m_Matrix._21*vPoint.y) + (m_Matrix._31);
@@ -202,7 +201,7 @@ inline void C2DMatrix::Rotate(double rot)
 
 
 //create a rotation matrix from a 2D vector
-inline void C2DMatrix::Rotate(const cocos2d::Vec2 &fwd, const cocos2d::Vec2 &side)
+inline void C2DMatrix::Rotate(const Vec2 &fwd, const Vec2 &side)
 {
 	C2DMatrix::Matrix mat;
 

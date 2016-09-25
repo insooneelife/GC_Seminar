@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "EntityManager.h"
 #include "World.h"
+#include "Camera2D.h"
 
 Engine::Engine()
 {}
@@ -43,6 +44,8 @@ bool Engine::init()
 		return false;
 	}
 	
+	Camera2D::staticInit(1280, 720);
+
 	EntityManager::staticInit();
 
 	_world.reset(new World());

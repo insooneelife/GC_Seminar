@@ -142,6 +142,7 @@ namespace
 		const Vec2 &AgentSide,
 		const Vec2 &AgentPosition)
 	{
+		// Inverse of world transform.
 
 		//make a copy of the point
 		Vec2 TransPoint = point;

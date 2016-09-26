@@ -37,17 +37,17 @@ namespace
 		//scale
 		if ((scale.x != 1.0) || (scale.y != 1.0))
 		{
-			matTransform.Scale(scale.x, scale.y);
+			matTransform.scale(scale.x, scale.y);
 		}
 
 		//rotate
-		matTransform.Rotate(forward, side);
+		matTransform.rotate(forward, side);
 
 		//and translate
-		matTransform.Translate(pos.x, pos.y);
+		matTransform.translate(pos.x, pos.y);
 
 		//now transform the object's vertices
-		matTransform.TransformVector2Ds(TranVector2Ds);
+		matTransform.transform(TranVector2Ds);
 
 		return TranVector2Ds;
 	}
@@ -70,13 +70,13 @@ namespace
 		C2DMatrix matTransform;
 
 		//rotate
-		matTransform.Rotate(forward, side);
+		matTransform.rotate(forward, side);
 
 		//and translate
-		matTransform.Translate(pos.x, pos.y);
+		matTransform.translate(pos.x, pos.y);
 
 		//now transform the object's vertices
-		matTransform.TransformVector2Ds(TranVector2Ds);
+		matTransform.transform(TranVector2Ds);
 
 		return TranVector2Ds;
 	}
@@ -98,13 +98,13 @@ namespace
 		C2DMatrix matTransform;
 
 		//rotate
-		matTransform.Rotate(AgentHeading, AgentSide);
+		matTransform.rotate(AgentHeading, AgentSide);
 
 		//and translate
-		matTransform.Translate(AgentPosition.x, AgentPosition.y);
+		matTransform.translate(AgentPosition.x, AgentPosition.y);
 
 		//now transform the vertices
-		matTransform.TransformVector2Ds(TransPoint);
+		matTransform.transform(TransPoint);
 
 		return TransPoint;
 	}
@@ -125,10 +125,10 @@ namespace
 		C2DMatrix matTransform;
 
 		//rotate
-		matTransform.Rotate(AgentHeading, AgentSide);
+		matTransform.rotate(AgentHeading, AgentSide);
 
 		//now transform the vertices
-		matTransform.TransformVector2Ds(TransVec);
+		matTransform.transform(TransVec);
 		return TransVec;
 	}
 
@@ -158,7 +158,7 @@ namespace
 		matTransform._31(Tx);           matTransform._32(Ty);
 
 		//now transform the vertices
-		matTransform.TransformVector2Ds(TransPoint);
+		matTransform.transform(TransPoint);
 
 		return TransPoint;
 	}
@@ -183,7 +183,7 @@ namespace
 		matTransform._21(AgentHeading.y); matTransform._22(AgentSide.y);
 
 		//now transform the vertices
-		matTransform.TransformVector2Ds(TransPoint);
+		matTransform.transform(TransPoint);
 
 		return TransPoint;
 	}
@@ -198,10 +198,10 @@ namespace
 		C2DMatrix mat;
 
 		//rotate
-		mat.Rotate(ang);
+		mat.rotate(ang);
 
 		//now transform the object's vertices
-		mat.TransformVector2Ds(v);
+		mat.transform(v);
 	}
 
 	//------------------------ createWhiskers ------------------------------------

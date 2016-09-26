@@ -1,0 +1,431 @@
+Vector
+	1. 벡터란?
+		방향과 양을 갖는 단위
+		여기서의 정의는, "점의 이동" 이라는 연산
+		
+		Programming
+			벡터의 정의와 연산을 구현한 Vec2(class)를 이용한다.
+	
+	2. 벡터와 점의 구분
+		"점의 이동"과 "점"은 다르다.
+		프로그래밍 할 때는 둘 다 Vec2 타입을 사용하지만, 갖는 의미를 잘 생각해서 사용해야 한다.
+	
+		Programming
+			벡터도 Vec2를 이용하지만, 점도 Vec2를 이용한다.
+			다만 정의할 때 벡터와 점의 구분은 인지하고 있어야 한다.
+	
+	3. Add
+		벡터의 합은 이동 연산들의 합으로써,
+		최종적인 이동 위치로의 이동 연산을 의미한다.
+		
+		v = [v1, v2]
+		u = [u1, u2]
+		v + u = v[v1 + u1, v2 + u2]
+	
+		Programming
+			Vec2는 operator+를 지원한다.
+			ex)
+			Vec2 v(1, 0);
+			Vec2 u(0, 1);
+			Vec2 add = v + u;
+	
+	4. Subtract
+		벡터의 차는 한 벡터에서 다른 벡터로의 벡터를 의미한다.
+		
+		v = [v1, v2]
+		u = [u1, u2]
+		v - u = v[v1 - u1, v2 - u2]
+		
+		만약 임의의 점을 원점에서 출발하는 벡터로 생각한다면,
+		한 점에서 다른 점으로의 벡터를 표현할 수도 있다.
+	
+		Programming
+			Vec2는 operator-를 지원한다.
+			ex)
+			Vec2 v(1, 0);
+			Vec2 u(0, 1);
+			Vec2 sub = v - u;
+	
+	5. Length
+		벡터의 길이
+		v = [v1, v2]
+		|v| = sqrt(v1*v1 + v2*v2)
+		
+		Programming
+			length 함수 이용
+			ex)
+			float length = v.length();
+	
+	6. Normalize
+		벡터의 단위벡터는 임의의 벡터에서 방향을 생각하는 경우에 사용된다.
+		방향만을 고려하기 위해서, 단위벡터는 길이를 1로 통일시켰고,
+		실수 공간의 모든 단위 벡터는 x*x + y*y = 1 원 위에 존재한다.
+		
+		v = [v1, v2]
+		Normalize(v) = v / sqrt(v1*v1 + v2*v2)
+		
+		Programming
+			getNormalized 함수 이용
+			ex)
+			Vec2 v(100, 50);
+			Vec2 e = v.getNormalized();
+		
+	7. Dot
+		벡터의 내적은 벡터와 각 사이의 관계를 찾는데 용이하다.
+		벡터와 각 사이의 관계를 통해서 각과 연관된 질의를 수행할 수 있다.
+		
+		v = [v1, v2]
+		u = [u1, u2]
+		v * u = v1*u1 + v2*u2
+			  = |v|*|u|*cosΘ
+			  
+		Programming
+			dot 함수 이용
+			ex)
+			Vec2 v(100, 50);
+			Vec2 u(50, 100);
+			float d = v.dot(u);
+	
+	8. Perp
+		한 벡터의 counter-clock-wise(반시계방향) 수직인 벡터를 의미한다.
+		
+		v = [v1, v2]
+		v.Perp = [-v2, v1]
+		
+		Programming
+			getPerp 함수 이용
+			ex)
+			Vec2 v(100, 50);
+			Vec2 p = v.getPerp();
+	
+	9. Cross
+		한 벡터와 다른 벡터의 외적을 통해 두 벡터에 수직인 벡터를 구할 수 있다.
+	
+		외적은 일반적으로 3차원에서 정의된다.
+		v = [v1, v2, v3]
+		u = [u1, u2, u3]
+		
+		i, j, k 벡터는 축에 대한 단위벡터이다.
+		i = [1, 0, 0]
+		i = [0, 1, 0]
+		i = [0, 0, 1]
+		
+		cross = c1i + c2j + c3k 
+			  = v × u 
+			  = [c1, c2, c3]
+			  
+		c1 = v2*u3 - v3*u2
+		c2 = v3*u1 - v1*u3
+		c3 = v1*u2 - v2*u1
+		
+	
+		위 정의는 3차원에서의 벡터의 외적에 대한 정의이고,
+		2차원에서 계산하기 위해서는 먼저 3차원의 벡터를 2차원으로 축소시킨다.
+		v = [v1, v2, 0]
+		u = [u1, u2, 0]
+
+		각 값을 대입하면 아래와 같은 외적 벡터를 구할 수 있다.
+		cross = [0, 0, v1*u2 - v2*u1]
+
+		이 벡터는 v와 u에 수직인 벡터지만, 
+		2차원 유클리드 공간에서는 z축이 없기 때문에 의미가 없다.
+		그럼에도 불구하고, 저 값 자체로 다양한 벡터 간의 관계를 찾을 수 있기 때문에 유용하다.
+		
+		v1*u2 - v2*u1 == 0 일 때
+		v와 u는 평행하다.
+		
+		v1*u2 - v2*u1 > 0 일 때
+		v벡터에서 u벡터로의 방향은 counter-clock-wise(반시계방향)이다.
+		
+		v1*u2 - v2*u1 < 0 일 때
+		v벡터에서 u벡터로의 방향은 clock-wise(시계방향)이다.
+		
+		Programming
+			cross 함수 이용
+			ex)
+			Vec2 v(1, 0);
+			Vec2 u(0, 1);
+			float c = v.cross(u);
+		
+
+Matrix Transform(행렬변환)
+	행렬의 Multiply(곱)은 변환으로써 사용될 수 있다.
+	
+	Programming
+		C2DMatrix(class)를 이용한다.
+		다음과 같이 항등행렬 I를 생성할 수 있다.
+		ex)
+		C2DMatrix mat;
+		
+		multiply 함수를 이용하여 현재 행렬에 다른 행렬을 곱할 수 있다.
+		this.multiply(other)		
+		
+		하지만 C2DMatrix class는 설계 차원에서 변환만을 위한 행렬로 구현되었기 때문에,
+		multiply 함수는 내부적으로만 사용된다.
+
+		
+	1. Translate(이동변환)
+		2차원 점을 이동시키기 위해서는 3차원 행렬이 필요하다.
+	
+		점:			P(x, y)	
+		평행이동: 	T(a, b)
+		변환된 점:	N(x + a, y + b)	 
+	
+		다음 3차원 행렬을 이용하여 변환을 수행할 수 있다.
+	
+		점 행렬		이동행렬			변환된 점 행렬
+		[x, y, 1] * [1, 0, 0]	=	[x + a,	y + b, 1]
+					[0, 1, 0]		 
+					[a, b, 1]		      
+	
+		
+		Programming
+			translate 함수를 이용한다.
+			ex)
+			C2DMatrix mat;
+			mat.translate(x, y);
+	
+	2. Scale(크기변환)
+		크기변환은 2차원 행렬로도 가능하지만,
+		3차원 행렬이 필요한 연산이 있으므로(이동변환) 3차원 행렬로 수행한다.
+	
+		점:			P(x, y)	
+		크기비율: 	S(a, b)
+		변환된 점:	N(x * a, y * b)	 
+	
+		다음 3차원 행렬을 이용하여 변환을 수행할 수 있다.
+	
+		점 행렬	  	크기행렬			변환된 점 행렬
+		[x, y, 1] * [a, 0, 0]	=	[x*a, y*b, 1]	
+					[0, b, 0]		 
+					[0, 0, 1]		 
+	
+	
+		Programming
+			scale 함수를 이용한다.
+			ex)
+			C2DMatrix mat;
+			mat.scale(sx, sy);
+	
+	
+	3. Rotate(회전변환)
+		회전변환은 2차원 행렬로도 가능하지만,
+		3차원 행렬이 필요한 연산이 있으므로(이동변환) 3차원 행렬로 수행한다.
+		회전변환은 회전각을 이용한 방법과 벡터를 이용한 방법이 있다.
+	
+		1) 회전각(반시계방향)을 이용한 방법
+		점:			P(x, y)	
+		회전각: 		Θ
+		변환된 점:	N(x*cosΘ - y*sinΘ, x*sinΘ + y*cosΘ)	 
+	
+		다음 3차원 행렬을 이용하여 변환을 수행할 수 있다.
+	
+		점 행렬		회전행렬					변환된 점 행렬
+		[x, y, 1] * [cosΘ,  sinΘ, 0]	=	[x*cosΘ - y*sinΘ, x*sinΘ + y*cosΘ, 1]		
+					[-sinΘ, cosΘ, 0]		 
+					[0,     0,    1]		      
+		
+		Programming
+			rotate 함수를 이용한다.
+			MATH_DEG_TO_RAD 함수는 degree를 radian으로 변환시켜준다.
+			ex)
+			C2DMatrix mat;
+			mat.rotate(MATH_DEG_TO_RAD(30));
+		
+				  
+		2) Forward(새로운 x축) 벡터와 side(새로운 y축) 벡터를 이용한 방법
+		점:			P(x, y)	
+		forward: 	F(fx, fy)
+		side:		S(sx, sy)
+		변환된 점:	N(x*fx + y*sx, x*fy + y*sy) 
+	
+		다음 3차원 행렬을 이용하여 변환을 수행할 수 있다.
+	
+		점 행렬	  	회전행렬			변환된 점 행렬
+		[x, y, 1] * [fx, fy, 0]	 =	[x*fx + y*sx, x*fy + y*sy, 1] 
+					[sx, sy, 0]	 	 
+					[0,  0,  1]		     	
+		
+		Programming		
+			rotate 함수를 이용(함수 오버로딩)
+			ex)
+			C2DMatrix mat;
+			Vec2 forward(1, 0);
+			Vec2 side(0, 1);
+			mat.rotate(forward, side);
+		
+	
+	Programming
+		위와 같은 작업을 통해서 변환행렬을 만들었다면,
+		transform 함수를 이용하여 점을 변환시킨다.
+		
+		ex)
+		Vec2 v(123, 321);
+		C2DMatrix mat;
+		mat.translate(33, 55);
+		mat.transform(v);
+		
+		//변환된 점
+		Vec2 tv = v;
+	
+Composite Transformation(합성변환)
+
+	1. 행렬의 변환은 합성시킬 수 있다.
+		예를 들어서 다음과 같은 요소들이 있다고 가정하면,
+		점 행렬:	 P
+		변환행렬1: T1
+		변환행렬2: T2
+		변환된 점: N
+	   
+		P*T1*T2 행렬은 변환1과 변환2가 적용된 행렬이 된다.
+		그러므로 여기서 T1*T2 라는 행렬은 변환1, 변환2를 동시에 적용시키는 변환행렬이 된다.
+	   
+		이 방법을 이용한다면,
+		먼저 항등행렬 I를 생성하고,
+		차례대로 이 행렬에 변환을 적용시켜서 최종적인 합성행렬 T를 만든다.
+		ex) T = I*T1*T2*...*Tn
+	   
+		임의의 점에 모든 변환을 한번에 적용시킬 수 있다.
+		ex) N = P*T
+	
+		Programming		
+			변환함수를 연속적으로 적용시킨다.
+			ex)
+			C2DMatrix mat;
+			mat.rotate(..);
+			mat.translate(..);
+			mat.scale(..);
+			..
+	
+	2. Point Transform to World Space
+		지역공간에 있는 점 P(x, y)를 전역공간의 점으로 변환시킨다.
+	   
+		항등행렬 I를 생성한다.
+		[1, 0, 0]
+		[0, 1, 0]
+		[0, 0, 1]
+	   
+		지역공간 주인의 forward(fx, fy), side(sx, sy) 벡터를 이용하여, I행렬을 회전시킨다.
+		회전행렬 R이 생성된다.
+		[fx, fy, 0]
+		[sx, sy, 0]
+		[0,  0,  1]
+	   
+		지역공간 주인의 위치(a, b)를 이용하여, R행렬을 이동시킨다.
+		합성행렬 T가 생성된다.
+		[fx, fy, 0]
+		[sx, sy, 0]
+		[a,  b,  1]
+	   
+		지역 점 행렬	전역변환행렬		전역 점 행렬	
+		[x, y, 1] * [fx, fy, 0]	 =	[x*fx + y*sx + a, x*fy + y*sy + b, 1]
+					[sx, sy, 0]	 	
+					[a,  b,  1]		
+	
+		Programming
+			다음 함수 이용
+			inline Vec2 pointToWorldSpace(
+				const Vec2 &point,
+				const Vec2 &AgentHeading,
+				const Vec2 &AgentSide,
+				const Vec2 &AgentPosition)
+	   
+	3. Point Transform to Local Space
+		전역공간에 있는 점 P(gx, gy)를 지역공간의 점으로 변환시킨다.
+		지역공간의 있던 점을 전역변환을 통해 전역공간의 점으로 변환시켰다.
+		그렇다면 역변환을 통해 다시 지역공간의 점으로 변환시킬 수 있을 것이다.
+		역변환은 역행렬을 곱함으로써 수행된다.
+		
+		지역->전역 변환 과정은 아래와 같았었다.
+		지역 점 행렬	  전역변환행렬			전역 점 행렬	
+		[lx, ly, 1] * [fx, fy, 0]	=	[lx*fx + ly*sx + a, lx*fy + ly*sy + b, 1] = [gx, gy, 1]
+					  [sx, sy, 0]	 	
+					  [a,  b,  1]		
+		
+		좌우에 전역변환행렬의 역행렬을 곱해준다.
+		[lx, ly, 1]	 =	[gx, gy, 1] * [fx, fy, 0]'
+									  [sx, sy, 0]
+									  [a,  b,  1]	
+									  
+		역행렬을 계산하면 다음 행렬이 나온다.
+		[fx,	      sx,		   0]
+		[fy,	      sy,		   0]
+		[fx*a + fy*b, sx*a + sy*b, 1]
+		
+		lx = gx*fx + gy*fy + fx*a + fy*b
+		ly = gx*sx + gy*sy + sx*a + sy*b
+	
+	
+		Programming
+			다음 함수 이용
+			inline Vec2 pointToLocalSpace(
+				const Vec2 &point,
+				const Vec2 &AgentHeading,
+				const Vec2 &AgentSide,
+				const Vec2 &AgentPosition)
+			
+	   
+	4. Vector Transform to World Space
+		지역공간에 있는 벡터 v[x, y]를 전역공간의 벡터로 변환시킨다.
+	   
+		항등행렬 I를 생성한다.
+		[1, 0, 0]
+		[0, 1, 0]
+		[0, 0, 1]
+	   
+		지역공간 주인의 forward(fx, fy), side(sx, sy) 벡터를 이용하여, I행렬을 회전시킨다.
+		회전행렬 R이 생성된다.
+		[fx, fy, 0]
+		[sx, sy, 0]
+		[0,  0,  1]
+	   
+		지역 점 벡터	회전행렬			전역 벡터 행렬	
+		[x, y, 1] * [fx, fy, 0]	 =	[x*fx + y*sx, x*fy + y*sy, 1]
+					[sx, sy, 0]	 	
+					[0,  0,  1]	
+	
+		Programming
+			다음 함수 이용
+			inline Vec2 vectorToWorldSpace(
+				const Vec2 &vec,
+				const Vec2 &AgentHeading,
+				const Vec2 &AgentSide)
+	
+	5. Vector Transform to Local Space
+		전역공간에 있는 벡터 v[gx, gy]를 지역공간의 벡터로 변환시킨다.
+		마찬가지로 역변환을 이용한다.
+		
+		지역->전역 변환 과정
+		지역 벡터 행렬	  전역변환행렬			전역 벡터 행렬	
+		[lx, ly, 1] * [fx, fy, 0]	=	[gx, gy, 1]
+					  [sx, sy, 0]	 					
+					  [0,  0,  1]		
+		
+		좌우에 전역변환행렬의 역행렬을 곱해준다.
+		[lx, ly, 1]	 =	[gx, gy, 1] * [fx, fy, 0]'
+									  [sx, sy, 0]
+									  [0,  0,  1]	
+									  
+		역행렬을 계산하면 다음 행렬이 나온다.
+		[fx,	      sx,		   0]
+		[fy,	      sy,		   0]
+		[0,			  0,		   1]
+		
+		lx = gx*fx + gy*fy
+		ly = gx*sx + gy*sy	   
+				  
+		
+		Programming
+			다음 함수 이용
+			inline Vec2 vectorToLocalSpace(
+				const Vec2 &vec,
+				const Vec2 &AgentHeading,
+				const Vec2 &AgentSide)
+				  
+				  
+				  
+				  
+				  
+				  
+	
+	

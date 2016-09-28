@@ -16,6 +16,15 @@ World::World()
 	_entities.emplace_back(new Entity(*this, 6, Vec2(455.0f, 400.0f), 25.0f));
 	_entities.emplace_back(new Entity(*this, 7, Vec2(1000.0f, 600.0f), 25.0f));
 	_entities.emplace_back(new Entity(*this, 8, Vec2(700.0f, 300.0f), 250.0f));
+
+
+	Entity* ent3 = EntityManager::instance->getEntity(3);
+	Entity* ent4 = EntityManager::instance->getEntity(4);
+
+	Vec2 dir = ent4->getPos() - ent3->getPos();
+	Vec2 new_heading = dir.getNormalized();
+
+	ent3->setHeading(new_heading);
 }
 
 

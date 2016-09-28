@@ -66,6 +66,7 @@ class EntityManager
 public:
 	enum { InvalidateId = 0 };
 
+	// For singleton
 	static void staticInit();
 	static std::unique_ptr<EntityManager> instance;
 

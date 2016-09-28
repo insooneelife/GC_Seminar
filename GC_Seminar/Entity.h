@@ -19,14 +19,14 @@ class Entity
 {
 public:
 
-	inline unsigned int getID() const { return _id; }
-	inline Vec2 getPos() const { return _pos; }
-	inline void setPos(const Vec2& pos) { _pos = pos; }
-	inline Vec2 getHeading() const { return _heading; }
+	inline unsigned int getID() const			{ return _id; }
+	inline Vec2 getPos() const					{ return _pos; }
+	inline void setPos(const Vec2& pos)			{ _pos = pos; }
+	inline Vec2 getHeading() const				{ return _heading; }
 	inline void setHeading(const Vec2& heading) { _heading = heading; }
-	inline Vec2 getSide() const { return _heading.getPerp(); }
-	inline float getBRadius() const { return _radius; }
-	inline void setBRadius(const float radius) { _radius = radius; }
+	inline Vec2 getSide() const					{ return _heading.getPerp(); }
+	inline float getBRadius() const				{ return _radius; }
+	inline void setBRadius(const float radius)	{ _radius = radius; }
 
 	Entity(World& world, unsigned int id, const Vec2& pos, float radius);
 

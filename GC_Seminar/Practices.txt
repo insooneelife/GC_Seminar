@@ -8,4 +8,5 @@
 5. 1번 entity와 3번 entity 사이의 거리를 구하세요.
 6. 8번 entity와 충돌하는 모든 entity의 id를 출력하세요.
 7. 6번 entity에 대면하는 모든 entity의 id를 출력하세요.
+
 8. 6번 entity를 기준으로 세계 공간을 지역 공간으로 변환시키세요.

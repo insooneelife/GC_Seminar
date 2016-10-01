@@ -27,7 +27,7 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 	GraphicsDriver* new_graph_driver = new GraphicsDriver();
 	bool result = new_graph_driver->init(wnd);
 
-	if( !result )
+	if (!result)
 	{
 		delete new_graph_driver;
 	}
@@ -67,9 +67,9 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 	_view_port.w = 100;
 
 	_renderer = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED);
-	if( _renderer == nullptr )
+	if (_renderer == nullptr)
 	{
-		SDL_LogError( SDL_LOG_CATEGORY_ERROR, "Failed to create hardware-accelerated renderer." );
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create hardware-accelerated renderer.");
 		return false;
 	}
 
@@ -78,7 +78,7 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 
 	// Set the logical size to 1280x720 so everything will just auto-scale
 	SDL_RenderSetLogicalSize(_renderer, kWidth, kHeight);
-	
+
 
 	// Add font for use texts.
 	TTF_Init();
@@ -99,13 +99,13 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 }
 
 GraphicsDriver::GraphicsDriver()
-	: _renderer( nullptr )
+	: _renderer(nullptr)
 {}
 
 
 GraphicsDriver::~GraphicsDriver()
 {
-	if(_renderer != nullptr )
+	if (_renderer != nullptr)
 	{
 		SDL_DestroyRenderer(_renderer);
 	}
@@ -192,7 +192,7 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color, bool on
 	{
 		p = Camera2D::instance->worldToScreen(p);
 	}
-	
+
 
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect;
@@ -286,7 +286,7 @@ void GraphicsDriver::drawBox2DShape(b2Shape* shape)
 	if (shape->GetType() == b2Shape::e_chain)
 	{
 		auto chain = static_cast<b2ChainShape*>(shape);
-		
+
 		for (int i = 0; i < chain->GetChildCount(); i++)
 		{
 			b2EdgeShape edge;
@@ -310,7 +310,7 @@ void GraphicsDriver::drawBox2DShape(b2Shape* shape)
 	else if (shape->GetType() == b2Shape::e_polygon)
 	{
 		auto polygon = static_cast<b2PolygonShape*>(shape);
-		
+
 		for (int i = 0; i < polygon->GetVertexCount(); i++)
 		{
 			int j = (i + 1) % polygon->GetVertexCount();

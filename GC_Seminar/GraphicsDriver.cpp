@@ -1,4 +1,6 @@
 #include "GraphicsDriver.h"
+#include "EntityManager.h"
+#include "Camera2D.h"
 #include <iostream>
 
 std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
@@ -6,6 +8,8 @@ std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
 SDL_Color GraphicsDriver::red;
 SDL_Color GraphicsDriver::blue;
 SDL_Color GraphicsDriver::yellow;
+SDL_Color GraphicsDriver::black;
+SDL_Color GraphicsDriver::white;
 
 bool GraphicsDriver::staticInit(SDL_Window* wnd)
 {
@@ -25,9 +29,8 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 	red.r = 255;	red.g = 0;		red.b = 0;
 	blue.r = 0;		blue.g = 0;		blue.b = 255;
 	yellow.r = 255;	yellow.g = 237;	yellow.b = 0;
-
-
-	
+	black.r = 0;	black.g = 0;	black.b = 0;
+	white.r = 255;	white.g = 255;	white.b = 255;
 
 	return result;
 }
@@ -47,7 +50,6 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 	// Set the logical size to 1280x720 so everything will just auto-scale
 	SDL_RenderSetLogicalSize(_renderer, 1280, 720 );
 	
-
 	// Add font for use texts.
 	TTF_Init();
 	_font = TTF_OpenFont("../Assets/Carlito-Regular.TTF", 36);
@@ -71,6 +73,16 @@ GraphicsDriver::~GraphicsDriver()
 	{
 		SDL_DestroyRenderer(_renderer);
 	}
+}
+
+void GraphicsDriver::render()
+{
+	// (example 1) 1번 entity와 2번 entity 사이에 직선을 그리세요.
+	Entity* ent1 = EntityManager::instance->getEntity(1);
+	Entity* ent2 = EntityManager::instance->getEntity(2);
+
+	if(ent1 && ent2)
+		GraphicsDriver::instance->drawLine(ent1->getPos(), ent2->getPos(), yellow);
 }
 
 void GraphicsDriver::clear()
@@ -99,21 +111,26 @@ SDL_Renderer* GraphicsDriver::getRenderer()
 
 void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color)
 {
+	Vec2 ca = Camera2D::instance->carmeraPos(a);
+	Vec2 cb = Camera2D::instance->carmeraPos(b);
+
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderDrawLine(
 		_renderer,
-		static_cast<int>(a.x),
-		static_cast<int>(a.y),
-		static_cast<int>(b.x),
-		static_cast<int>(b.y));
+		static_cast<int>(ca.x),
+		static_cast<int>(ca.y),
+		static_cast<int>(cb.x),
+		static_cast<int>(cb.y));
 }
 
 void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
 {
+	Vec2 cp = Camera2D::instance->carmeraPos(p);
+
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect;
-	rect.x = static_cast<int>(p.x);
-	rect.y = static_cast<int>(p.y);
+	rect.x = static_cast<int>(cp.x);
+	rect.y = static_cast<int>(cp.y);
 	rect.w = static_cast<int>(w);
 	rect.h = static_cast<int>(h);
 	SDL_RenderDrawRect(_renderer, &rect);
@@ -122,8 +139,6 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
 
 void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color)
 {
-	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
-
 	float add = 360 / fragment;
 	
 	Vec2 start = Vec2(r, 0) + p;
@@ -135,13 +150,15 @@ void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color
 
 		end = Vec2(r*cos(rad), r*sin(rad)) + p;
 
-		drawLine(start, end);
+		drawLine(start, end, color);
 		start = end;
 	}
 }
 
 void GraphicsDriver::drawText(const std::string& inStr, const Vec2& origin, const SDL_Color& inColor)
 {
+	Vec2 corigin = Camera2D::instance->carmeraPos(origin);
+
 	// Convert the color
 	SDL_Color color;
 	color.r = inColor.r;
@@ -155,8 +172,8 @@ void GraphicsDriver::drawText(const std::string& inStr, const Vec2& origin, cons
 
 	// Setup the rect for the texture
 	SDL_Rect dstRect;
-	dstRect.x = static_cast<int>(origin.x);
-	dstRect.y = static_cast<int>(origin.y);
+	dstRect.x = static_cast<int>(corigin.x);
+	dstRect.y = static_cast<int>(corigin.y);
 	SDL_QueryTexture(texture, nullptr, nullptr, &dstRect.w, &dstRect.h);
 
 	// Draw the texture

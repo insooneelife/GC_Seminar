@@ -75,7 +75,7 @@ GraphicsDriver::~GraphicsDriver()
 		SDL_DestroyRenderer(_renderer);
 	}
 }
-
+//change
 void GraphicsDriver::render()
 {
 	// (example 1) 1번 entity와 2번 entity 사이에 직선을 그리세요.

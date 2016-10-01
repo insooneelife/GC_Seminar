@@ -14,10 +14,41 @@ Engine::~Engine()
 
 void Engine::handleEvent(SDL_Event* inEvent)
 {
+	Vec2 player_pos = _world->getPlayerEntity()->getPos();
+	
 	switch (inEvent->type)
 	{
 	case SDL_KEYDOWN:
-		std::cout << "SDL_KEYDOWN" << std::endl;
+		// Details
+		switch (inEvent->key.keysym.sym) 
+		{
+		case SDLK_LEFT:
+			std::cout << "L" << std::endl;
+			_world->getPlayerEntity()->setPos(player_pos + Vec2(-10, 0));
+			_world->getPlayerEntity()->setHeading(Vec2(-1, 0));
+			break;
+		case SDLK_RIGHT:
+			std::cout << "R" << std::endl;
+			_world->getPlayerEntity()->setPos(player_pos + Vec2(10, 0));
+			_world->getPlayerEntity()->setHeading(Vec2(1, 0));
+			break;
+		case SDLK_UP:
+			std::cout << "U" << std::endl;
+			_world->getPlayerEntity()->setPos(player_pos + Vec2(0, 10));
+			_world->getPlayerEntity()->setHeading(Vec2(0, 1));
+			break;
+		case SDLK_DOWN:
+			std::cout << "D" << std::endl;
+			_world->getPlayerEntity()->setPos(player_pos + Vec2(0, -10));
+			_world->getPlayerEntity()->setHeading(Vec2(0, -1));
+			break;
+			
+		case SDLK_SPACE:
+			_world->createProjectile(_world->getPlayerEntity()->getID(), _world->getPlayerEntity()->getPos());
+			break;
+		default:
+			break;
+		}
 		break;
 	case SDL_KEYUP:
 		std::cout << "SDL_KEYUP" << std::endl;

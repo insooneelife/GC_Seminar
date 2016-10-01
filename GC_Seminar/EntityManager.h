@@ -1,4 +1,14 @@
 #pragma once
+//------------------------------------------------------------------------
+//
+//  Name:		EntityManager.h
+//
+//  Desc:		For query entities by id and handle message between entities.
+//
+//  Author:		Insub Im (insooneelife@naver.com)
+//
+//------------------------------------------------------------------------
+
 
 #include <map>
 #include <memory>

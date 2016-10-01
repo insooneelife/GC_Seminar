@@ -1,3 +1,4 @@
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:   Entity.h
@@ -8,8 +9,6 @@
 //
 //--------------------------------------------------------------------------
 
-#pragma once
-
 #include "Math\Vec2.h"
 #include "Engine.h"
 
@@ -18,33 +17,35 @@ class World;
 class Entity
 {
 public:
+	enum Type
+	{
+		kHunter,
+		kPrey,
+		kProjectile
+	};
 
-	inline unsigned int getID() const { return _id; }
-	inline Vec2 getPos() const { return _pos; }
-	inline void setPos(const Vec2& pos) { _pos = pos; }
-	inline Vec2 getHeading() const { return _heading; }
-	inline void setHeading(const Vec2& heading) { _heading = heading; }
-	inline Vec2 getSide() const { return _heading.getPerp(); }
-	inline float getBRadius() const { return _radius; }
-	inline void setBRadius(const float radius) { _radius = radius; }
-
-	Entity(World& world, unsigned int id, const Vec2& pos, float radius);
-
+	inline unsigned int getID() const			{ return _id; }
+	inline Vec2 getPos() const					{ return _pos; }
+	inline void setPos(const Vec2& pos)			{ _pos = pos; }
+	inline Vec2 getHeading() const				{ return _heading; }
+	inline void setHeading(const Vec2& heading)	{ _heading = heading; }
+	inline Vec2 getSide() const					{ return _heading.getPerp(); }
+	inline float getBRadius() const				{ return _radius; }
+	inline void setBRadius(const float radius)	{ _radius = radius; }
+	inline Type getType() const					{ return _type; }
+	
+	Entity(World& world, unsigned int id, const Vec2& pos, float radius, Type);
 	virtual ~Entity();
+	virtual void update() = 0;
+	virtual void render() = 0;
+	virtual bool handleMessage(const Message& msg) { return false; }
 
-	virtual void update();
-
-	virtual void render();
-
-	virtual bool handleMessage(const Message& msg);
-
-private:
-
+protected:
 	World& _world;
-
 	unsigned int _id;
 	Vec2 _pos;
 	Vec2 _heading;
 	float _radius;
+	Type _type;
 
 };

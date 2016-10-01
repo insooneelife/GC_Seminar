@@ -1,3 +1,4 @@
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:		GraphicsDriver.h
@@ -7,9 +8,6 @@
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-
-
-#pragma once
 
 #include <SDL/SDL.h>
 #include <SDL\SDL_ttf.h>
@@ -39,7 +37,7 @@ public:
 
 	void			drawLine(Vec2 a, Vec2 b, SDL_Color color = red);
 	void			drawRect(Vec2 p, float w, float h, SDL_Color color = red);
-	void			drawCircle(Vec2 p, float r, float fragment = 15, SDL_Color color = red);
+	void			drawCircle(Vec2 p, float r, SDL_Color color = red, float fragment = 15);
 	void			drawText(const std::string& inStr, const Vec2& origin, const SDL_Color& inColor = red);
 
 	~GraphicsDriver();

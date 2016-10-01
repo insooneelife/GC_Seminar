@@ -1,4 +1,15 @@
 #pragma once
+//------------------------------------------------------------------------
+//
+//  Name:		Camera2D.h
+//
+//  Desc:		For view transform related with screen, world and player entity.
+//				
+//
+//  Author:		Insub Im (insooneelife@naver.com)
+//
+//------------------------------------------------------------------------
+
 #include "Math\Transformations.h"
 #include <iostream>
 
@@ -9,9 +20,12 @@ public:
 	static std::unique_ptr<Camera2D> instance;
 
 	inline Vec2 getOrigin() const { return _origin; }
+	inline void setOrigin(const Vec2& origin) { _origin = origin; }
 	inline Vec2 getAxisX() const { return _axisX; }
 	inline Vec2 getAxisY() const { return _axisY; }
 	inline float getScale() const { return _scale; }
+
+	//inline void move(const Vec2 vec) { _origin = _origin + vec; }
 
 	inline void setCamera(const Vec2& origin, const Vec2& axisX, const Vec2& axisY, float scale = 1.0f)
 	{

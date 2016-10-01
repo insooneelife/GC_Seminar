@@ -75,16 +75,9 @@ GraphicsDriver::~GraphicsDriver()
 		SDL_DestroyRenderer(_renderer);
 	}
 }
-//change
-void GraphicsDriver::render()
-{
-	// (example 1) 1번 entity와 2번 entity 사이에 직선을 그리세요.
-	Entity* ent1 = EntityManager::instance->getEntity(1);
-	Entity* ent2 = EntityManager::instance->getEntity(2);
 
-	if(ent1 && ent2)
-		GraphicsDriver::instance->drawLine(ent1->getPos(), ent2->getPos(), yellow);
-}
+void GraphicsDriver::render()
+{}
 
 void GraphicsDriver::clear()
 {
@@ -138,19 +131,16 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
 }
 
 
-void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color)
+void GraphicsDriver::drawCircle(Vec2 p, float r,  SDL_Color color, float fragment)
 {
 	float add = 360 / fragment;
-	
 	Vec2 start = Vec2(r, 0) + p;
 	Vec2 end(0, 0);
 
 	for (float degree = 0; degree <= 360; degree += add)
 	{
 		float rad = MATH_DEG_TO_RAD(degree);
-
 		end = Vec2(r*cos(rad), r*sin(rad)) + p;
-
 		drawLine(start, end, color);
 		start = end;
 	}

@@ -1,3 +1,4 @@
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:		Utils.h
@@ -7,10 +8,8 @@
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-
-#pragma once
-
 #include <SDL\SDL.h>
+#include <random>
 
 namespace
 {

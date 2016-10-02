@@ -34,6 +34,11 @@ void World::collide(Hunter& h, Prey& p)
 	}
 }
 
+template<class Container>
+void World::updateEntity(const Container& entities)
+{
+}
+
 World::World()
 	:
 	_next_validate_id(1)

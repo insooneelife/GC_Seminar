@@ -25,7 +25,7 @@ public:
 	static void collide(Hunter& h1, Projectile& h2);
 	static void collide(Hunter& h1, Prey& h2);
 	template<class Container>
-	static void updateEntity(const Container& entities);
+	static void updateEntity(Container& entities);
 
 	inline const std::vector<Hunter*>& getHunters() const			{ return _hunters; }
 	inline const std::vector<Projectile*>& getProjectiles() const	{ return _projectiles; }

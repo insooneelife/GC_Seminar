@@ -7,7 +7,6 @@
 #include "Camera2D.h"
 #include "Utils.h"
 #include <iostream>
-
 using namespace std;
 
 void World::collide(Hunter& h1, Hunter& h2)
@@ -35,8 +34,25 @@ void World::collide(Hunter& h, Prey& p)
 }
 
 template<class Container>
-void World::updateEntity(const Container& entities)
+void World::updateEntity(Container& entities)
 {
+	// Update entities
+	auto e = begin(entities);
+	while (e != end(entities))
+	{
+		// Test for any dead entities and remove them if necessary.
+		if (!(*e)->isGarbage())
+		{
+			(*e)->update();
+			++e;
+		}
+		else
+		{
+			delete *e;
+			e = entities.erase(e);
+		}
+	}
+	
 }
 
 World::World()
@@ -91,14 +107,9 @@ void World::update()
 		_created_entities.pop();
 	}
 
-	for (auto e = std::begin(_hunters); e != std::end(_hunters); e++)
-		(*e)->update();
-
-	for (auto p = std::begin(_projectiles); p != std::end(_projectiles); p++)
-		(*p)->update();
-
-	for (auto p = std::begin(_preys); p != std::end(_preys); p++)
-		(*p)->update();
+	updateEntity(_hunters);
+	updateEntity(_projectiles);
+	updateEntity(_preys);
 
 
 	for (auto h1 : _hunters)
@@ -119,13 +130,13 @@ void World::update()
 
 void World::render()
 {
-	for (auto e = std::begin(_hunters); e != std::end(_hunters); e++)
+	for (auto e = begin(_hunters); e != end(_hunters); e++)
 		(*e)->render();
 
-	for (auto p = std::begin(_projectiles); p != std::end(_projectiles); p++)
+	for (auto p = begin(_projectiles); p != end(_projectiles); p++)
 		(*p)->render();
 
-	for (auto p = std::begin(_preys); p != std::end(_preys); p++)
+	for (auto p = begin(_preys); p != end(_preys); p++)
 		(*p)->render();
 }
 

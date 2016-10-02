@@ -19,9 +19,15 @@ Camera2D::Camera2D(float screenX, float screenY)
 	_scale(1.0f)
 {}
 
-Vec2 Camera2D::carmeraPos(const Vec2& pos)
+Vec2 Camera2D::worldToScreen(const Vec2& pos)
 {
 	Vec2 convertPos = pointToLocalSpace(pos, _axisX, _axisY, _origin);
 	convertPos = Vec2(_screenX / 2 + convertPos.x, _screenY / 2 - convertPos.y);
+	return convertPos;
+}
+
+Vec2 Camera2D::screenToWorld(const Vec2& mpos)
+{
+	Vec2 convertPos = Vec2(mpos.x - _screenX / 2, -mpos.y + _screenY / 2) + _origin;
 	return convertPos;
 }

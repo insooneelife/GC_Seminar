@@ -15,6 +15,8 @@ Engine::~Engine()
 void Engine::handleEvent(SDL_Event* inEvent)
 {
 	Vec2 player_pos = _world->getPlayerEntity()->getPos();
+	int mx = 0;
+	int my = 0;
 	
 	switch (inEvent->type)
 	{
@@ -24,23 +26,15 @@ void Engine::handleEvent(SDL_Event* inEvent)
 		{
 		case SDLK_LEFT:
 			std::cout << "L" << std::endl;
-			_world->getPlayerEntity()->setPos(player_pos + Vec2(-10, 0));
-			_world->getPlayerEntity()->setHeading(Vec2(-1, 0));
 			break;
 		case SDLK_RIGHT:
 			std::cout << "R" << std::endl;
-			_world->getPlayerEntity()->setPos(player_pos + Vec2(10, 0));
-			_world->getPlayerEntity()->setHeading(Vec2(1, 0));
 			break;
 		case SDLK_UP:
 			std::cout << "U" << std::endl;
-			_world->getPlayerEntity()->setPos(player_pos + Vec2(0, 10));
-			_world->getPlayerEntity()->setHeading(Vec2(0, 1));
 			break;
 		case SDLK_DOWN:
 			std::cout << "D" << std::endl;
-			_world->getPlayerEntity()->setPos(player_pos + Vec2(0, -10));
-			_world->getPlayerEntity()->setHeading(Vec2(0, -1));
 			break;
 			
 		case SDLK_SPACE:
@@ -57,7 +51,8 @@ void Engine::handleEvent(SDL_Event* inEvent)
 		std::cout << "SDL_KEYUP" << std::endl;
 		break;
 	case SDL_MOUSEBUTTONDOWN:
-		std::cout << "SDL_MOUSEBUTTONDOWN" << std::endl;
+		SDL_GetMouseState(&mx, &my);
+		_world->getPlayerEntity()->enterMovingState(Camera2D::instance->screenToWorld(Vec2(mx, my)));
 		break;
 	default:
 		break;

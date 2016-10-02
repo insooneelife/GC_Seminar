@@ -11,7 +11,8 @@ Entity::Entity(World& world, unsigned int id, const Vec2& pos, float radius, Typ
 	_pos(pos),
 	_radius(radius),
 	_type(type),
-	_heading(1, 0)
+	_heading(1, 0),
+	_is_garbage(false)
 {
 	EntityManager::instance->registerEntity(this);
 }

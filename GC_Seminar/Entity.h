@@ -33,6 +33,8 @@ public:
 	inline float getBRadius() const				{ return _radius; }
 	inline void setBRadius(const float radius)	{ _radius = radius; }
 	inline Type getType() const					{ return _type; }
+	inline bool isGarbage() const				{ return _is_garbage; }
+	inline void setGarbage()					{ _is_garbage = true; }
 	
 	Entity(World& world, unsigned int id, const Vec2& pos, float radius, Type);
 	virtual ~Entity();
@@ -47,5 +49,5 @@ protected:
 	Vec2 _heading;
 	float _radius;
 	Type _type;
-
+	bool _is_garbage;
 };

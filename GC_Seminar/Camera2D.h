@@ -40,7 +40,8 @@ public:
 
 	Camera2D(float screenX, float screenY);
 
-	Vec2 carmeraPos(const Vec2& pos);
+	Vec2 worldToScreen(const Vec2& pos);
+	Vec2 screenToWorld(const Vec2& mpos);
 
 
 private:

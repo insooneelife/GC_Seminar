@@ -20,11 +20,13 @@ public:
 	virtual void update();
 	virtual void render();
 
-	Projectile(World& world, unsigned int id, unsigned int owner_id, const Vec2& pos)
+	Projectile(World& world, unsigned int id, unsigned int owner_id, const Vec2& pos, const Vec2& heading)
 		:
 		Entity(world, id, pos, 15.0f, Entity::Type::kProjectile),
 		_owner_id(owner_id)
-	{}
+	{
+		setHeading(heading);
+	}
 
 private:
 	unsigned int _owner_id;

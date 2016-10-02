@@ -4,7 +4,9 @@
 #include "GraphicsDriver.h"
 
 void Projectile::update()
-{}
+{
+	_pos += _heading * 15;
+}
 
 void Projectile::render()
 {

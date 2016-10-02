@@ -44,7 +44,10 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			break;
 			
 		case SDLK_SPACE:
-			_world->createProjectile(_world->getPlayerEntity()->getID(), _world->getPlayerEntity()->getPos());
+			_world->createProjectile(
+				_world->getPlayerEntity()->getID(),
+				_world->getPlayerEntity()->getPos(),
+				_world->getPlayerEntity()->getHeading());
 			break;
 		default:
 			break;

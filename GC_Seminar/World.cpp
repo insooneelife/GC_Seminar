@@ -39,22 +39,21 @@ World::World()
 	_next_validate_id(1)
 {
 	_player_entity = new Hunter(*this, genID(), Vec2(100.0f, 100.0f));
-	_entities.emplace_back(_player_entity);
-	_entities.emplace_back(new Hunter(*this, genID(), Vec2(250.0f, 200.0f)));
-	//_entities.emplace_back(new Hunter(*this, genID(), Vec2(150.0f, 500.0f)));
-	//_entities.emplace_back(new Hunter(*this, genID(), Vec2(300.0f, 450.0f)));
-	//_entities.emplace_back(new Hunter(*this, genID(), Vec2(500.0f, 200.0f)));
-	//_entities.emplace_back(new Hunter(*this, genID(), Vec2(450.0f, 400.0f)));
-	//_entities.emplace_back(new Hunter(*this, genID(), Vec2(1000.0f, 600.0f)));
-	//_entities.emplace_back(new Hunter(*this, genID(), Vec2(700.0f, 300.0f)));
+	_hunters.push_back(_player_entity);
+
+	createHunter(Vec2(250.0f, 200.0f));
+	createHunter(Vec2(150.0f, 500.0f));
+	createHunter(Vec2(300.0f, 450.0f));
+	createHunter(Vec2(500.0f, 200.0f));
+	createHunter(Vec2(450.0f, 400.0f));
+	createHunter(Vec2(1000.0f, 600.0f));
+	createHunter(Vec2(700.0f, 300.0f));
 
 	float screenX = Camera2D::instance->getScreenX();
 	float screenY = Camera2D::instance->getScreenY();
 
 	for (int i = 0; i < 100; i++)
-	{
-		_entities.emplace_back(new Prey(*this, genID(), Vec2(random(-screenX, 2 * screenX), random(-screenX, 2 * screenX))));
-	}
+		createPrey(Vec2(random(-screenX, 2 * screenX), random(-screenX, 2 * screenX)));
 
 	Vec2 heading = _player_entity->getHeading();
 	Vec2 side = _player_entity->getSide();
@@ -70,68 +69,73 @@ void World::update()
 {
 	while (!_created_entities.empty())
 	{
-		_entities.emplace_back(std::move(_created_entities.front()));
+		Entity* ent = _created_entities.front();
+
+		if (ent->getType() == Entity::kHunter) 
+		{
+			_hunters.push_back(static_cast<Hunter*>(ent));
+		}
+		else if (ent->getType() == Entity::kPrey)
+		{
+			_preys.push_back(static_cast<Prey*>(ent));
+		}
+		else if (ent->getType() == Entity::kProjectile)
+		{
+			_projectiles.push_back(static_cast<Projectile*>(ent));
+		}
 		_created_entities.pop();
 	}
 
-	for (auto e = std::begin(_entities); e != std::end(_entities); e++)
-	{
+	for (auto e = std::begin(_hunters); e != std::end(_hunters); e++)
 		(*e)->update();
-	}
 
-	for (auto e = std::begin(_entities); e != std::end(_entities); e++)
-	{
-		for (auto o = std::begin(_entities); o != std::end(_entities); o++)
-		{
-			if ((*e)->getID() == (*o)->getID())
-				continue;
+	for (auto p = std::begin(_projectiles); p != std::end(_projectiles); p++)
+		(*p)->update();
 
-			if ((*e)->getType() == Entity::Type::kHunter && (*o)->getType() == Entity::Type::kHunter)
-			{
-				collide(*static_cast<Hunter*>((*e).get()), *static_cast<Hunter*>((*o).get()));
-			}
-			else if ((*e)->getType() == Entity::Type::kHunter && (*o)->getType() == Entity::Type::kPrey)
-			{
-				collide(*static_cast<Hunter*>((*e).get()), *static_cast<Prey*>((*o).get()));
-			}
-			else if ((*e)->getType() == Entity::Type::kHunter && (*o)->getType() == Entity::Type::kProjectile)
-			{
-				collide(*static_cast<Hunter*>((*e).get()), *static_cast<Projectile*>((*o).get()));
-			}
-			else if ((*e)->getType() == Entity::Type::kPrey && (*o)->getType() == Entity::Type::kHunter)
-			{
-				collide(*static_cast<Hunter*>((*o).get()), *static_cast<Prey*>((*e).get()));
-			}
-			else if ((*e)->getType() == Entity::Type::kProjectile && (*o)->getType() == Entity::Type::kHunter)
-			{
-				collide(*static_cast<Hunter*>((*o).get()), *static_cast<Projectile*>((*e).get()));
-			}
-		}
-	}
+	for (auto p = std::begin(_preys); p != std::end(_preys); p++)
+		(*p)->update();
+
+
+	for (auto h1 : _hunters)
+		for (auto h2 : _hunters)
+			if (h1->getID() != h2->getID())
+				collide(*h1, *h2);
+
+	for (auto h : _hunters)
+		for (auto p : _projectiles)
+				collide(*h, *p);
+
+	for (auto h : _hunters)
+		for (auto p : _preys)
+				collide(*h, *p);
 
 	Camera2D::instance->setOrigin(_player_entity->getPos());
 }
 
 void World::render()
 {
-	for (auto e = std::begin(_entities); e != std::end(_entities); e++)
-	{
+	for (auto e = std::begin(_hunters); e != std::end(_hunters); e++)
 		(*e)->render();
-	}
+
+	for (auto p = std::begin(_projectiles); p != std::end(_projectiles); p++)
+		(*p)->render();
+
+	for (auto p = std::begin(_preys); p != std::end(_preys); p++)
+		(*p)->render();
 }
 
 
-const std::vector<std::unique_ptr<Entity> >& World::getEntities() const
+void World::createHunter(const Vec2& pos)
 {
-	return _entities;
-}
-
-Entity* World::getPlayerEntity() const
-{
-	return _player_entity;
+	_created_entities.emplace(new Hunter(*this, genID(), pos));
 }
 
 void World::createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading)
 {
 	_created_entities.emplace(new Projectile(*this, genID(), owner_id, pos, heading));
+}
+
+void World::createPrey(const Vec2& pos)
+{
+	_created_entities.emplace(new Prey(*this, genID(), pos));
 }

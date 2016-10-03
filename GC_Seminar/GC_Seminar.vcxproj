@@ -29,6 +29,7 @@
     <ClCompile Include="Math\Vec2.cpp" />
     <ClCompile Include="Prey.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -46,6 +47,7 @@
     <ClInclude Include="Prey.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="Wall.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

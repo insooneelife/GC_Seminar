@@ -5,6 +5,9 @@
 
 void Projectile::update()
 {
+	if (_life_time-- < 0)
+		_is_garbage = true;
+
 	_pos += _heading * 15;
 }
 

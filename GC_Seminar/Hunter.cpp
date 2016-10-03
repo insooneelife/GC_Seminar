@@ -31,7 +31,10 @@ void Hunter::render()
 	ss << _id;
 	GraphicsDriver::instance->drawCircle(_pos, _radius, GraphicsDriver::black);
 	GraphicsDriver::instance->drawText(ss.str(), _pos);
-	GraphicsDriver::instance->drawLine(_pos, _pos + _heading * _radius * 2, GraphicsDriver::black);
-	GraphicsDriver::instance->drawCircle(_pos + _heading * _radius * 2, _radius / 2, GraphicsDriver::white);
+
+	Vec2 sidev = getSide() * _radius / 2;
+	GraphicsDriver::instance->drawLine(_pos + sidev, _pos - sidev, GraphicsDriver::black);
+	GraphicsDriver::instance->drawLine(_pos + sidev, _pos + _heading * _radius * 2, GraphicsDriver::black);
+	GraphicsDriver::instance->drawLine(_pos - sidev, _pos + _heading * _radius * 2, GraphicsDriver::black);
 }
 

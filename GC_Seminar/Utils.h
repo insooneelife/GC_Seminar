@@ -30,4 +30,54 @@ namespace
 		return ((end - begin) * rand + begin);
 	}
 
+
+	inline float distToSegmentSq(
+		Vec2 A,
+		Vec2 B,
+		Vec2 P)
+	{
+		//CCASSERT(A != B, "invalid segment");
+
+		//if the angle is obtuse between PA and AB is obtuse then the closest
+		//vertex must be A
+		float dotA = (P.x - A.x)*(B.x - A.x) + (P.y - A.y)*(B.y - A.y);
+
+		if (dotA <= 0) return (P - A).getLengthSq();
+
+		//if the angle is obtuse between PB and AB is obtuse then the closest
+		//vertex must be B
+		float dotB = (P.x - B.x)*(A.x - B.x) + (P.y - B.y)*(A.y - B.y);
+
+		if (dotB <= 0) return (P - B).getLengthSq();
+
+		//calculate the point along AB that is the closest to P
+		Vec2 Point = A + ((B - A) * dotA) / (dotA + dotB);
+
+		//calculate the distance P-Point
+		return (Point - P).getLengthSq();
+	}
+
+	inline bool segmentCircleOverlap(
+		Vec2 A,
+		Vec2 B,
+		Vec2 P,
+		float radius)
+	{
+		//CCASSERT(A != B, "invalid segment");
+		//CCASSERT(radius > 0, "invalid circle radius");
+
+		//first determine the distance from the center of the circle to
+		//the line segment (working in distance squared space)
+		float dist_to_line_sq = distToSegmentSq(A, B, P);
+
+		if (dist_to_line_sq <= radius*radius)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 }

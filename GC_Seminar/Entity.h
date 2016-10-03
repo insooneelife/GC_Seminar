@@ -21,7 +21,8 @@ public:
 	{
 		kHunter,
 		kPrey,
-		kProjectile
+		kProjectile,
+		kWall
 	};
 
 	inline unsigned int getID() const			{ return _id; }

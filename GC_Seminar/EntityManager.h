@@ -12,7 +12,7 @@
 
 #include <map>
 #include <memory>
-#include "Entity.h"
+#include "Entity/Entity.h"
 
 class Message
 {

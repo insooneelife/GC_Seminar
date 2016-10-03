@@ -9,8 +9,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include "Math\Vec2.h"
-#include "Engine.h"
+#include "../Math/Vec2.h"
+#include "../Engine.h"
 
 class Message;
 class World;

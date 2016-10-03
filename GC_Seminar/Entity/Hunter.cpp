@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "Hunter.h"
-#include "GraphicsDriver.h"
+#include "../GraphicsDriver.h"
 
 void Hunter::enterMovingState(const Vec2& desti)
 {

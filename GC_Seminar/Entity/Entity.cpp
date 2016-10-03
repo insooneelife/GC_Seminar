@@ -1,8 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include "Entity.h"
-#include "GraphicsDriver.h"
-#include "EntityManager.h"
+#include "../GraphicsDriver.h"
+#include "../EntityManager.h"
 
 Entity::Entity(World& world, unsigned int id, const Vec2& pos, float radius, Type type)
 	:

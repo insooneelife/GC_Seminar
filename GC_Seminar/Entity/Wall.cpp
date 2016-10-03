@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "Wall.h"
-#include "GraphicsDriver.h"
+#include "../GraphicsDriver.h"
 
 void Wall::render()
 {

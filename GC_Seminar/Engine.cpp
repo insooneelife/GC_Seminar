@@ -1,10 +1,11 @@
 #include "Engine.h"
 #include "WindowManager.h"
 #include "GraphicsDriver.h"
-#include "Hunter.h"
 #include "EntityManager.h"
 #include "World.h"
 #include "Camera2D.h"
+
+#include "Entity/Hunter.h"
 
 Engine::Engine()
 {}

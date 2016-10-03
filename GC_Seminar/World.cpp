@@ -1,13 +1,16 @@
+#include <iostream>
 #include "World.h"
-#include "Hunter.h"
-#include "Prey.h"
-#include "Projectile.h"
-#include "Wall.h"
 #include "EntityManager.h"
-#include "Math\Transformations.h"
 #include "Camera2D.h"
 #include "Utils.h"
-#include <iostream>
+
+#include "Math\Transformations.h"
+
+#include "Entity/Hunter.h"
+#include "Entity/Prey.h"
+#include "Entity/Projectile.h"
+#include "Entity/Wall.h"
+
 using namespace std;
 
 void World::collide(Hunter& h1, Hunter& h2)

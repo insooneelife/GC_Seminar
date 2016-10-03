@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "Prey.h"
-#include "GraphicsDriver.h"
+#include "../GraphicsDriver.h"
 
 void Prey::render()
 {

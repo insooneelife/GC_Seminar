@@ -18,14 +18,12 @@ public:
 	inline Vec2 getBegin() const	{ return _begin; }
 	inline Vec2 getEnd() const		{ return _end; }
 
-	Wall(World& world, unsigned int id, const Vec2& begin, const Vec2& end, const Vec2& heading)
-		:
-		Entity(world, id, (begin + end)/2, 0.0f, Entity::Type::kWall),
-		_begin(begin),
-		_end(end)
-	{
-		setHeading(heading);
-	}
+	Wall(
+		World& world,
+		unsigned int id,
+		const Vec2& begin,
+		const Vec2& end,
+		const Vec2& heading);
 
 	virtual ~Wall() {}
 	virtual void update() {}

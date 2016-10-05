@@ -53,7 +53,7 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 
 	// Add font for use texts.
 	TTF_Init();
-	_font = TTF_OpenFont("../Assets/Carlito-Regular.TTF", 36);
+	_font = TTF_OpenFont("../Assets/Carlito-Regular.TTF", 24);
 
 	if (_font == nullptr)
 	{
@@ -103,35 +103,41 @@ SDL_Renderer* GraphicsDriver::getRenderer()
 }
 
 
-void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color)
+void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color, bool on_ui)
 {
-	Vec2 ca = Camera2D::instance->worldToScreen(a);
-	Vec2 cb = Camera2D::instance->worldToScreen(b);
+	if (!on_ui)
+	{
+		a = Camera2D::instance->worldToScreen(a);
+		b = Camera2D::instance->worldToScreen(b);
+	}
 
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderDrawLine(
 		_renderer,
-		static_cast<int>(ca.x),
-		static_cast<int>(ca.y),
-		static_cast<int>(cb.x),
-		static_cast<int>(cb.y));
+		static_cast<int>(a.x),
+		static_cast<int>(a.y),
+		static_cast<int>(b.x),
+		static_cast<int>(b.y));
 }
 
-void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
+void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color, bool on_ui)
 {
-	Vec2 cp = Camera2D::instance->worldToScreen(p);
+	if (!on_ui)
+	{
+		p = Camera2D::instance->worldToScreen(p);
+	}
 
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect;
-	rect.x = static_cast<int>(cp.x);
-	rect.y = static_cast<int>(cp.y);
+	rect.x = static_cast<int>(p.x);
+	rect.y = static_cast<int>(p.y);
 	rect.w = static_cast<int>(w);
 	rect.h = static_cast<int>(h);
 	SDL_RenderDrawRect(_renderer, &rect);
 }
 
 
-void GraphicsDriver::drawCircle(Vec2 p, float r,  SDL_Color color, float fragment)
+void GraphicsDriver::drawCircle(Vec2 p, float r,  SDL_Color color, float fragment, bool on_ui)
 {
 	float add = 360 / fragment;
 	Vec2 start = Vec2(r, 0) + p;
@@ -141,14 +147,17 @@ void GraphicsDriver::drawCircle(Vec2 p, float r,  SDL_Color color, float fragmen
 	{
 		float rad = MATH_DEG_TO_RAD(degree);
 		end = Vec2(r*cos(rad), r*sin(rad)) + p;
-		drawLine(start, end, color);
+		drawLine(start, end, color, on_ui);
 		start = end;
 	}
 }
 
-void GraphicsDriver::drawText(const std::string& inStr, const Vec2& origin, const SDL_Color& inColor)
+void GraphicsDriver::drawText(const std::string& inStr, Vec2 origin, const SDL_Color& inColor, bool on_ui)
 {
-	Vec2 corigin = Camera2D::instance->worldToScreen(origin);
+	if (!on_ui)
+	{
+		origin = Camera2D::instance->worldToScreen(origin);
+	}
 
 	// Convert the color
 	SDL_Color color;
@@ -163,8 +172,8 @@ void GraphicsDriver::drawText(const std::string& inStr, const Vec2& origin, cons
 
 	// Setup the rect for the texture
 	SDL_Rect dstRect;
-	dstRect.x = static_cast<int>(corigin.x);
-	dstRect.y = static_cast<int>(corigin.y);
+	dstRect.x = static_cast<int>(origin.x);
+	dstRect.y = static_cast<int>(origin.y);
 	SDL_QueryTexture(texture, nullptr, nullptr, &dstRect.w, &dstRect.h);
 
 	// Draw the texture

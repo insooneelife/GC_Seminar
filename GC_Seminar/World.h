@@ -24,7 +24,7 @@ class World
 public:
 	static void collide(Hunter& h1, Hunter& h2);
 	static void collide(Hunter& h, Projectile& p);
-	static void collide(Hunter& h, Prey& p);
+	static void collide(Projectile& h, Prey& p);
 	static void collide(Hunter& h, Wall& w);
 	template<class Container>
 	static void updateEntity(Container& entities);
@@ -34,13 +34,14 @@ public:
 	inline const std::vector<Prey*>& getPreys() const				{ return _preys; }
 	inline const std::vector<Wall*>& getWalls() const				{ return _walls; }
 	inline Hunter* getPlayerEntity() const							{ return _player_entity; }
+	inline void setPlayerEntity(Hunter* const hunter)				{ _player_entity = hunter; }
 	inline unsigned int genID()										{ return _next_validate_id++; }
 
 	World();
 	~World();
 	
 	void createHunter(const Vec2& pos);
-	void createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading);
+	void createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading, int proj_speed);
 	void createPrey(const Vec2& pos);
 	void createWall(const Vec2& begin, const Vec2& end, const Vec2& heading);
 

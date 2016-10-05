@@ -14,22 +14,24 @@
 class Projectile : public Entity
 {
 public:
+
 	inline unsigned int getOwnerID() const { return _owner_id; }
+
+	Projectile(
+		World& world,
+		unsigned int id,
+		unsigned int owner_id,
+		const Vec2& pos,
+		const Vec2& heading,
+		int proj_speed);
 
 	virtual ~Projectile() {}
 	virtual void update();
 	virtual void render();
 
-	Projectile(World& world, unsigned int id, unsigned int owner_id, const Vec2& pos, const Vec2& heading)
-		:
-		Entity(world, id, pos, 15.0f, Entity::Type::kProjectile),
-		_owner_id(owner_id),
-		_life_time(50)
-	{
-		setHeading(heading);
-	}
-
 private:
+
 	unsigned int _owner_id;
 	int _life_time;
+	int _proj_speed;
 };

@@ -29,7 +29,29 @@ namespace
 		double rand = genRand<0, 1>();
 		return ((end - begin) * rand + begin);
 	}
-
+	
+	// neighber1_key is clock-wise direction key of dir
+	// neighber2_key is counter-clock-wise direction key of dir
+	// ex)
+	//		a =>	left	=> Vec2(-1, 0)
+	//		s =>	down	=> Vec2(0, -1)
+	//		d =>	right	=> Vec2(1, 0)
+	//		w =>	up		=> Vec2(0, 1)
+	//		 
+	//		neighber1_key of 'a' is 'w'
+	//		neighber2_key of 'a' is 's'
+	//
+	inline Vec2 directionFromMultiKey(bool neighber1_key, bool neighber2_key, Vec2 dir)
+	{
+		Vec2 dir1 = -dir.getPerp();
+		Vec2 dir2 = dir.getPerp();
+		if (neighber1_key)
+			return (dir1 + dir).getNormalized();
+		else if (neighber2_key)
+			return (dir2 + dir).getNormalized();
+		else
+			return dir;
+	}
 
 	inline float distToSegmentSq(
 		Vec2 A,

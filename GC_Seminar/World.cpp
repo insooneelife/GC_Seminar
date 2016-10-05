@@ -18,7 +18,7 @@ void World::collide(Hunter& h1, Hunter& h2)
 	if ((h1.getPos().distance(h2.getPos()) < h1.getBRadius() + h2.getBRadius()))
 	{
 		cout << "collide!  Hunter && Hunter" << endl;
-		if (h1.getBRadius() > h2.getBRadius())
+		/*if (h1.getBRadius() > h2.getBRadius())
 		{
 			h1.increase(h2.getIntake());
 			h2.setGarbage();
@@ -29,7 +29,7 @@ void World::collide(Hunter& h1, Hunter& h2)
 			h1.setGarbage();
 		}
 		else
-		{}
+		{}*/
 	}
 }
 
@@ -38,16 +38,27 @@ void World::collide(Hunter& h, Projectile& p)
 	if ((h.getPos().distance(p.getPos()) < h.getBRadius() + p.getBRadius()))
 	{
 		cout << "collide!  Hunter && Projectile" << endl;
+
+		p.setGarbage();
+
+		int damage = h.getDamage();
+		EntityManager::instance->dispatchMsg(
+			p.getOwnerID(), h.getID(), Message::kDamage, &damage);
 	}
 }
 
-void World::collide(Hunter& h, Prey& p)
+void World::collide(Projectile& pro, Prey& prey)
 {
-	if ((h.getPos().distance(p.getPos()) < h.getBRadius() + p.getBRadius()))
+	if ((pro.getPos().distance(prey.getPos()) < pro.getBRadius() + prey.getBRadius()))
 	{
-		cout << "collide!  Hunter && Prey" << endl;
-		p.setGarbage();
-		h.increase(1);
+		cout << "collide!  Projectile && Prey" << endl;
+		prey.setGarbage();
+		pro.setGarbage();
+
+		int increase = 1;
+		EntityManager::instance->dispatchMsg(
+			prey.getID(), pro.getOwnerID(), Message::kIncrease, &increase);
+
 	}
 }
 
@@ -82,6 +93,10 @@ void World::updateEntity(Container& entities)
 		}
 		else
 		{
+			if ((*e)->getWorld().getPlayerEntity() != nullptr &&
+				(*e)->getID() == (*e)->getWorld().getPlayerEntity()->getID())
+				(*e)->getWorld().setPlayerEntity(nullptr);
+
 			delete *e;
 			e = entities.erase(e);
 		}
@@ -161,7 +176,6 @@ void World::update()
 		_created_entities.pop();
 	}
 	
-
 	// Update entities and delete them if set garbage.
 	updateEntity(_hunters);
 	updateEntity(_projectiles);
@@ -184,18 +198,20 @@ void World::update()
 
 	for (auto h : _hunters)
 		for (auto p : _projectiles)
+			if (h->getID() != p->getOwnerID())
 			collide(*h, *p);
 
-	for (auto h : _hunters)
+	for (auto pro : _projectiles)
 		for (auto p : _preys)
-			collide(*h, *p);
+			collide(*pro, *p);
 
 	for (auto h : _hunters)
 		for (auto w : _walls)
 			collide(*h, *w);
 
 	// Camera position setting
-	Camera2D::instance->setOrigin(_player_entity->getPos());
+	if(_player_entity)
+		Camera2D::instance->setOrigin(_player_entity->getPos());
 }
 
 void World::render()
@@ -219,9 +235,9 @@ void World::createHunter(const Vec2& pos)
 	_created_entities.emplace(new Hunter(*this, genID(), pos));
 }
 
-void World::createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading)
+void World::createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading, int proj_speed)
 {
-	_created_entities.emplace(new Projectile(*this, genID(), owner_id, pos, heading));
+	_created_entities.emplace(new Projectile(*this, genID(), owner_id, pos, heading, proj_speed));
 }
 
 void World::createPrey(const Vec2& pos)

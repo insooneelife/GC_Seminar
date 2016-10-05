@@ -56,6 +56,12 @@
     <ClCompile Include="Entity\Wall.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\Button.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -104,6 +110,12 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Wall.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Button.h">
       <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>

@@ -212,6 +212,9 @@ void World::update()
 	// Camera position setting
 	if(_player_entity)
 		Camera2D::instance->setOrigin(_player_entity->getPos());
+
+
+	
 }
 
 void World::render()

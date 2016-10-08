@@ -135,7 +135,7 @@ void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color
 
 		end = Vec2(r*cos(rad), r*sin(rad)) + p;
 
-		drawLine(start, end);
+		drawLine(start, end, color);
 		start = end;
 	}
 }

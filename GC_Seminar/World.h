@@ -24,6 +24,9 @@ public:
 	void update();
 	void render();
 
+	// 충돌처리를 위한 함수
+	void checkCollision();
+
 private:
 	std::vector<std::unique_ptr<Entity> > _entities;
 

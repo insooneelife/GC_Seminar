@@ -26,6 +26,8 @@ public:
 
 	Camera2D(float screenX, float screenY);
 
+	// 인자로 들어온 위치를 camera의 지역 공간으로 변환 후,
+	// screen에 맞도록 변환시킨 새로운 위치를 반환한다.
 	Vec2 carmeraPos(const Vec2& pos);
 
 

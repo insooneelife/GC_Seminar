@@ -427,5 +427,15 @@ Composite Transformation(합성변환)
 				  
 				  
 				  
+
+Camera				  
+	Transformation을 활용하여 Camera를 만들 수 있다.
+	Camera는 결국 같은 장면은 다른 기준에 따라서 보여주기 때문이다.
+	즉, 같은 장면에 대해 위치, 회전, 크기에 대한 변환을 적용시켜서 출력시킨다면 Camera를 구현할 수 있다.
+
+	
+	
+	
+	
 	
 	

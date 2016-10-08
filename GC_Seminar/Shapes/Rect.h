@@ -2,6 +2,7 @@
 #include "Shape.h"
 #include "../Math/Vec2.h"
 
+// 직사각형을 나타내는 shape
 class Rect : public Shape
 {
 public:
@@ -35,6 +36,7 @@ public:
 	virtual bool collide(const Rect* const other) const;
 	virtual bool collide(const Circle* const other) const;
 
+	// 직사각형을 그리는 함수
 	virtual void render();
 
 private:

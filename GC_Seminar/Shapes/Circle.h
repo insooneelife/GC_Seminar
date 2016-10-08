@@ -1,6 +1,7 @@
 #pragma once
 #include "Shape.h"
 
+// 원을 나타내는 shape
 class Circle : public Shape
 {
 public:
@@ -24,6 +25,7 @@ public:
 	virtual bool collide(const Rect* const other) const;
 	virtual bool collide(const Circle* const other) const;
 
+	// 원을 그리는 함수
 	virtual void render();
 
 private:

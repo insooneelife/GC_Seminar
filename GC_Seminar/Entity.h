@@ -38,6 +38,7 @@ private:
 
 	World& _world;
 
+	// 충돌판별을 위한 shape을 하나 갖도록 한다.
 	Shape* _body;
 	
 };

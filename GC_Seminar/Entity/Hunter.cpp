@@ -24,6 +24,7 @@ bool Hunter::upgradeDamage()
 	_damage += 1;
 
 	std::cout << "upgrade damage to : " << _damage << std::endl;
+	return true;
 }
 
 bool Hunter::upgradeRange()
@@ -36,6 +37,7 @@ bool Hunter::upgradeRange()
 	_proj_speed += 1;
 
 	std::cout << "upgrade range to : " << _proj_speed << std::endl;
+	return true;
 }
 
 void Hunter::enterMovingState(const Vec2& desti)

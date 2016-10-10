@@ -3,6 +3,7 @@
 #include "EntityManager.h"
 #include "Camera2D.h"
 #include "Utils.h"
+#include "UIManager.h"
 
 #include "Math\Transformations.h"
 
@@ -219,6 +220,10 @@ void World::update()
 			Camera2D::instance->getScale());*/
 	}
 
+	if (_player_entity)
+	{
+		UIManager::instance->update(_player_entity->getExp());
+	}
 
 	
 }

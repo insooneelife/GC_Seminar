@@ -24,13 +24,12 @@ public:
 	inline Vec2 getAxisX() const { return _axisX; }
 	inline Vec2 getAxisY() const { return _axisY; }
 	inline Vec2 getScale() const { return _scale; }
+	
 	inline void setScale(Vec2 scale) 
 	{
 		if(scale.x > 0 && scale.y > 0)
 		_scale = scale; 
 	}
-
-	//inline void move(const Vec2 vec) { _origin = _origin + vec; }
 
 	inline void setCamera(const Vec2& origin, const Vec2& axisX, const Vec2& axisY, Vec2 scale)
 	{

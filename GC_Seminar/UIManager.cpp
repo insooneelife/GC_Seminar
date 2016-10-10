@@ -37,6 +37,25 @@ Button* UIManager::trySelect(Vec2 pos)
 	return nullptr;
 }
 
+void UIManager::update(int player_experience)
+{
+	int cost = 10;
+	if (player_experience > cost)
+	{
+		for (auto b : _buttons)
+		{
+			b->setVisible(true);
+		}
+	}
+	else
+	{
+		for (auto b : _buttons)
+		{
+			b->setVisible(false);
+		}
+	}
+}
+
 void UIManager::render()
 {
 	for (auto b : _buttons)

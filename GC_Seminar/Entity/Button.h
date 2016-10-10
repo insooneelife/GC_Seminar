@@ -18,6 +18,8 @@ public:
 	
 	inline const std::string& getText() const		{ return _text; }
 	inline void setText(const std::string text)		{ _text = text; }
+	inline bool isVisible() const					{ return _visible; }
+	inline void setVisible(bool visible)			{ _visible = visible; }
 
 	Button(World& world, unsigned int id, const Vec2& pos, const std::string& text);
 
@@ -29,4 +31,5 @@ public:
 private:
 
 	std::string _text;
+	bool _visible;
 };

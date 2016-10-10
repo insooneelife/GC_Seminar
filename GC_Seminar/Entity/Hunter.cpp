@@ -8,19 +8,20 @@ Hunter::Hunter(World& world, unsigned int id, const Vec2& pos)
 	:
 	Entity(world, id, pos, 25.0f, Entity::Type::kHunter, GraphicsDriver::black),
 	_state(kIdle),
-	_intake(5),
+	_experience(5),
 	_hp(100),
 	_damage(10),
-	_proj_speed(15)
+	_proj_speed(15),
+	_is_player(true)
 {}
 
 bool Hunter::upgradeDamage()
 {
 	int cost = 10;
-	if (_intake - cost < 0)
+	if (_experience - cost < 0)
 		return false;
 
-	_intake -= cost;
+	setExp(getExp() - cost);
 	_damage += 1;
 
 	std::cout << "upgrade damage to : " << _damage << std::endl;
@@ -30,10 +31,10 @@ bool Hunter::upgradeDamage()
 bool Hunter::upgradeRange()
 {
 	int cost = 10;
-	if (_intake - cost < 0)
+	if (_experience - cost < 0)
 		return false;
 
-	_intake -= cost;
+	setExp(getExp() - cost);
 	_proj_speed += 1;
 
 	std::cout << "upgrade range to : " << _proj_speed << std::endl;
@@ -46,11 +47,16 @@ void Hunter::enterMovingState(const Vec2& desti)
 	_state = State::kMoving;
 }
 
-void Hunter::takeDamage(int damage)
+void Hunter::takeDamage(int damage, unsigned int who)
 {
 	_hp = std::max(0, _hp - damage);
 	if (_hp == 0)
+	{
 		setGarbage();
+		int expr = 10;
+		EntityManager::instance->dispatchMsg(_id, who, Message::MsgType::kIncrease, &expr);
+	}
+		
 }
 
 void Hunter::update()
@@ -87,15 +93,15 @@ bool Hunter::handleMessage(const Message& msg)
 	switch (msg.getMsg())
 	{
 	case Message::kDamage:
-		takeDamage(Message::voidToType<int>(msg.getExtraInfo()));
+		takeDamage(Message::voidToType<int>(msg.getExtraInfo()), msg.getSender());
 		break;
 
 	case Message::kIncrease:
-		increase(Message::voidToType<int>(msg.getExtraInfo()));
+		setExp(getExp() + Message::voidToType<int>(msg.getExtraInfo()));
 		break;
 
 	case Message::kDecrease:
-		decrease();
+		setExp(getExp() - 1);
 		break;
 
 	default:

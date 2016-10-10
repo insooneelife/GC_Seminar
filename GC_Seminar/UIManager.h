@@ -30,7 +30,7 @@ public:
 	void removeButton(Button* const button);
 
 	Button* trySelect(Vec2 pos);
-	void update() {}
+	void update(int player_experience);
 	void render();
 
 

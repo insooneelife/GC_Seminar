@@ -20,7 +20,8 @@ public:
 		kMoving
 	};
 
-	inline int getIntake() const		{ return _intake; }
+	inline int getExp() const			{ return _experience; }
+	inline void setExp(int exp)			{ _experience = exp; }
 	inline int getHp() const			{ return _hp; }
 
 	inline int getDamage() const		{ return _damage; }
@@ -28,15 +29,14 @@ public:
 	inline int getProjSpeed() const		{ return _proj_speed; }
 	inline void setProjSpeed(int range)	{ _proj_speed = range; }
 
-	inline void increase(int intake)	{ _intake += intake; }
-	inline void decrease()				{ _intake--; }
+	inline bool isPlayer() const		{ return _is_player; }
 
 	Hunter(World& world, unsigned int id, const Vec2& pos);
 
 	bool upgradeDamage();
 	bool upgradeRange();
 	void enterMovingState(const Vec2& desti);
-	void takeDamage(int damage);
+	void takeDamage(int damage, unsigned int who);
 
 	virtual ~Hunter() {}
 	virtual void update();
@@ -46,8 +46,9 @@ public:
 private:
 	State _state;
 	Vec2 _destination;
-	int _intake;
+	int _experience;
 	int _hp;
 	int _damage;
 	int _proj_speed;
+	bool _is_player;
 };

@@ -125,7 +125,19 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			player->setHeading(
 				(Camera2D::instance->screenToWorld(Vec2(mx, my)) 
 					- player->getPos()).getNormalized());
-		
+		break;
+	case SDL_MOUSEWHEEL:
+		if (inEvent->wheel.y > 0)
+		{
+			Camera2D::instance->setScale(
+				Camera2D::instance->getScale() + Vec2(0.1f, 0.1f));
+		}
+		else
+		{
+			Vec2 scale = Camera2D::instance->getScale();
+			Camera2D::instance->setScale(scale - Vec2(0.1f, 0.1f));
+		}
+
 	default:
 		break;
 	}

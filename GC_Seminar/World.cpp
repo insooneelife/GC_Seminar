@@ -144,7 +144,7 @@ World::World()
 	Vec2 heading = _player_entity->getHeading();
 	Vec2 side = _player_entity->getSide();
 	Vec2 pos = _player_entity->getPos();
-	Camera2D::instance->setCamera(pos, heading, side);
+	Camera2D::instance->setCamera(pos, heading, side, Camera2D::instance->getScale());
 }
 
 
@@ -215,7 +215,8 @@ void World::update()
 		Camera2D::instance->setCamera(
 			_player_entity->getPos(),
 			_player_entity->getHeading(),
-			_player_entity->getSide());
+			_player_entity->getSide(),
+			Camera2D::instance->getScale());
 
 
 	

@@ -25,6 +25,22 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	case SDL_MOUSEBUTTONDOWN:
 		std::cout << "SDL_MOUSEBUTTONDOWN" << std::endl;
 		break;
+	case SDL_MOUSEWHEEL:
+		std::cout << inEvent->wheel.x << " " << inEvent->wheel.y << std::endl;
+
+		if (inEvent->wheel.y > 0)
+		{
+			Camera2D::instance->setScale(
+				Vec2(Camera2D::instance->getScale().x + 0.1f,
+					Camera2D::instance->getScale().y + 0.1f));
+		}
+		else
+		{
+			Camera2D::instance->setScale(
+				Vec2(Camera2D::instance->getScale().x - 0.1f,
+					Camera2D::instance->getScale().y - 0.1f));
+		}
+		break;
 	default:
 		break;
 	}

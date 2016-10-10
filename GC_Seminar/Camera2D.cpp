@@ -31,6 +31,8 @@ Vec2 Camera2D::carmeraPos(const Vec2& pos)
 		matTransform.scale(_scale.x, _scale.y);
 	matTransform.transform(convertPos);
 
+
+	// screen
 	convertPos = Vec2(convertPos.x, _screenY - convertPos.y);
 
 

@@ -24,9 +24,6 @@
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vec2.cpp" />
-    <ClCompile Include="Shapes\Circle.cpp" />
-    <ClCompile Include="Shapes\Rect.cpp" />
-    <ClCompile Include="Shapes\Shape.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="WindowManager.cpp" />
@@ -38,9 +35,6 @@
     <ClInclude Include="GraphicsDriver.h" />
     <ClInclude Include="Math\MathBase.h" />
     <ClInclude Include="Math\Vec2.h" />
-    <ClInclude Include="Shapes\Circle.h" />
-    <ClInclude Include="Shapes\Rect.h" />
-    <ClInclude Include="Shapes\Shape.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Utils.h" />

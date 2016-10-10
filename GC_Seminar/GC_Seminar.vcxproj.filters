@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Shapes">
-      <UniqueIdentifier>{dc55ffa9-6808-4f86-87c5-b0424edf0e36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{12c0a11b-0370-4a31-809b-3d57377f2303}</UniqueIdentifier>
     </Filter>
@@ -45,15 +42,6 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shapes\Circle.cpp">
-      <Filter>Shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Shapes\Rect.cpp">
-      <Filter>Shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Shapes\Shape.cpp">
-      <Filter>Shapes</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Vec2.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -82,15 +70,6 @@
     </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shapes\Circle.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="Shapes\Rect.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="Shapes\Shape.h">
-      <Filter>Shapes</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathBase.h">
       <Filter>Math</Filter>

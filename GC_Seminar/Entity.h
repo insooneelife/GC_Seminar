@@ -12,9 +12,7 @@
 
 #include "Math\Vec2.h"
 #include "Engine.h"
-//#include "Shapes\Shape.h"
 
-class Shape;
 class World;
 class Entity
 {
@@ -22,9 +20,9 @@ public:
 
 	inline unsigned int getID() const { return _id; }
 	inline Vec2 getPos() const { return _pos; }
-	inline Shape* getBody() const { return _body; }
+	//inline Shape* getBody() const { return _body; }
 
-	Entity(World& world, unsigned int id, const Vec2& pos, Shape* const shape);
+	Entity(World& world, unsigned int id, const Vec2& pos);
 	~Entity();
 
 	virtual void update();
@@ -39,6 +37,6 @@ private:
 	World& _world;
 
 	// 충돌판별을 위한 shape을 하나 갖도록 한다.
-	Shape* _body;
+	//Shape* _body;
 	
 };

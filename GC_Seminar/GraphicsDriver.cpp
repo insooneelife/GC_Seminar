@@ -110,10 +110,10 @@ SDL_Renderer* GraphicsDriver::getRenderer()
 
 void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color)
 {
-	Vec2 ca(a);
-	Vec2 cb(b);
-	//Vec2 ca = Camera2D::instance->carmeraPos(a);
-	//Vec2 cb = Camera2D::instance->carmeraPos(b);
+	//Vec2 ca(a);
+	//Vec2 cb(b);
+	Vec2 ca = Camera2D::instance->carmeraPos(a);
+	Vec2 cb = Camera2D::instance->carmeraPos(b);
 
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderDrawLine(
@@ -126,8 +126,8 @@ void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color)
 
 void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
 {
-	Vec2 cp(p);
-	//Vec2 cp = Camera2D::instance->carmeraPos(p);
+	//Vec2 cp(p);
+	Vec2 cp = Camera2D::instance->carmeraPos(p);
 
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect;
@@ -159,8 +159,8 @@ void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color
 
 void GraphicsDriver::drawText(const std::string& inStr, const Vec2& origin, const SDL_Color& inColor)
 {
-	Vec2 corigin(origin);
-	//Vec2 corigin = Camera2D::instance->carmeraPos(origin);
+	//Vec2 corigin(origin);
+	Vec2 corigin = Camera2D::instance->carmeraPos(origin);
 
 	// Convert the color
 	SDL_Color color;

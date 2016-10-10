@@ -22,6 +22,7 @@ Camera2D::Camera2D(float screenX, float screenY)
 Vec2 Camera2D::carmeraPos(const Vec2& pos)
 {
 	Vec2 convertPos = pointToLocalSpace(pos, _axisX, _axisY, _origin);
+	
 	convertPos = Vec2(convertPos.x, _screenY - convertPos.y);
 	return convertPos;
 }

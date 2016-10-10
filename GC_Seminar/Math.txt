@@ -233,7 +233,7 @@ Matrix Transform(행렬변환)
 			mat.rotate(MATH_DEG_TO_RAD(30));
 		
 				  
-		2) Forward(새로운 x축) 벡터와 side(새로운 y축) 벡터를 이용한 방법
+		2) Forward(새로운 x축) 벡터와 side(새로운 y축) 벡터를 이용한 방법  #bug side가 x축?
 		점:			P(x, y)	
 		forward: 	F(fx, fy)
 		side:		S(sx, sy)

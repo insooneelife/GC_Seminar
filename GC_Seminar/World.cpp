@@ -1,6 +1,7 @@
 #include "World.h"
 #include "Entity.h"
 #include <iostream>
+#include <Box2D\Box2D.h>
 
 
 World::World()

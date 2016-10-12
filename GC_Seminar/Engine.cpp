@@ -30,7 +30,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	int mx = 0;
 	int my = 0;
 
-	Button* but = nullptr;
+	Button* button = nullptr;
 	
 	switch (inEvent->type)
 	{
@@ -107,9 +107,9 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&mx, &my);
 
-		but = UIManager::instance->trySelect(Vec2(mx, my));
-		if(but)
-			but->update();
+		button = UIManager::instance->trySelect(Vec2(mx, my));
+		if(button)
+			button->update();
 
 		if (player)
 			_world->createProjectile(

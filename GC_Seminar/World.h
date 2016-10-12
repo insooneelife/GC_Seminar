@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <memory>
+#include "Collision\MyTest1.h"
 
 class Entity;
 class World
@@ -30,4 +31,5 @@ public:
 private:
 	std::vector<std::unique_ptr<Entity> > _entities;
 
+	MyTest1* test;
 };

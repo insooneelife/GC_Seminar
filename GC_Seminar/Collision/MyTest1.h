@@ -23,7 +23,6 @@
 #include "Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h"
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D\Box2D.h>
-#include "../DebugDraw.h"
 
 struct Settings
 {
@@ -105,6 +104,7 @@ public:
 		b2Vec2 gravity;
 		gravity.Set(0.0f, 0.0f);
 		m_world = new b2World(gravity);
+
 		/*{
 			
 			b2Transform t;
@@ -427,7 +427,6 @@ public:
 		flags += settings.drawAABBs			* b2Draw::e_aabbBit;
 		flags += settings.drawCOMs			* b2Draw::e_centerOfMassBit;
 
-		DebugDraw::getInstance().SetFlags(flags);
 
 		m_world->Step(
 			settings.hz,
@@ -435,7 +434,6 @@ public:
 			settings.positionIterations);
 
 		m_world->DrawDebugData();
-		DebugDraw::getInstance().Flush();
 	}
 
 

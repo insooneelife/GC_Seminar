@@ -6,6 +6,8 @@
 
 World::World()
 {
+	test = new MyTest1();
+
 	// unique_ptr needs to be initialized by emplace_back.
 	_entities.emplace_back(new Entity(*this, 1, Vec2(100, 100)));
 	_entities.emplace_back(new Entity(*this, 2, Vec2(180, 200)));
@@ -29,10 +31,12 @@ void World::update()
 	{
 		(*e)->update();
 	}
+	test->Step();
 }
 
 void World::render()
 {
+	
 	for (auto e = std::begin(_entities); e != std::end(_entities); e++)
 	{
 		(*e)->render();

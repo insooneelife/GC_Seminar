@@ -65,8 +65,6 @@
     <ClCompile Include="..\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
     <ClCompile Include="..\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\Box2D\Rope\b2Rope.cpp" />
-    <ClCompile Include="..\deps\include\glew\glew.c" />
-    <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GraphicsDriver.cpp" />
@@ -125,10 +123,7 @@
     <ClInclude Include="..\Box2D\Dynamics\Joints\b2WeldJoint.h" />
     <ClInclude Include="..\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\Box2D\Rope\b2Rope.h" />
-    <ClInclude Include="..\deps\include\glew\glew.h" />
-    <ClInclude Include="..\deps\include\glew\wglew.h" />
     <ClInclude Include="Collision\MyTest1.h" />
-    <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GraphicsDriver.h" />

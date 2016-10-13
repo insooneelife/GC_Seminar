@@ -10,8 +10,8 @@ Entity::Entity(World& world, const Vec2& pos)
 
 void Entity::update()
 {
-	Vec2 velocity(0.1f, 0.1f);
-	_pos += velocity;
+	//Vec2 velocity(0.1f, 0.1f);
+	//_pos += velocity;
 }
 
 void Entity::render()

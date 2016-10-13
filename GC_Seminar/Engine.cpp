@@ -179,6 +179,9 @@ int Engine::run()
 
 	while (!quit)
 	{
+		// SDL에서 지원하는 event 확인 방법
+		// 어떤 input event가 발생하면 SDL_PollEvent는 true를 리턴하고,
+		// event 변수에 상세 내용을 기록한다.
 		if (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT ||
@@ -189,11 +192,13 @@ int Engine::run()
 			}
 			else
 			{
+				// event에 대한 처리
 				handleEvent(&event);
 			}
 		}
 		else
 		{
+			// 모든 update
 			update();
 		}
 	}
@@ -204,11 +209,17 @@ int Engine::run()
 
 void Engine::update()
 {
+	// World의 update
 	_world->update();
 	
+	// 새 그래픽 버퍼를 준비한다.
 	GraphicsDriver::instance->clear();
+	
+	// 화면에 그려질 모든 객체들을 그린다.
 	_world->render();
 	GraphicsDriver::instance->render();
 	UIManager::instance->render();
+
+	// 그래픽 버퍼를 화면에 출력한다.
 	GraphicsDriver::instance->present();
 }

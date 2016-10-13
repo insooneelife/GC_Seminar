@@ -105,6 +105,7 @@ void World::updateEntity(Container& entities)
 	
 }
 
+// World의 생성자에서 모든 entity의 초기화가 이루어진다.
 World::World()
 	:
 	_next_validate_id(1)

@@ -74,13 +74,10 @@ private:
 class EntityManager
 {
 public:
-	enum { InvalidateId = 0 };
-
 	static void staticInit();
 	static std::unique_ptr<EntityManager> instance;
 
 	EntityManager();
-	unsigned int genID();
 
 	// Methods related with entity querying.
 	Entity* getEntity(unsigned int id) const;
@@ -102,6 +99,5 @@ public:
 
 private:
 
-	unsigned int _nextGenId;
 	std::map <unsigned int, Entity*> _entities;
 };

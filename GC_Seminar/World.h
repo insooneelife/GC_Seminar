@@ -22,19 +22,29 @@ class Wall;
 class World
 {
 public:
+	enum { InvalidateId = 0 };
+
+	// Entity 조합에 맞는 충돌판별 및 처리
 	static void collide(Hunter& h1, Hunter& h2);
 	static void collide(Hunter& h, Projectile& p);
 	static void collide(Projectile& h, Prey& p);
 	static void collide(Hunter& h, Wall& w);
+
+	// 모든 entity의 update 및, garbage 수집
 	template<class Container>
 	static void updateEntity(Container& entities);
 
+	// Entity 컨테이너 getter && setter
 	inline const std::vector<Hunter*>& getHunters() const			{ return _hunters; }
 	inline const std::vector<Projectile*>& getProjectiles() const	{ return _projectiles; }
 	inline const std::vector<Prey*>& getPreys() const				{ return _preys; }
 	inline const std::vector<Wall*>& getWalls() const				{ return _walls; }
+
+	// 플레이어의 entity를 참조하기 위한 getter
 	inline Hunter* getPlayerEntity() const							{ return _player_entity; }
 	inline void setPlayerEntity(Hunter* const hunter)				{ _player_entity = hunter; }
+	
+	// 유일한 id를 생성해 준다.
 	inline unsigned int genID()										{ return _next_validate_id++; }
 
 	World();

@@ -124,9 +124,4 @@
       <Filter>Math</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Practices.txt">
-      <Filter>Math</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

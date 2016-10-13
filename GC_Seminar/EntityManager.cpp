@@ -8,14 +8,7 @@ void EntityManager::staticInit()
 }
 
 EntityManager::EntityManager()
-{
-	_nextGenId = InvalidateId;
-}
-
-unsigned int EntityManager::genID()
-{
-	return ++_nextGenId;
-}
+{}
 
 Entity* EntityManager::getEntity(unsigned int id) const
 {

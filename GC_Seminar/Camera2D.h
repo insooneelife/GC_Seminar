@@ -4,8 +4,7 @@
 //  Name:		Camera2D.h
 //
 //  Desc:		For view transform related with screen, world and player.
-//				
-//
+//			
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------

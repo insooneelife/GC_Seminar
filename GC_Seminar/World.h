@@ -12,7 +12,7 @@
 
 #include <vector>
 #include <memory>
-#include "Collision\MyTest1.h"
+#include "PhysicsManager.h"
 
 class Entity;
 class World
@@ -27,9 +27,9 @@ public:
 
 	// 충돌처리를 위한 함수
 	void checkCollision();
-
+	
 private:
-	std::vector<std::unique_ptr<Entity> > _entities;
 
-	MyTest1* test;
+	std::vector<std::unique_ptr<Entity> > _entities;
+	std::unique_ptr<PhysicsManager> _physics;
 };

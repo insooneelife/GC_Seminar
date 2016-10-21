@@ -26,9 +26,6 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 	blue.r = 0;		blue.g = 0;		blue.b = 255;
 	yellow.r = 255;	yellow.g = 237;	yellow.b = 0;
 
-
-	
-
 	return result;
 }
 
@@ -56,6 +53,12 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to load font.");
 	}
+
+	AppendFlags(e_shapeBit);		// draw shapes
+	AppendFlags(e_jointBit);		// draw joint connections
+	AppendFlags(e_aabbBit);			// draw axis aligned bounding boxes
+	AppendFlags(e_pairBit);			// draw broad-phase pairs
+	AppendFlags(e_centerOfMassBit);	// draw center of mass frame
 
 	return true;
 }
@@ -94,6 +97,13 @@ SDL_Rect& GraphicsDriver::getLogicalViewport()
 SDL_Renderer* GraphicsDriver::getRenderer()
 {
 	return _renderer;
+}
+
+
+void GraphicsDriver::drawPoint(Vec2 p, SDL_Color color)
+{
+	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderDrawPoint(_renderer, p.x, p.y);
 }
 
 
@@ -165,4 +175,61 @@ void GraphicsDriver::drawText(const std::string& inStr, const Vec2& origin, cons
 	// Destroy the surface/texture
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surface);
+}
+
+
+
+/// Draw a closed polygon provided in CCW order.
+void GraphicsDriver::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
+{
+	SDL_Color sdl_color;
+	toSdlColor(sdl_color, color);
+	for (int i = 0; i < vertexCount; i++)
+	{
+		int j = (i + 1) % vertexCount;
+		SDL_Color sdl_color;
+		toSdlColor(sdl_color, color);
+		drawLine(toVec(vertices[i]), toVec(vertices[j]), sdl_color);
+	}
+}
+
+/// Draw a solid closed polygon provided in CCW order.
+void GraphicsDriver::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
+{
+	DrawPolygon(vertices, vertexCount, color);
+}
+
+/// Draw a circle.
+void GraphicsDriver::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
+{
+	SDL_Color sdl_color;
+	toSdlColor(sdl_color, color);
+	drawCircle(toVec(center), radius, 15.0f, sdl_color);
+}
+
+/// Draw a solid circle.
+void GraphicsDriver::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
+{
+	DrawCircle(center, radius, color);
+}
+
+/// Draw a line segment.
+void GraphicsDriver::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
+{
+	SDL_Color sdl_color;
+	toSdlColor(sdl_color, color);
+	drawLine(toVec(p1), toVec(p2), sdl_color);
+}
+
+/// Draw a transform. Choose your own length scale.
+/// @param xf a transform.
+void GraphicsDriver::DrawTransform(const b2Transform& xf)
+{}
+
+/// Draw a point.
+void GraphicsDriver::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
+{
+	SDL_Color sdl_color;
+	toSdlColor(sdl_color, color);
+	drawPoint(Vec2(p.x, p.y), sdl_color);
 }

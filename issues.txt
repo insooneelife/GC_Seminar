@@ -1,0 +1,42 @@
+Engine
+	World
+	Entity
+	Manager
+	Library
+
+_1_World_practice
+1. Game Loop
+	input event 처리
+	update
+	render
+	
+2. GraphicsDriver
+	그려짐 처리
+	clear
+	present
+	
+
+_For_Server
+1. Entity
+	Hunter		움직임, 그려짐, 메시지, 발사체 생성, 충돌
+	Prey		그려짐, 충돌
+	Projectile	움직임, 그려짐, 메시지, 충돌
+	Wall		그려짐, 충돌
+	Button		그려짐, 클릭
+	
+	이 상호작용 동작들을 구현하기 위한 설계로 어떤 것이 적합할까?
+	
+2. World
+	충돌판별 및 처리
+	생성 및 제거
+	모든 entity 및 manager update
+	
+3. EntityManager
+	메시지 처리
+	entity 질의
+	
+4. Camera2D
+	화면 이동, 회전, 크기 변환
+	
+
+	

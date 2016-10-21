@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "World.h"
 
+#include <Box2D\Common\b2Draw.h>
 
 
 Engine::Engine()
@@ -45,6 +46,7 @@ bool Engine::init()
 	}
 
 	_world.reset(new World());
+	
 	return true;
 }
 

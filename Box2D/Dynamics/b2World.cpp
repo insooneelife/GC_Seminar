@@ -34,6 +34,8 @@
 #include <Box2D/Common/b2Timer.h>
 #include <new>
 
+#include "../../GC_Seminar/GraphicsDriver.h"
+
 b2World::b2World(const b2Vec2& gravity)
 {
 	m_destructionListener = NULL;
@@ -1095,6 +1097,7 @@ void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color
 			b2Vec2 axis = b2Mul(xf.q, b2Vec2(1.0f, 0.0f));
 
 			g_debugDraw->DrawSolidCircle(center, radius, axis, color);
+			//GraphicsDriver
 		}
 		break;
 

@@ -34,12 +34,12 @@ struct Settings
 		positionIterations = 3;
 		drawShapes = true;
 		drawJoints = true;
-		drawAABBs = false;
-		drawContactPoints = false;
-		drawContactNormals = false;
+		drawAABBs = true;
+		drawContactPoints = true;
+		drawContactNormals = true;
 		drawContactImpulse = false;
 		drawFrictionImpulse = false;
-		drawCOMs = false;
+		drawCOMs = true;
 		drawStats = false;
 		drawProfile = false;
 		enableWarmStarting = true;
@@ -71,6 +71,28 @@ struct Settings
 	bool singleStep;
 };
 
+class PhysicsManager;
+class DestructionListener : public b2DestructionListener
+{
+public:
+	void SayGoodbye(b2Fixture* fixture) { B2_NOT_USED(fixture); }
+	void SayGoodbye(b2Joint* joint) {}
+
+	PhysicsManager* physics;
+};
+
+struct ContactPoint
+{
+	b2Fixture* fixtureA;
+	b2Fixture* fixtureB;
+	b2Vec2 normal;
+	b2Vec2 position;
+	b2PointState state;
+	float32 normalImpulse;
+	float32 tangentImpulse;
+	float32 separation;
+};
+
 /// This is a test of typical character collision scenarios. This does not
 /// show how you should implement a character in your application.
 /// Instead this is used to test smooth collision on edge chains.
@@ -78,22 +100,35 @@ class PhysicsManager : public b2ContactListener
 {
 public:
 
-	bool testContact(
+	static bool CheckContact(
 		const b2Shape* shapeA, int32 indexA,
 		const b2Shape* shapeB, int32 indexB,
 		const b2Transform& xfA, const b2Transform& xfB,
 		b2DistanceOutput& output);
 
-
-	PhysicsManager();
+	PhysicsManager(float worldX, float worldY);
 
 	void Step();
-
 	void Render();
 
+	inline b2World* GetPhysicsWorld() const { return _world; }
 
-	b2Body* m_character;
-	b2World* m_world;
+	virtual void BeginContact(b2Contact* contact) override;
+	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
+
+	b2Body* CreateApplyForceBody(float x, float y, b2Shape* shape);
+	b2Body* CreateBody(float x, float y, b2BodyType type, b2Shape* shape, bool sensor);
+
+	void RemoveBody(b2Body* body);
+
+	DestructionListener _destruction_listener;
+	b2Body* _character;
+	b2World* _world;
+	b2Body* _ground;
+	Settings _settings;
+
+	ContactPoint m_points[2048];
+	int32 m_pointCount;
 };
 
 #endif

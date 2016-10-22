@@ -1,4 +1,6 @@
 #include "GraphicsDriver.h"
+#include "EntityManager.h"
+#include "Camera2D.h"
 #include <iostream>
 
 std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
@@ -6,6 +8,8 @@ std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
 SDL_Color GraphicsDriver::red;
 SDL_Color GraphicsDriver::blue;
 SDL_Color GraphicsDriver::yellow;
+SDL_Color GraphicsDriver::black;
+SDL_Color GraphicsDriver::white;
 
 bool GraphicsDriver::staticInit(SDL_Window* wnd)
 {
@@ -25,6 +29,8 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 	red.r = 255;	red.g = 0;		red.b = 0;
 	blue.r = 0;		blue.g = 0;		blue.b = 255;
 	yellow.r = 255;	yellow.g = 237;	yellow.b = 0;
+	black.r = 0;	black.g = 0;	black.b = 0;
+	white.r = 255;	white.g = 255;	white.b = 255;
 
 	return result;
 }
@@ -47,7 +53,7 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 
 	// Add font for use texts.
 	TTF_Init();
-	_font = TTF_OpenFont("../Assets/Carlito-Regular.TTF", 36);
+	_font = TTF_OpenFont("../Assets/Carlito-Regular.TTF", 24);
 
 	if (_font == nullptr)
 	{
@@ -76,9 +82,12 @@ GraphicsDriver::~GraphicsDriver()
 	}
 }
 
+void GraphicsDriver::render()
+{}
+
 void GraphicsDriver::clear()
 {
-	SDL_SetRenderDrawColor(_renderer, 100, 149, 237, SDL_ALPHA_OPAQUE );
+	SDL_SetRenderDrawColor(_renderer, 100, 149, 237, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(_renderer);
 }
 
@@ -89,7 +98,7 @@ void GraphicsDriver::present()
 
 SDL_Rect& GraphicsDriver::getLogicalViewport()
 {
-	SDL_RenderGetLogicalSize(_renderer, &_view_port.w, &_view_port.h );
+	SDL_RenderGetLogicalSize(_renderer, &_view_port.w, &_view_port.h);
 
 	return _view_port;
 }
@@ -100,15 +109,36 @@ SDL_Renderer* GraphicsDriver::getRenderer()
 }
 
 
-void GraphicsDriver::drawPoint(Vec2 p, SDL_Color color)
+
+void GraphicsDriver::drawPoint(Vec2 p, SDL_Color color, bool on_ui)
 {
+	Vec2 bl(p);
+	Vec2 tr(p + Vec2(0.1f, 0.1f));
+	if (!on_ui)
+	{
+		bl = Camera2D::instance->worldToScreen(bl);
+		tr = Camera2D::instance->worldToScreen(tr);
+	}
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderDrawPoint(_renderer, p.x, p.y);
+
+	SDL_Rect rect;
+	rect.x = static_cast<int>(bl.x);
+	rect.y = static_cast<int>(bl.y);
+	rect.w = static_cast<int>(tr.x - bl.x);
+	rect.h = static_cast<int>(tr.y - bl.y);
+
+	SDL_RenderFillRect(_renderer, &rect);
 }
 
 
-void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color)
+void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color, bool on_ui)
 {
+	if (!on_ui)
+	{
+		a = Camera2D::instance->worldToScreen(a);
+		b = Camera2D::instance->worldToScreen(b);
+	}
+
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderDrawLine(
 		_renderer,
@@ -118,8 +148,13 @@ void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color)
 		static_cast<int>(b.y));
 }
 
-void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
+void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color, bool on_ui)
 {
+	if (!on_ui)
+	{
+		p = Camera2D::instance->worldToScreen(p);
+	}
+
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect;
 	rect.x = static_cast<int>(p.x);
@@ -130,37 +165,38 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
 }
 
 
-void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color)
+void GraphicsDriver::drawCircle(Vec2 p, float r, SDL_Color color, float fragment, bool on_ui)
 {
-	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
-
 	float add = 360 / fragment;
-	
 	Vec2 start = Vec2(r, 0) + p;
 	Vec2 end(0, 0);
 
 	for (float degree = 0; degree <= 360; degree += add)
 	{
 		float rad = MATH_DEG_TO_RAD(degree);
-
 		end = Vec2(r*cos(rad), r*sin(rad)) + p;
 
-		drawLine(start, end, color);
+		drawLine(start, end, color, on_ui);
 		start = end;
 	}
 }
 
-void GraphicsDriver::drawText(const std::string& inStr, const Vec2& origin, const SDL_Color& inColor)
+void GraphicsDriver::drawText(const std::string& str, Vec2 origin, const SDL_Color& color, bool on_ui)
 {
+	if (!on_ui)
+	{
+		origin = Camera2D::instance->worldToScreen(origin);
+	}
+
 	// Convert the color
-	SDL_Color color;
-	color.r = inColor.r;
-	color.g = inColor.g;
-	color.b = inColor.b;
-	color.a = 255;
+	SDL_Color ccolor;
+	ccolor.r = color.r;
+	ccolor.g = color.g;
+	ccolor.b = color.b;
+	ccolor.a = 255;
 
 	// Draw to surface and create a texture
-	SDL_Surface* surface = TTF_RenderText_Blended(_font, inStr.c_str(), color);
+	SDL_Surface* surface = TTF_RenderText_Blended(_font, str.c_str(), ccolor);
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(GraphicsDriver::instance->getRenderer(), surface);
 
 	// Setup the rect for the texture
@@ -204,7 +240,7 @@ void GraphicsDriver::DrawCircle(const b2Vec2& center, float32 radius, const b2Co
 {
 	SDL_Color sdl_color;
 	toSdlColor(sdl_color, color);
-	drawCircle(toVec(center), radius, 15.0f, sdl_color);
+	drawCircle(toVec(center), radius, sdl_color, 15.0f);
 }
 
 /// Draw a solid circle.

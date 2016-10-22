@@ -1,4 +1,4 @@
-
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:		Engine.h
@@ -9,8 +9,6 @@
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-
-#pragma once
 
 #include <SDL\SDL.h>
 #include <vector>

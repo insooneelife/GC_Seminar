@@ -1,3 +1,4 @@
+#pragma once
 //------------------------------------------------------------------------
 //
 //  Name:		GraphicsDriver.h
@@ -7,9 +8,6 @@
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-
-
-#pragma once
 
 #include <SDL/SDL.h>
 #include <SDL\SDL_ttf.h>
@@ -29,18 +27,21 @@ public:
 	static SDL_Color red;
 	static SDL_Color blue;
 	static SDL_Color yellow;
+	static SDL_Color black;
+	static SDL_Color white;
 
 
+	void			render();
 	void			clear();
 	void			present();
 	SDL_Rect&		getLogicalViewport();
 	SDL_Renderer*	getRenderer();
 
-	void			drawPoint(Vec2 p, SDL_Color color = red);
-	void			drawLine(Vec2 a, Vec2 b, SDL_Color color = red);
-	void			drawRect(Vec2 p, float w, float h, SDL_Color color = red);
-	void			drawCircle(Vec2 p, float r, float fragment = 15, SDL_Color color = red);
-	void			drawText(const std::string& inStr, const Vec2& origin, const SDL_Color& inColor = red);
+	void			drawPoint(Vec2 p, SDL_Color color = red, bool on_ui = false);
+	void			drawLine(Vec2 a, Vec2 b, SDL_Color color = red, bool on_ui = false);
+	void			drawRect(Vec2 p, float w, float h, SDL_Color color = red, bool on_ui = false);
+	void			drawCircle(Vec2 p, float r, SDL_Color color = red, float fragment = 15, bool on_ui = false);
+	void			drawText(const std::string& str, Vec2 p, const SDL_Color& color = red, bool on_ui = false);
 
 	virtual ~GraphicsDriver();
 
@@ -69,26 +70,26 @@ public:
 
 	// Helper
 	template<typename Point>
-	inline Vec2 toVec(const Point& p) { return Vec2(p.x, p.y); }
+	static inline Vec2 toVec(const Point& p) { return Vec2(p.x, p.y); }
 
 	template<typename Point>
-	inline b2Vec2 tob2Vec(const Point& p) { return b2Vec2(p.x, p.y); }
+	static inline b2Vec2 tob2Vec(const Point& p) { return b2Vec2(p.x, p.y); }
 
 	template<typename Color>
-	inline b2Color tob2Color(const Color& sdl_color)
+	static inline b2Color tob2Color(const Color& sdl_color)
 	{
 		return b2Color(sdl_color.r, sdl_color.g, sdl_color.b, sdl_color.a);
 	}
 
 	template<typename Color>
-	inline void toSdlColor(SDL_Color& sdl_color, const Color& b2_color)
+	static inline void toSdlColor(SDL_Color& sdl_color, const Color& b2_color)
 	{
-		sdl_color.r = b2_color.r;
-		sdl_color.g = b2_color.g;
-		sdl_color.b = b2_color.b;
-		sdl_color.a = b2_color.a;
+		sdl_color.r = (Uint8)(b2_color.r * 255.0f);
+		sdl_color.g = (Uint8)(b2_color.g * 255.0f);
+		sdl_color.b = (Uint8)(b2_color.b * 255.0f);
+		sdl_color.a = (Uint8)(b2_color.a * 255.0f);
 	}
-	
+
 
 private:
 

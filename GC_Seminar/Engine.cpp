@@ -1,8 +1,13 @@
 #include "Engine.h"
 #include "WindowManager.h"
 #include "GraphicsDriver.h"
-#include "Entity.h"
+#include "EntityManager.h"
 #include "World.h"
+#include "Camera2D.h"
+#include "UIManager.h"
+#include "Utils.h"
+
+#include "Entity/Hunter.h"
 
 #include <Box2D\Common\b2Draw.h>
 
@@ -15,17 +20,127 @@ Engine::~Engine()
 
 void Engine::handleEvent(SDL_Event* inEvent)
 {
+	Hunter* player = _world->getPlayerEntity();
+	Vec2 velocity;
+
+	static bool press[255] = { 0 };
+	const float distance = 1000;
+	const Vec2 left(-1, 0);
+	const Vec2 right(1, 0);
+	const Vec2 up(0, 1);
+	const Vec2 down(0, -1);
+
+	int mx = 0;
+	int my = 0;
+
+	Button* button = nullptr;
+	
 	switch (inEvent->type)
 	{
 	case SDL_KEYDOWN:
-		std::cout << "SDL_KEYDOWN" << std::endl;
+		// Details
+		switch (inEvent->key.keysym.sym) 
+		{
+		case SDLK_a:
+			std::cout << "a" << std::endl;
+			press[SDLK_a] = true;
+			velocity = directionFromMultiKey(press[SDLK_w], press[SDLK_s], left) * distance;
+			break;
+
+		case SDLK_d:
+			std::cout << "d" << std::endl;
+			press[SDLK_d] = true;
+			velocity = directionFromMultiKey(press[SDLK_s], press[SDLK_w], right) * distance;
+			break;
+
+		case SDLK_w:
+			std::cout << "w" << std::endl;
+			press[SDLK_w] = true;
+			velocity = directionFromMultiKey(press[SDLK_d], press[SDLK_a], up) * distance;
+			break;
+
+		case SDLK_s:
+			std::cout << "s" << std::endl;
+			press[SDLK_s] = true;
+			velocity = directionFromMultiKey(press[SDLK_a], press[SDLK_d], down) * distance;
+			break;
+			
+		case SDLK_SPACE:
+			break;
+
+		default:
+			break;
+		}
+
+		if (player)
+			player->enterMovingState(player->getPos() + velocity);
+
 		break;
 	case SDL_KEYUP:
-		std::cout << "SDL_KEYUP" << std::endl;
+		// Details
+		switch (inEvent->key.keysym.sym)
+		{
+		case SDLK_a:
+			std::cout << "a up" << std::endl;
+			press[SDLK_a] = false;
+			break;
+
+		case SDLK_d:
+			std::cout << "d up" << std::endl;
+			press[SDLK_d] = false;
+			break;
+
+		case SDLK_w:
+			std::cout << "w up" << std::endl;
+			press[SDLK_w] = false;
+			break;
+
+		case SDLK_s:
+			std::cout << "s up" << std::endl;
+			press[SDLK_s] = false;
+			break;
+
+		case SDLK_SPACE:
+			break;
+
+		default:
+			break;
+		}
 		break;
 	case SDL_MOUSEBUTTONDOWN:
-		std::cout << "SDL_MOUSEBUTTONDOWN" << std::endl;
+		SDL_GetMouseState(&mx, &my);
+
+		button = UIManager::instance->trySelect(Vec2(mx, my));
+		if(button)
+			button->update();
+
+		if (player)
+			_world->createProjectile(
+				player->getID(),
+				player->getPos(),
+				player->getHeading(),
+				player->getProjSpeed());
+		
 		break;
+	case SDL_MOUSEMOTION:
+		SDL_GetMouseState(&mx, &my);
+		if (player)
+			player->setHeading(
+				(Camera2D::instance->screenToWorld(Vec2(mx, my)) 
+					- player->getPos()).getNormalized());
+		break;
+	case SDL_MOUSEWHEEL:
+		if (inEvent->wheel.y > 0)
+		{
+			Camera2D::instance->setScale(
+				Camera2D::instance->getScale() + Vec2(0.1f, 0.1f));
+		}
+		else
+		{
+			Vec2 scale = Camera2D::instance->getScale();
+			Camera2D::instance->setScale(scale - Vec2(0.1f, 0.1f));
+		}
+
 	default:
 		break;
 	}
@@ -44,9 +159,18 @@ bool Engine::init()
 	{
 		return false;
 	}
+	
+	Camera2D::staticInit(1280, 720);
+
+	EntityManager::staticInit();
 
 	_world.reset(new World());
-	
+
+
+	UIManager::staticInit();
+	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(80, 70), "Damage"));
+	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(180, 70), "Range"));
+
 	return true;
 }
 
@@ -59,6 +183,9 @@ int Engine::run()
 
 	while (!quit)
 	{
+		// SDL에서 지원하는 event 확인 방법
+		// 어떤 input event가 발생하면 SDL_PollEvent는 true를 리턴하고,
+		// event 변수에 상세 내용을 기록한다.
 		if (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT ||
@@ -69,11 +196,13 @@ int Engine::run()
 			}
 			else
 			{
+				// event에 대한 처리
 				handleEvent(&event);
 			}
 		}
 		else
 		{
+			// 모든 update
 			update();
 		}
 	}
@@ -82,11 +211,19 @@ int Engine::run()
 }
 
 
-
 void Engine::update()
 {
+	// World의 update
 	_world->update();
+	
+	// 새 그래픽 버퍼를 준비한다.
 	GraphicsDriver::instance->clear();
+	
+	// 화면에 그려질 모든 객체들을 그린다.
 	_world->render();
+	GraphicsDriver::instance->render();
+	UIManager::instance->render();
+
+	// 그래픽 버퍼를 화면에 출력한다.
 	GraphicsDriver::instance->present();
 }

@@ -1241,7 +1241,7 @@ void b2World::DrawDebugData()
 				}
 				else
 				{
-					DrawShape(f, xf, b2Color(0.9f, 0.7f, 0.7f));
+					DrawShape(f, xf, b2Color(0.8f, 1.0f, 0.0f));
 				}
 			}
 		}

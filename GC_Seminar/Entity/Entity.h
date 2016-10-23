@@ -24,6 +24,7 @@ public:
 		kPrey,
 		kProjectile,
 		kWall,
+		kStructure,
 		kButton
 	};
 

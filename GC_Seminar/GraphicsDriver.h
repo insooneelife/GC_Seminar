@@ -30,6 +30,14 @@ public:
 	static SDL_Color black;
 	static SDL_Color white;
 
+	static SDL_Color green;				
+	static SDL_Color indigo;			
+	static SDL_Color darkgray;			
+	static SDL_Color orange; 			
+	static SDL_Color antiquewhite;		
+	static SDL_Color lemon; 			
+	static SDL_Color darkgreen;
+
 
 	void			render();
 	void			clear();

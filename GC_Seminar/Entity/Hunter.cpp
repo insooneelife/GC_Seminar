@@ -6,18 +6,36 @@
 #include "../PhysicsManager.h"
 #include "../World.h"
 
+namespace
+{
+	const int kUpgradeDamageCost = 10;
+	const int kUpgradeRangeCost = 10;
+
+	const int kIncreaseDamage = 1;
+	const int kIncreaseRange = 1;
+
+	const int kDefaultMaxHP = 100;
+	const int kDefaultDamage = 10;
+	const int kDefaultProjSpeed = 15;
+	const int kExpFromHunter = 10;
+
+	const float kHunterRenderRadius = 0.25f;
+	const float kHunterBodyRadius = 0.20f;
+	const float kHunterSpeed = 5.0f;
+}
+
 Hunter::Hunter(World& world, unsigned int id, const Vec2& pos)
 	:
-	Entity(world, id, pos, 0.25f, Entity::Type::kHunter, GraphicsDriver::black),
+	Entity(world, id, pos, kHunterRenderRadius, Entity::Type::kHunter, GraphicsDriver::black),
 	_state(kIdle),
 	_experience(5),
-	_hp(100),
-	_damage(10),
-	_proj_speed(15),
+	_hp(kDefaultMaxHP),
+	_damage(kDefaultDamage),
+	_proj_speed(kDefaultProjSpeed),
 	_is_player(true)
 {
 	b2CircleShape shape;
-	shape.m_radius = 0.2f;
+	shape.m_radius = kHunterBodyRadius;
 
 	_body = _world.getPhysicsMgr()->CreateApplyForceBody(_pos.x, _pos.y, &shape);
 	_body->SetUserData(this);
@@ -28,12 +46,11 @@ Hunter::~Hunter()
 
 bool Hunter::upgradeDamage()
 {
-	int cost = 10;
-	if (_experience - cost < 0)
+	if (_experience - kUpgradeDamageCost < 0)
 		return false;
 
-	setExp(getExp() - cost);
-	_damage += 1;
+	setExp(getExp() - kUpgradeDamageCost);
+	_damage += kIncreaseDamage;
 
 	std::cout << "upgrade damage to : " << _damage << std::endl;
 	return true;
@@ -41,12 +58,11 @@ bool Hunter::upgradeDamage()
 
 bool Hunter::upgradeRange()
 {
-	int cost = 10;
-	if (_experience - cost < 0)
+	if (_experience - kUpgradeRangeCost < 0)
 		return false;
 
-	setExp(getExp() - cost);
-	_proj_speed += 1;
+	setExp(getExp() - kUpgradeRangeCost);
+	_proj_speed += kIncreaseRange;
 
 	std::cout << "upgrade range to : " << _proj_speed << std::endl;
 	return true;
@@ -64,10 +80,15 @@ void Hunter::takeDamage(int damage, unsigned int who)
 	if (_hp == 0)
 	{
 		setGarbage();
-		int expr = 10;
+		int expr = kExpFromHunter;
 		EntityManager::instance->dispatchMsg(_id, who, Message::MsgType::kIncrease, &expr);
 	}
 		
+}
+
+void Hunter::shoot()
+{
+	_world.createProjectile(_id, _pos + _heading * _radius * 2, _heading, _proj_speed);
 }
 
 void Hunter::update()
@@ -76,17 +97,13 @@ void Hunter::update()
 	{}
 	else if (_state == State::kMoving)
 	{
-		float speed = 10;
-		float expect_radius = 0.25f;
-
-		Vec2 velocity = (_destination - _pos).getNormalized() * speed;
-		
+		Vec2 velocity = (_destination - _pos).getNormalized() * kHunterSpeed;	
 		_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
 		
-		
-		if (_pos.distance(_destination) < expect_radius)
+		if (_pos.distance(_destination) < kHunterBodyRadius)
 			_state = State::kIdle;
 	}
+
 	_pos.set(_body->GetPosition().x, _body->GetPosition().y);
 }
 
@@ -98,7 +115,7 @@ void Hunter::render()
 	GraphicsDriver::instance->drawCircle(_pos, _radius, _color);
 	GraphicsDriver::instance->drawText(ss.str(), _pos);
 
-	Vec2 sidev = getSide() * _radius / 2;
+	Vec2 sidev = getSide() * _radius * 0.5f;
 	GraphicsDriver::instance->drawLine(_pos + sidev, _pos - sidev, _color);
 	GraphicsDriver::instance->drawLine(_pos + sidev, _pos + _heading * _radius * 2, _color);
 	GraphicsDriver::instance->drawLine(_pos - sidev, _pos + _heading * _radius * 2, _color);
@@ -118,7 +135,6 @@ bool Hunter::handleMessage(const Message& msg)
 		break;
 
 	case Message::kDecrease:
-		setExp(getExp() - 1);
 		break;
 
 	default:

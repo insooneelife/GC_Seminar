@@ -11,6 +11,15 @@ SDL_Color GraphicsDriver::yellow;
 SDL_Color GraphicsDriver::black;
 SDL_Color GraphicsDriver::white;
 
+SDL_Color GraphicsDriver::green;
+SDL_Color GraphicsDriver::indigo;
+SDL_Color GraphicsDriver::darkgray;
+SDL_Color GraphicsDriver::orange;
+SDL_Color GraphicsDriver::antiquewhite;
+SDL_Color GraphicsDriver::lemon;
+SDL_Color GraphicsDriver::darkgreen;
+
+
 bool GraphicsDriver::staticInit(SDL_Window* wnd)
 {
 	GraphicsDriver* new_graph_driver = new GraphicsDriver();
@@ -28,9 +37,19 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 	// Set color
 	red.r = 255;	red.g = 0;		red.b = 0;
 	blue.r = 0;		blue.g = 0;		blue.b = 255;
-	yellow.r = 255;	yellow.g = 237;	yellow.b = 0;
+	yellow.r = 255;	yellow.g = 255;	yellow.b = 0;
 	black.r = 0;	black.g = 0;	black.b = 0;
 	white.r = 255;	white.g = 255;	white.b = 255;
+
+	green.r = 0;		green.g = 255;		green.b = 0;
+	indigo.r = 75;		indigo.g = 0;		indigo.b = 130;
+	darkgray.r = 169;	darkgray.g = 169;	darkgray.b = 169;
+	orange.r = 238;		orange.g = 154;		orange.b = 0;
+
+	antiquewhite.r = 255;	antiquewhite.g = 239;	antiquewhite.b = 219;
+	lemon.r = 255;			lemon.g = 250;			lemon.b = 205;
+	darkgreen.r = 162;		darkgreen.g = 205;		darkgreen.b = 90;
+
 
 	return result;
 }
@@ -45,10 +64,10 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 	}
 
 	// Cornflower blue background, cause why not?
-	SDL_SetRenderDrawColor(_renderer, 100, 149, 237, SDL_ALPHA_OPAQUE );
+	SDL_SetRenderDrawColor(_renderer, 100, 149, 237, SDL_ALPHA_OPAQUE);
 
 	// Set the logical size to 1280x720 so everything will just auto-scale
-	SDL_RenderSetLogicalSize(_renderer, 1280, 720 );
+	SDL_RenderSetLogicalSize(_renderer, 1280, 720);
 	
 
 	// Add font for use texts.
@@ -87,7 +106,7 @@ void GraphicsDriver::render()
 
 void GraphicsDriver::clear()
 {
-	SDL_SetRenderDrawColor(_renderer, 100, 149, 237, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(_renderer, darkgray.r, darkgray.g, darkgray.b, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(_renderer);
 }
 

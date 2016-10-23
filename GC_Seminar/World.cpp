@@ -6,12 +6,13 @@
 #include "Utils.h"
 #include "UIManager.h"
 
-#include "Math\Transformations.h"
+#include "Math/Transformations.h"
 
 #include "Entity/Hunter.h"
 #include "Entity/Prey.h"
 #include "Entity/Projectile.h"
 #include "Entity/Wall.h"
+#include "Entity/Structure.h"
 
 namespace
 {
@@ -24,24 +25,13 @@ using namespace std;
 void World::collide(Hunter& h1, Hunter& h2)
 {
 	cout << "collide!  Hunter && Hunter" << endl;
-	/*if (h1.getBRadius() > h2.getBRadius())
-	{
-		h1.increase(h2.getIntake());
-		h2.setGarbage();
-	}
-	else if (h1.getBRadius() < h2.getBRadius())
-	{
-		h2.increase(h1.getIntake());
-		h1.setGarbage();
-	}
-	else
-	{}*/
 }
 
 void World::collide(Hunter& h, Projectile& p)
 {
 	if (h.getID() == p.getOwnerID())
 		return;
+
 	cout << "collide!  Hunter && Projectile" << endl;
 
 	p.setGarbage();
@@ -69,11 +59,7 @@ void World::collide(Hunter& h, Wall& w)
 	float distance = sqrt(distToSegmentSq(w.getBegin(), w.getEnd(), h.getPos()));
 	Vec2 force = w.getHeading() * distance;
 	h.setPos(h.getPos() + force);
-	
 }
-
-
-
 
 
 template<class Container>
@@ -125,16 +111,17 @@ World::World()
 	for (int i = 0; i < 100; i++)
 		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 
-	// Create walls
-	Vec2 bot_left(-kWorldX, -kWorldY);
-	Vec2 bot_right(kWorldX, -kWorldY);
-	Vec2 top_left(-kWorldX, kWorldY);
-	Vec2 top_right(kWorldX, kWorldY);
-
-	createWall(bot_left, bot_right, (bot_right - bot_left).getNormalized().getPerp());
-	createWall(bot_right, top_right, (top_right - bot_right).getNormalized().getPerp());
-	createWall(top_right, top_left, (top_left - top_right).getNormalized().getPerp());
-	createWall(top_left, bot_left, (bot_left - top_left).getNormalized().getPerp());
+	// Create Structures
+	for (int i = 0; i < 20; i++)
+	{
+		int type = random(0, 3);
+		createStructure(
+			Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)),
+			random(1.0f, 4.0f),
+			type);
+		
+	}
+		
 
 	// Set camera
 	Vec2 heading = _player_entity->getHeading();
@@ -170,6 +157,9 @@ void World::update()
 		else if (ent->getType() == Entity::kWall)
 			_walls.push_back(static_cast<Wall*>(ent));
 
+		else if (ent->getType() == Entity::kStructure)
+			_structures.push_back(static_cast<Structure*>(ent));
+
 		_created_entities.pop();
 	}
 
@@ -179,33 +169,12 @@ void World::update()
 	updateEntity(_projectiles);
 	updateEntity(_preys);
 
-
 	// Preys must maintain 100 units.
 	float screenX = Camera2D::instance->getScreenX();
 	float screenY = Camera2D::instance->getScreenY();
 	int create_num = 100 - _preys.size();
 	while (create_num-- > 0)
 		createPrey(Vec2(random(-screenX, 2 * screenX), random(-screenY, 2 * screenY)));
-
-
-	// Process collide between entities.
-	/*for (auto h1 : _hunters)
-		for (auto h2 : _hunters)
-			if (h1->getID() != h2->getID())
-				collide(*h1, *h2);
-
-	for (auto h : _hunters)
-		for (auto p : _projectiles)
-			if (h->getID() != p->getOwnerID())
-			collide(*h, *p);
-
-	for (auto pro : _projectiles)
-		for (auto p : _preys)
-			collide(*pro, *p);
-
-	for (auto h : _hunters)
-		for (auto w : _walls)
-			collide(*h, *w);*/
 
 	// Camera position setting
 	if (_player_entity) {
@@ -236,8 +205,12 @@ void World::render()
 	for (auto p : _preys)
 		p->render();
 
-	for (auto p : _walls)
-		p->render();
+	for (auto w : _walls)
+		w->render();
+
+	for (auto s : _structures)
+		s->render();
+
 	_physics->Render();
 }
 
@@ -259,4 +232,16 @@ void World::createPrey(const Vec2& pos)
 void World::createWall(const Vec2& begin, const Vec2& end, const Vec2& heading)
 {
 	_created_entities.emplace(new Wall(*this, genID(), begin, end, heading));
+}
+
+void World::createStructure(const Vec2& pos, float radius, int type)
+{
+	if(type == Structure::StructureType::kCircle)
+		_created_entities.emplace(Structure::createCircle(*this, genID(), pos, radius));
+
+	else if (type == Structure::StructureType::kPolygon)
+		_created_entities.emplace(Structure::createPolygon(*this, genID(), pos));
+	
+	else if (type == Structure::StructureType::kAnchor)
+		_created_entities.emplace(Structure::createAnchor(*this, genID(), pos, pos + Vec2(2.0f, 0)));
 }

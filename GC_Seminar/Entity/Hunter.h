@@ -38,6 +38,7 @@ public:
 	bool upgradeRange();
 	void enterMovingState(const Vec2& desti);
 	void takeDamage(int damage, unsigned int who);
+	void shoot();
 
 	virtual void update();
 	virtual void render();

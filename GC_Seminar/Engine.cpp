@@ -115,11 +115,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			button->update();
 
 		if (player)
-			_world->createProjectile(
-				player->getID(),
-				player->getPos(),
-				player->getHeading(),
-				player->getProjSpeed());
+			player->shoot();
 		
 		break;
 	case SDL_MOUSEMOTION:
@@ -133,12 +129,12 @@ void Engine::handleEvent(SDL_Event* inEvent)
 		if (inEvent->wheel.y > 0)
 		{
 			Camera2D::instance->setScale(
-				Camera2D::instance->getScale() + Vec2(0.1f, 0.1f));
+				Camera2D::instance->getScale() * 0.95f);
 		}
 		else
 		{
 			Vec2 scale = Camera2D::instance->getScale();
-			Camera2D::instance->setScale(scale - Vec2(0.1f, 0.1f));
+			Camera2D::instance->setScale(scale * 1.05f);
 		}
 
 	default:

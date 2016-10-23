@@ -73,6 +73,7 @@
     <ClCompile Include="Entity\Hunter.cpp" />
     <ClCompile Include="Entity\Prey.cpp" />
     <ClCompile Include="Entity\Projectile.cpp" />
+    <ClCompile Include="Entity\Structure.cpp" />
     <ClCompile Include="Entity\Wall.cpp" />
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Entity\Hunter.h" />
     <ClInclude Include="Entity\Prey.h" />
     <ClInclude Include="Entity\Projectile.h" />
+    <ClInclude Include="Entity\Structure.h" />
     <ClInclude Include="Entity\Wall.h" />
     <ClInclude Include="GraphicsDriver.h" />
     <ClInclude Include="Math\MathBase.h" />

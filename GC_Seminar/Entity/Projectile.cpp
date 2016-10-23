@@ -5,6 +5,14 @@
 #include "../PhysicsManager.h"
 #include "../World.h"
 
+namespace
+{
+	const int kDefaultLifeTime = 50;
+
+	const float kProjectileRenderRadius = 0.15f;
+	const float kProjectileBodyRadius = 0.10f;
+}
+
 Projectile::Projectile(
 	World& world,
 	unsigned int id,
@@ -13,17 +21,17 @@ Projectile::Projectile(
 	const Vec2& heading,
 	int proj_speed)
 	:
-	Entity(world, id, pos, 0.15f, Entity::Type::kProjectile, GraphicsDriver::black),
+	Entity(world, id, pos, kProjectileRenderRadius, Entity::Type::kProjectile, GraphicsDriver::black),
 	_owner_id(owner_id),
-	_life_time(50),
+	_life_time(kDefaultLifeTime),
 	_proj_speed(proj_speed)
 {
 	setHeading(heading);
 
-	b2Shape* shape = new b2CircleShape();
-	shape->m_radius = 0.1f;
+	b2CircleShape shape;
+	shape.m_radius = kProjectileBodyRadius;
 
-	_body = _world.getPhysicsMgr()->CreateBody(_pos.x, _pos.y, b2BodyType::b2_dynamicBody, shape, true);
+	_body = _world.getPhysicsMgr()->CreateBody(_pos.x, _pos.y, b2BodyType::b2_dynamicBody, &shape, false);
 	
 	Vec2 velocity = _heading * (float)_proj_speed;
 	_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
@@ -40,7 +48,7 @@ void Projectile::update()
 
 void Projectile::render()
 {
-	Vec2 sidev = getSide() * _radius / 2;
+	Vec2 sidev = getSide() * _radius * 0.5f;
 	GraphicsDriver::instance->drawLine(_pos + sidev, _pos - sidev, _color);
 	GraphicsDriver::instance->drawLine(_pos + sidev, _pos + _heading * _radius * 2, _color);
 	GraphicsDriver::instance->drawLine(_pos - sidev, _pos + _heading * _radius * 2, _color);

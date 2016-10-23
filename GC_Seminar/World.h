@@ -20,6 +20,7 @@ class Hunter;
 class Prey;
 class Projectile;
 class Wall;
+class Structure;
 class World
 {
 public:
@@ -42,6 +43,7 @@ public:
 	inline const std::vector<Projectile*>& getProjectiles() const		{ return _projectiles; }
 	inline const std::vector<Prey*>& getPreys() const					{ return _preys; }
 	inline const std::vector<Wall*>& getWalls() const					{ return _walls; }
+	inline const std::vector<Structure*>& getStructures() const			{ return _structures; }
 
 	// 플레이어의 entity를 참조하기 위한 getter
 	inline Hunter* getPlayerEntity() const								{ return _player_entity; }
@@ -57,6 +59,7 @@ public:
 	void createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading, int proj_speed);
 	void createPrey(const Vec2& pos);
 	void createWall(const Vec2& begin, const Vec2& end, const Vec2& heading);
+	void createStructure(const Vec2& pos, float radius, int type);
 
 	void update();
 	void render();
@@ -70,6 +73,7 @@ private:
 	std::vector<Projectile*> _projectiles;
 	std::vector<Prey*> _preys;
 	std::vector<Wall*> _walls;
+	std::vector<Structure*> _structures;
 	std::queue<Entity*> _created_entities;
 	
 	Hunter* _player_entity;

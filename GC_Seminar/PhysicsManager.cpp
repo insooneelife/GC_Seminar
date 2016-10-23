@@ -33,7 +33,7 @@ bool PhysicsManager::CheckContact(
 
 PhysicsManager::PhysicsManager(float worldX, float worldY)
 	:
-	m_pointCount(0)
+	_pointCount(0)
 {
 	b2Vec2 gravity;
 	gravity.Set(0.0f, 0.0f);
@@ -76,6 +76,7 @@ void PhysicsManager::Step()
 	GraphicsDriver::instance->SetFlags(flags);
 
 	float32 timeStep = _settings.hz > 0.0f ? 1.0f / _settings.hz : float32(0.0f);
+	_pointCount = 0;
 
 	_world->Step(
 		timeStep,
@@ -92,18 +93,16 @@ void PhysicsManager::Render()
 		const float32 k_impulseScale = 0.1f;
 		const float32 k_axisScale = 0.3f;
 
-		for (int32 i = 0; i < m_pointCount; ++i)
+		for (int32 i = 0; i < _pointCount; ++i)
 		{
-			ContactPoint* point = m_points + i;
+			ContactPoint* point = _points + i;
 
 			if (point->state == b2_addState)
 			{
-				// Add
 				GraphicsDriver::instance->DrawPoint(point->position, 10.0f, b2Color(0.3f, 0.95f, 0.3f));
 			}
 			else if (point->state == b2_persistState)
 			{
-				// Persist
 				GraphicsDriver::instance->DrawPoint(point->position, 5.0f, b2Color(0.3f, 0.3f, 0.95f));
 			}
 
@@ -183,9 +182,9 @@ void PhysicsManager::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	b2WorldManifold worldManifold;
 	contact->GetWorldManifold(&worldManifold);
 
-	for (int32 i = 0; i < manifold->pointCount && m_pointCount < 2048; ++i)
+	for (int32 i = 0; i < manifold->pointCount && _pointCount < 2048; ++i)
 	{
-		ContactPoint* cp = m_points + m_pointCount;
+		ContactPoint* cp = _points + _pointCount;
 		cp->fixtureA = fixtureA;
 		cp->fixtureB = fixtureB;
 		cp->position = worldManifold.points[i];
@@ -194,7 +193,7 @@ void PhysicsManager::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 		cp->normalImpulse = manifold->points[i].normalImpulse;
 		cp->tangentImpulse = manifold->points[i].tangentImpulse;
 		cp->separation = worldManifold.separations[i];
-		++m_pointCount;
+		++_pointCount;
 	}
 }
 

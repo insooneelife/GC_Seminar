@@ -76,7 +76,7 @@ class DestructionListener : public b2DestructionListener
 {
 public:
 	void SayGoodbye(b2Fixture* fixture) { B2_NOT_USED(fixture); }
-	void SayGoodbye(b2Joint* joint) {}
+	void SayGoodbye(b2Joint* joint) { B2_NOT_USED(joint); }
 
 	PhysicsManager* physics;
 };
@@ -112,9 +112,13 @@ public:
 	void Render();
 
 	inline b2World* GetPhysicsWorld() const { return _world; }
+	inline b2Body* GetGround() const { return _ground; }
 
 	virtual void BeginContact(b2Contact* contact) override;
+	virtual void EndContact(b2Contact* contact) override { B2_NOT_USED(contact); }
+
 	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
+	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) override { B2_NOT_USED(contact); B2_NOT_USED(impulse); }
 
 	b2Body* CreateApplyForceBody(float x, float y, b2Shape* shape);
 	b2Body* CreateBody(float x, float y, b2BodyType type, b2Shape* shape, bool sensor);
@@ -127,8 +131,8 @@ public:
 	b2Body* _ground;
 	Settings _settings;
 
-	ContactPoint m_points[2048];
-	int32 m_pointCount;
+	ContactPoint _points[2048];
+	int32 _pointCount;
 };
 
 #endif

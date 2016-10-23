@@ -127,13 +127,10 @@ inline void C2DMatrix::transform(std::vector<Vec2> &vPoint)
 //applies a 2D transformation matrix to a single Vector2D
 inline void C2DMatrix::transform(Vec2 &vPoint)
 {
-
 	double tempX = (_mat._11*vPoint.x) + (_mat._21*vPoint.y) + (_mat._31);
-
 	double tempY = (_mat._12*vPoint.x) + (_mat._22*vPoint.y) + (_mat._32);
 
 	vPoint.x = tempX;
-
 	vPoint.y = tempY;
 }
 

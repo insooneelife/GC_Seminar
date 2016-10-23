@@ -231,6 +231,9 @@
     <ClCompile Include="UIManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Entity\Structure.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="UIManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Structure.h">
+      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

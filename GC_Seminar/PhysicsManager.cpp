@@ -30,6 +30,22 @@ bool PhysicsManager::CheckContact(
 	return output.distance < 10.0f * b2_epsilon;
 }
 
+void PhysicsManager::ApplyBlastImpulse(
+	b2Body* body,
+	b2Vec2 blastCenter,
+	b2Vec2 applyPoint,
+	float blastPower)
+{
+	b2Vec2 blastDir = applyPoint - blastCenter;
+	float distance = blastDir.Normalize();
+	//ignore bodies exactly at the blast point - blast direction is undefined
+	if (distance == 0)
+		return;
+	float invDistance = 1 / distance;
+	float impulseMag = blastPower * invDistance * invDistance;
+	body->ApplyLinearImpulse(impulseMag * blastDir, applyPoint, true);
+}
+
 
 PhysicsManager::PhysicsManager(float worldX, float worldY)
 	:
@@ -259,5 +275,27 @@ b2Body* PhysicsManager::CreateBody(float x, float y, b2BodyType type, b2Shape* s
 void PhysicsManager::RemoveBody(b2Body* body)
 {
 	body->GetWorld()->DestroyBody(body);
+}
+
+void PhysicsManager::Explosion(const b2Vec2& center, float blastRadius, float blastPower)
+{
+	//find all bodies with fixtures in blast radius AABB
+	MyQueryCallback queryCallback; //see "World querying topic"
+	b2AABB aabb;
+	aabb.lowerBound = center - b2Vec2(blastRadius, blastRadius);
+	aabb.upperBound = center + b2Vec2(blastRadius, blastRadius);
+	_world->QueryAABB(&queryCallback, aabb);
+
+	//check which of these bodies have their center of mass within the blast radius
+	for (int i = 0; i < queryCallback.foundBodies.size(); i++) {
+		b2Body* body = queryCallback.foundBodies[i];
+		b2Vec2 bodyCom = body->GetWorldCenter();
+
+		//ignore bodies outside the blast range
+		if ((bodyCom - center).Length() >= blastRadius)
+			continue;
+
+		ApplyBlastImpulse(body, center, bodyCom, blastPower);
+	}
 }
 

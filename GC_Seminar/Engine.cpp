@@ -25,6 +25,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 
 	static bool press[255] = { 0 };
 	const float distance = 1000;
+
 	const Vec2 left(-1, 0);
 	const Vec2 right(1, 0);
 	const Vec2 up(0, 1);
@@ -66,6 +67,8 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			break;
 			
 		case SDLK_SPACE:
+			_world->getPhysicsMgr()->Explosion(
+				b2Vec2(player->getPos().x, player->getPos().y), 5.0f, 100.0f);
 			break;
 
 		default:

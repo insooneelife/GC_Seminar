@@ -22,6 +22,12 @@ Prey::Prey(World& world, unsigned int id, const Vec2& pos)
 	_body->SetUserData(this);
 }
 
+
+void Prey::update()
+{
+	_pos.set(_body->GetPosition().x, _body->GetPosition().y);
+}
+
 void Prey::render()
 {
 	GraphicsDriver::instance->drawCircle(_pos, _radius, _color);

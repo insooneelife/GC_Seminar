@@ -24,6 +24,7 @@
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D\Box2D.h>
 #include "GraphicsDriver.h"
+#include <vector>
 
 struct Settings
 {
@@ -93,6 +94,16 @@ struct ContactPoint
 	float32 separation;
 };
 
+class MyQueryCallback : public b2QueryCallback {
+public:
+	std::vector<b2Body*> foundBodies;
+
+	bool ReportFixture(b2Fixture* fixture) {
+		foundBodies.push_back(fixture->GetBody());
+		return true;//keep going to find all fixtures in the query area
+	}
+};
+
 /// This is a test of typical character collision scenarios. This does not
 /// show how you should implement a character in your application.
 /// Instead this is used to test smooth collision on edge chains.
@@ -105,6 +116,12 @@ public:
 		const b2Shape* shapeB, int32 indexB,
 		const b2Transform& xfA, const b2Transform& xfB,
 		b2DistanceOutput& output);
+
+	static void ApplyBlastImpulse(
+		b2Body* body,
+		b2Vec2 blastCenter,
+		b2Vec2 applyPoint,
+		float blastPower);
 
 	PhysicsManager(float worldX, float worldY);
 
@@ -124,6 +141,9 @@ public:
 	b2Body* CreateBody(float x, float y, b2BodyType type, b2Shape* shape, bool sensor);
 
 	void RemoveBody(b2Body* body);
+
+	void Explosion(const b2Vec2& center, float blastRadius, float blastPower);
+
 
 	DestructionListener _destruction_listener;
 	b2Body* _character;

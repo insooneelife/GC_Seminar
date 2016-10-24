@@ -94,6 +94,32 @@ World::World()
 	_next_validate_id(1),
 	_physics(new PhysicsManager(kWorldX, kWorldY))
 {
+	b2CircleShape* circle = new b2CircleShape();
+	circle->m_p = b2Vec2(5.0f, 5.0f);
+	circle->m_radius = 1.0f;
+
+	b2PolygonShape* polygon = new b2PolygonShape();
+
+	b2Vec2 vertices[5] =
+	{
+		b2Vec2(-0.5f, 0.0f),
+		b2Vec2(1.2f, -0.2f),
+		b2Vec2(1.5f, 1.0f),
+		b2Vec2(-1.5f, 0.2f),
+		b2Vec2(-0.5f, 0.0f)
+	};
+	
+	polygon->Set(vertices, 5);
+
+	b2Transform temp;
+	temp.SetIdentity();
+
+	b2DistanceOutput out;
+
+	bool check = _physics->CheckContact(circle, 1, polygon, 2, temp, temp, out);
+	
+	printf("%d", check);
+
 	// Create player with hunter
 	_player_entity = new Hunter(*this, genID(), Vec2(1.0f, 1.0f));
 	_hunters.push_back(_player_entity);

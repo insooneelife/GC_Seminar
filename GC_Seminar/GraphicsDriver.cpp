@@ -106,7 +106,7 @@ void GraphicsDriver::render()
 
 void GraphicsDriver::clear()
 {
-	SDL_SetRenderDrawColor(_renderer, darkgray.r, darkgray.g, darkgray.b, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(_renderer, 100, 149, 237, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(_renderer);
 }
 

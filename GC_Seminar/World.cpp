@@ -16,8 +16,8 @@
 
 namespace
 {
-	const float kWorldX = 100.0f;
-	const float kWorldY = 100.0f;
+	const float kWorldX = 20.0f;
+	const float kWorldY = 20.0f;
 }
 
 using namespace std;
@@ -108,7 +108,7 @@ World::World()
 	createHunter(Vec2(7.00f, 3.00f));
 
 	// Create preys
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 200; i++)
 		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 
 	// Create Structures
@@ -119,7 +119,6 @@ World::World()
 			Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)),
 			random(1.0f, 4.0f),
 			type);
-		
 	}
 		
 

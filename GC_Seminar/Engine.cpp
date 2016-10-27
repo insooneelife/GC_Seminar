@@ -161,7 +161,7 @@ bool Engine::init()
 
 	EntityManager::staticInit();
 
-	_world.reset(new World());
+	_world.reset(new World(2400, 1400));
 
 	UIManager::staticInit();
 	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(80, 70), "Damage"));

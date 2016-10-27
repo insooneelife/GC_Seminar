@@ -47,7 +47,7 @@ public:
 	// 유일한 id를 생성해 준다.
 	inline unsigned int genID()										{ return _next_validate_id++; }
 
-	World();
+	World(float width, float height);
 	~World();
 	
 	void createHunter(const Vec2& pos);
@@ -68,4 +68,6 @@ private:
 	Hunter* _player_entity;
 	unsigned int _next_validate_id;
 
+	float _width;
+	float _height;
 };

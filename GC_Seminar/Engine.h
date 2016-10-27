@@ -3,8 +3,8 @@
 //
 //  Name:		Engine.h
 //
-//  Desc:		Simple game engine for starcraft project.
-//				It includes world and managers which are outside of world.
+//  Desc:		It includes world and managers which are outside of world.
+//				
 //
 //  Author:		Insub Im (insooneelife@naver.com)
 //

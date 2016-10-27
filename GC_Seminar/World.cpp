@@ -106,9 +106,11 @@ void World::updateEntity(Container& entities)
 }
 
 // World의 생성자에서 모든 entity의 초기화가 이루어진다.
-World::World()
+World::World(float width, float height)
 	:
-	_next_validate_id(1)
+	_next_validate_id(1),
+	_width(width),
+	_height(height)
 {
 	// Create player with hunter
 	_player_entity = new Hunter(*this, genID(), Vec2(100.0f, 100.0f));
@@ -123,19 +125,16 @@ World::World()
 	createHunter(Vec2(1000.0f, 600.0f));
 	createHunter(Vec2(700.0f, 300.0f));
 
-	float screenX = Camera2D::instance->getScreenX();
-	float screenY = Camera2D::instance->getScreenY();
-	
 	// Create preys
 	for (int i = 0; i < 100; i++)
-		createPrey(Vec2(random(-screenX, 2 * screenX), random(-screenY, 2 * screenY)));
+		createPrey(Vec2(random(-width / 2, width / 2), random(-height / 2, height / 2)));
 
 	// Create walls
 	float dummy = 100.0f;
-	Vec2 bot_left(-(screenX + dummy), -(screenY + dummy));
-	Vec2 bot_right(2 * (screenX + dummy), -(screenY + dummy));
-	Vec2 top_left(-(screenX + dummy), 2 * (screenY + dummy));
-	Vec2 top_right(2 * (screenX + dummy), 2 * (screenY + dummy));
+	Vec2 bot_left(-(width + dummy) / 2, -(height + dummy) / 2);
+	Vec2 bot_right((width + dummy) / 2, -(height + dummy) / 2);
+	Vec2 top_left(-(width + dummy) / 2, (height + dummy) / 2);
+	Vec2 top_right((width + dummy) / 2, (height + dummy) / 2);
 
 	createWall(bot_left, bot_right, (bot_right - bot_left).getNormalized().getPerp());
 	createWall(bot_right, top_right, (top_right - bot_right).getNormalized().getPerp());
@@ -189,7 +188,7 @@ void World::update()
 	float screenY = Camera2D::instance->getScreenY();
 	int create_num = 100 - _preys.size();
 	while (create_num-- > 0)
-		createPrey(Vec2(random(-screenX, 2 * screenX), random(-screenY, 2 * screenY)));
+		createPrey(Vec2(random(-_width / 2, _width / 2), random(-_height / 2, _height / 2)));
 
 
 	// Process collide between entities.

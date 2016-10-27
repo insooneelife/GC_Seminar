@@ -188,6 +188,7 @@ void World::update()
 	}
 
 	_physics->Step();
+
 	// Update entities and delete them if set garbage.
 	updateEntity(_hunters);
 	updateEntity(_projectiles);

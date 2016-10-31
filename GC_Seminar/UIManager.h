@@ -15,8 +15,6 @@
 #include "Math\Vec2.h"
 #include "Entity\Button.h"
 
-
-
 class UIManager
 {
 public:

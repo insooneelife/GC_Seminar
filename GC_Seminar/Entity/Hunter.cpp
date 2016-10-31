@@ -91,6 +91,24 @@ void Hunter::shoot()
 	_world.createProjectile(_id, _pos + _heading * _radius * 2, _heading, _proj_speed);
 }
 
+void Hunter::shootRay()
+{
+	const float kRange = 500.0f;
+	Vec2 shootPos = _pos + _heading * kRange;
+
+	EntityRayCastCallback callback;
+	_world.getPhysicsMgr()->QueryRayCast(_pos, shootPos, &callback);
+
+	//check which of these bodies have their center of mass within the blast radius
+	std::cout << "callback size : " << callback.foundEntities.size() << std::endl;
+	for (int i = 0; i < callback.foundEntities.size(); i++) 
+	{
+		Entity* ent = callback.foundEntities[i];
+		int damage = 10;
+		EntityManager::instance->dispatchMsg(_id, ent->getID(), Message::MsgType::kDamage, &damage);
+	}
+}
+
 void Hunter::update()
 {
 	if (_state == State::kIdle)

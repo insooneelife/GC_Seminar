@@ -39,6 +39,7 @@ public:
 	void enterMovingState(const Vec2& desti);
 	void takeDamage(int damage, unsigned int who);
 	void shoot();
+	void shootRay();
 
 	virtual void update();
 	virtual void render();

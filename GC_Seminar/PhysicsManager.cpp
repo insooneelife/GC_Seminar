@@ -287,7 +287,8 @@ void PhysicsManager::Explosion(const b2Vec2& center, float blastRadius, float bl
 	_world->QueryAABB(&queryCallback, aabb);
 
 	//check which of these bodies have their center of mass within the blast radius
-	for (int i = 0; i < queryCallback.foundBodies.size(); i++) {
+	for (int i = 0; i < queryCallback.foundBodies.size(); i++) 
+	{
 		b2Body* body = queryCallback.foundBodies[i];
 		b2Vec2 bodyCom = body->GetWorldCenter();
 
@@ -297,5 +298,27 @@ void PhysicsManager::Explosion(const b2Vec2& center, float blastRadius, float bl
 
 		ApplyBlastImpulse(body, center, bodyCom, blastPower);
 	}
+}
+
+
+void PhysicsManager::QueryAABB(
+	const Vec2& center,
+	float halfWidth,
+	float halfHeight,
+	b2QueryCallback* callback)
+{
+	b2AABB aabb;
+	aabb.lowerBound = b2Vec2(center.x, center.y) - b2Vec2(halfWidth, halfHeight);
+	aabb.upperBound = b2Vec2(center.x, center.y) + b2Vec2(halfWidth, halfHeight);
+	_world->QueryAABB(callback, aabb);
+}
+
+
+void PhysicsManager::QueryRayCast(
+	const Vec2& begin,
+	const Vec2& end,
+	b2RayCastCallback* callback)
+{
+	_world->RayCast(callback, b2Vec2(begin.x, begin.y), b2Vec2(end.x, end.y));
 }
 

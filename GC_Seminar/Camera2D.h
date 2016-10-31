@@ -38,6 +38,13 @@ public:
 		_scale = scale;
 	}
 
+	inline bool pointInScreen(const Vec2& screenPos)
+	{
+		return
+			0 < screenPos.x && screenPos.x < _screenX &&
+			0 < screenPos.y && screenPos.y < _screenY;
+	}
+
 	inline float getScreenX() const { return _screenX; }
 	inline float getScreenY() const { return _screenY; }
 

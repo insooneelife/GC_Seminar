@@ -48,7 +48,7 @@ public:
 	void			drawPoint(Vec2 p, SDL_Color color = red, bool on_ui = false);
 	void			drawLine(Vec2 a, Vec2 b, SDL_Color color = red, bool on_ui = false);
 	void			drawRect(Vec2 p, float w, float h, SDL_Color color = red, bool on_ui = false);
-	void			drawCircle(Vec2 p, float r, SDL_Color color = red, float fragment = 15, bool on_ui = false);
+	void			drawCircle(Vec2 p, float r, SDL_Color color = red, float fragment = 10, bool on_ui = false);
 	void			drawText(const std::string& str, Vec2 p, const SDL_Color& color = red, bool on_ui = false);
 
 	virtual ~GraphicsDriver();

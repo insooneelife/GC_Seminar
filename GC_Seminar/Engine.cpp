@@ -10,6 +10,7 @@
 #include "Entity/Hunter.h"
 
 #include <Box2D\Common\b2Draw.h>
+#include <chrono>
 
 
 Engine::Engine()
@@ -35,6 +36,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	int my = 0;
 
 	Button* button = nullptr;
+
 	
 	switch (inEvent->type)
 	{
@@ -105,20 +107,27 @@ void Engine::handleEvent(SDL_Event* inEvent)
 
 		case SDLK_SPACE:
 			break;
-
-		default:
-			break;
 		}
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&mx, &my);
 
-		button = UIManager::instance->trySelect(Vec2(mx, my));
-		if(button)
-			button->update();
+		switch (inEvent->button.button)
+		{
+		case SDL_BUTTON_LEFT:
+			button = UIManager::instance->trySelect(Vec2(mx, my));
+			if (button)
+				button->update();
 
-		if (player)
-			player->shoot();
+			if (player)
+				player->shoot();
+			break;
+
+		case SDL_BUTTON_RIGHT:
+			if (player)
+				player->shootRay();
+			break;
+		}
 		
 		break;
 	case SDL_MOUSEMOTION:
@@ -164,7 +173,6 @@ bool Engine::init()
 	EntityManager::staticInit();
 
 	_world.reset(new World());
-
 
 	UIManager::staticInit();
 	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(80, 70), "Damage"));
@@ -212,9 +220,15 @@ int Engine::run()
 
 void Engine::update()
 {
+	std::chrono::duration<double> start = std::chrono::system_clock::now().time_since_epoch();
+
 	// World의 update
 	_world->update();
 	
+	std::chrono::duration<double> end1 = std::chrono::system_clock::now().time_since_epoch();
+
+	//std::cout << "update : " << (end1 - start).count() << std::endl;
+
 	// 새 그래픽 버퍼를 준비한다.
 	GraphicsDriver::instance->clear();
 	
@@ -222,6 +236,10 @@ void Engine::update()
 	_world->render();
 	GraphicsDriver::instance->render();
 	UIManager::instance->render();
+
+	std::chrono::duration<double> end2 = std::chrono::system_clock::now().time_since_epoch();
+
+	//std::cout << "render : " << (end2 - end1).count() <<  std::endl;
 
 	// 그래픽 버퍼를 화면에 출력한다.
 	GraphicsDriver::instance->present();

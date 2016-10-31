@@ -67,6 +67,10 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			press[SDLK_s] = true;
 			velocity = directionFromMultiKey(press[SDLK_a], press[SDLK_d], down) * distance;
 			break;
+
+		case SDLK_q:
+			_world->getPhysicsMgr()->test(player->getPos(), 1.0f);
+			break;
 			
 		case SDLK_SPACE:
 			_world->getPhysicsMgr()->Explosion(

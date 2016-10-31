@@ -284,6 +284,7 @@ void PhysicsManager::Explosion(const b2Vec2& center, float blastRadius, float bl
 	b2AABB aabb;
 	aabb.lowerBound = center - b2Vec2(blastRadius, blastRadius);
 	aabb.upperBound = center + b2Vec2(blastRadius, blastRadius);
+	
 	_world->QueryAABB(&queryCallback, aabb);
 
 	//check which of these bodies have their center of mass within the blast radius
@@ -322,3 +323,20 @@ void PhysicsManager::QueryRayCast(
 	_world->RayCast(callback, b2Vec2(begin.x, begin.y), b2Vec2(end.x, end.y));
 }
 
+
+#include <iostream>
+void PhysicsManager::test(Vec2 center, float radius)
+{
+	Basket callback;
+
+	b2AABB aabb;
+	aabb.lowerBound = b2Vec2(center.x, center.y) - b2Vec2(radius, radius);
+	aabb.upperBound = b2Vec2(center.x, center.y) + b2Vec2(radius, radius);
+
+	_world->QueryAABB(&callback, aabb);
+
+	for (auto e : callback.entities)
+	{
+		e->setGarbage();
+	}
+}

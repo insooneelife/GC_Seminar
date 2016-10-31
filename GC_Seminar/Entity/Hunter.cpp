@@ -103,9 +103,14 @@ void Hunter::shootRay()
 	std::cout << "callback size : " << callback.foundEntities.size() << std::endl;
 	for (int i = 0; i < callback.foundEntities.size(); i++) 
 	{
-		Entity* ent = callback.foundEntities[i];
-		int damage = 10;
-		EntityManager::instance->dispatchMsg(_id, ent->getID(), Message::MsgType::kDamage, &damage);
+		b2Body* body = callback.foundEntities[i]->getBody();
+		b2Vec2 bodyCom = body->GetWorldCenter();
+		_world.getPhysicsMgr()->ApplyBlastImpulse(body, b2Vec2(_pos.x, _pos.y), bodyCom, 1000.0f);
+			
+
+		//Entity* ent = callback.foundEntities[i];
+		//int damage = 100;
+		//EntityManager::instance->dispatchMsg(_id, ent->getID(), Message::MsgType::kDamage, &damage);
 	}
 }
 

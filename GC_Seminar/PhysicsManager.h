@@ -157,6 +157,25 @@ public:
 	}
 };
 
+#include <iostream>
+class Basket : public b2QueryCallback
+{
+public:
+	std::vector<Entity*> entities;
+
+	virtual bool ReportFixture(b2Fixture* fixture) override
+	{
+		if (fixture->GetBody()->GetUserData())
+		{
+			auto entity = static_cast<Entity*>(fixture->GetBody()->GetUserData());
+
+			entities.push_back(entity);
+		}
+			
+		return true;
+	}
+};
+
 /// This is a test of typical character collision scenarios. This does not
 /// show how you should implement a character in your application.
 /// Instead this is used to test smooth collision on edge chains.
@@ -209,6 +228,9 @@ public:
 		b2RayCastCallback* callback);
 
 	
+	void test(Vec2 center, float radius);
+
+
 
 	DestructionListener _destruction_listener;
 	b2Body* _character;

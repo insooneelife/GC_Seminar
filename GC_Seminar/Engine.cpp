@@ -218,7 +218,7 @@ void Engine::update()
 	// 화면에 그려질 모든 객체들을 그린다.
 	_world->render();
 	GraphicsDriver::instance->render();
-	UIManager::instance->render();
+	//UIManager::instance->render();
 
 	// 그래픽 버퍼를 화면에 출력한다.
 	GraphicsDriver::instance->present();

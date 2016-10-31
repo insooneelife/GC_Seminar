@@ -55,10 +55,13 @@ public:
 	void createPrey(const Vec2& pos);
 	void createWall(const Vec2& begin, const Vec2& end, const Vec2& heading);
 
+	// world의 logic
+	// 모든 entity의 update 호출
 	void update();
 	void render();
 
 private:
+	// entities
 	std::vector<Hunter*> _hunters;
 	std::vector<Projectile*> _projectiles;
 	std::vector<Prey*> _preys;

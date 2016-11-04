@@ -11,6 +11,7 @@
 
 #include "Entity.h"
 
+class Renderable;
 class Hunter : public Entity
 {
 public:
@@ -53,4 +54,6 @@ private:
 	int _damage;
 	int _proj_speed;
 	bool _is_player;
+
+	std::unique_ptr<Renderable> _renderable;
 };

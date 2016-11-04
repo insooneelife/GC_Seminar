@@ -5,6 +5,8 @@
 #include "../GraphicsDriver.h"
 #include "../PhysicsManager.h"
 #include "../World.h"
+#include "../TextureManager.h"
+#include "../Renderable.h"
 
 namespace
 {
@@ -32,12 +34,14 @@ Hunter::Hunter(World& world, unsigned int id, const Vec2& pos)
 	_hp(kDefaultMaxHP),
 	_damage(kDefaultDamage),
 	_proj_speed(kDefaultProjSpeed),
-	_is_player(true)
+	_is_player(true),
+	_renderable(new Renderable(this, TextureManager::sInstance->GetTexture("ZealotAttack1")))
 {
 	b2CircleShape shape;
 	shape.m_radius = kHunterBodyRadius;
 
-	_body = _world.getPhysicsMgr()->CreateApplyForceBody(_pos.x, _pos.y, &shape);
+	_body = _world.getPhysicsMgr()->CreateBody(_pos.x, _pos.y, b2BodyType::b2_dynamicBody, &shape, false);
+	_body->SetLinearDamping(2.0f);
 	_body->SetUserData(this);
 }
 

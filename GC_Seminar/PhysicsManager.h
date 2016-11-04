@@ -115,7 +115,7 @@ public:
 	bool ReportFixture(b2Fixture* fixture)
 	{
 		if (fixture->GetBody()->GetUserData() == nullptr)
-			return false;
+			return true;
 
 		foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
 		return true;
@@ -150,31 +150,13 @@ public:
 		float32 fraction) override
 	{
 		if (fixture->GetBody()->GetUserData() == nullptr)
-			return false;
+			return true;
 
 		foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
 		return true;
 	}
 };
 
-#include <iostream>
-class Basket : public b2QueryCallback
-{
-public:
-	std::vector<Entity*> entities;
-
-	virtual bool ReportFixture(b2Fixture* fixture) override
-	{
-		if (fixture->GetBody()->GetUserData())
-		{
-			auto entity = static_cast<Entity*>(fixture->GetBody()->GetUserData());
-
-			entities.push_back(entity);
-		}
-			
-		return true;
-	}
-};
 
 /// This is a test of typical character collision scenarios. This does not
 /// show how you should implement a character in your application.
@@ -226,12 +208,7 @@ public:
 		const Vec2& begin,
 		const Vec2& end,
 		b2RayCastCallback* callback);
-
 	
-	void test(Vec2 center, float radius);
-
-
-
 	DestructionListener _destruction_listener;
 	b2Body* _character;
 	b2World* _world;

@@ -19,6 +19,7 @@ Prey::Prey(World& world, unsigned int id, const Vec2& pos)
 	shape.m_radius = kPreyBodyRadius;
 
 	_body = _world.getPhysicsMgr()->CreateBody(_pos.x, _pos.y, b2BodyType::b2_dynamicBody, &shape, false);
+	_body->SetLinearDamping(2.0f);
 	_body->SetUserData(this);
 }
 

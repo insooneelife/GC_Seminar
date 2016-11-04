@@ -323,20 +323,3 @@ void PhysicsManager::QueryRayCast(
 	_world->RayCast(callback, b2Vec2(begin.x, begin.y), b2Vec2(end.x, end.y));
 }
 
-
-#include <iostream>
-void PhysicsManager::test(Vec2 center, float radius)
-{
-	Basket callback;
-
-	b2AABB aabb;
-	aabb.lowerBound = b2Vec2(center.x, center.y) - b2Vec2(radius, radius);
-	aabb.upperBound = b2Vec2(center.x, center.y) + b2Vec2(radius, radius);
-
-	_world->QueryAABB(&callback, aabb);
-
-	for (auto e : callback.entities)
-	{
-		e->setGarbage();
-	}
-}

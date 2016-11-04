@@ -10,12 +10,13 @@
 //------------------------------------------------------------------------
 
 #include <SDL/SDL.h>
-#include <SDL\SDL_ttf.h>
+#include <SDL/SDL_ttf.h>
 #include <memory>
-#include "Math\Vec2.h"
+#include <vector>
+#include "Math/Vec2.h"
+#include <Box2D/Common/b2Draw.h>
 
-#include <Box2D\Common\b2Draw.h>
-
+class Renderable;
 class GraphicsDriver : public b2Draw
 {
 public:
@@ -98,6 +99,9 @@ public:
 		sdl_color.a = (Uint8)(b2_color.a * 255.0f);
 	}
 
+	void addRenderable(Renderable* renderable);
+	void removeRenderable(Renderable* renderable);
+	int getRenderableIndex(Renderable* renderable) const;
 
 private:
 
@@ -107,4 +111,8 @@ private:
 	SDL_Renderer*			_renderer;
 	SDL_Rect				_view_port;
 	TTF_Font*				_font;
+
+	std::vector<Renderable*> _renderables;
+
+	SDL_Rect mViewTransform;
 };

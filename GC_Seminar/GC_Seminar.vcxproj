@@ -79,6 +79,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vec2.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="Renderable.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="World.cpp" />
@@ -145,6 +148,9 @@
     <ClInclude Include="Math\MathBase.h" />
     <ClInclude Include="Math\Vec2.h" />
     <ClInclude Include="PhysicsManager.h" />
+    <ClInclude Include="Renderable.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WindowManager.h" />

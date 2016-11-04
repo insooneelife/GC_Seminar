@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "Camera2D.h"
 #include <iostream>
+#include "Renderable.h"
 
 std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
 
@@ -287,4 +288,40 @@ void GraphicsDriver::DrawPoint(const b2Vec2& p, float32 size, const b2Color& col
 	SDL_Color sdl_color;
 	toSdlColor(sdl_color, color);
 	drawPoint(Vec2(p.x, p.y), sdl_color);
+}
+
+
+void GraphicsDriver::addRenderable(Renderable* renderable)
+{
+	_renderables.push_back(renderable);
+}
+
+void GraphicsDriver::removeRenderable(Renderable* renderable)
+{
+	int index = getRenderableIndex(renderable);
+
+	if (index != -1)
+	{
+		int lastIndex = static_cast<int>(_renderables.size()) - 1;
+		if (index != lastIndex)
+		{
+			_renderables[index] = _renderables[lastIndex];
+		}
+		_renderables.pop_back();
+	}
+}
+
+
+
+int GraphicsDriver::getRenderableIndex(Renderable* renderable) const
+{
+	for (int i = 0, c = static_cast<int>(_renderables.size()); i < c; ++i)
+	{
+		if (_renderables[i] == renderable)
+		{
+			return i;
+		}
+	}
+
+	return -1;
 }

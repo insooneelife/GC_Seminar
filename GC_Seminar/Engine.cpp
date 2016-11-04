@@ -5,11 +5,12 @@
 #include "World.h"
 #include "Camera2D.h"
 #include "UIManager.h"
+#include "TextureManager.h"
 #include "Utils.h"
 
 #include "Entity/Hunter.h"
 
-#include <Box2D\Common\b2Draw.h>
+#include <Box2D/Common/b2Draw.h>
 #include <chrono>
 
 
@@ -69,7 +70,6 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			break;
 
 		case SDLK_q:
-			_world->getPhysicsMgr()->test(player->getPos(), 1.0f);
 			break;
 			
 		case SDLK_SPACE:
@@ -175,6 +175,7 @@ bool Engine::init()
 	Camera2D::staticInit(1280, 720);
 
 	EntityManager::staticInit();
+	TextureManager::StaticInit();
 
 	_world.reset(new World());
 
@@ -240,6 +241,7 @@ void Engine::update()
 	_world->render();
 	GraphicsDriver::instance->render();
 	UIManager::instance->render();
+
 
 	std::chrono::duration<double> end2 = std::chrono::system_clock::now().time_since_epoch();
 

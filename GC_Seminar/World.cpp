@@ -94,31 +94,6 @@ World::World()
 	_next_validate_id(1),
 	_physics(new PhysicsManager(kWorldX, kWorldY))
 {
-	/*b2CircleShape* circle = new b2CircleShape();
-	circle->m_p = b2Vec2(5.0f, 5.0f);
-	circle->m_radius = 1.0f;
-
-	b2PolygonShape* polygon = new b2PolygonShape();
-
-	b2Vec2 vertices[5] =
-	{
-		b2Vec2(-0.5f, 0.0f),
-		b2Vec2(1.2f, -0.2f),
-		b2Vec2(1.5f, 1.0f),
-		b2Vec2(-1.5f, 0.2f),
-		b2Vec2(-0.5f, 0.0f)
-	};
-	
-	polygon->Set(vertices, 5);
-
-	b2Transform temp;
-	temp.SetIdentity();
-
-	b2DistanceOutput out;
-
-	bool check = _physics->CheckContact(circle, 1, polygon, 2, temp, temp, out);
-	printf("%d", check);*/
-
 	// Create player with hunter
 	_player_entity = new Hunter(*this, genID(), Vec2(1.0f, 1.0f));
 	_hunters.push_back(_player_entity);
@@ -131,7 +106,7 @@ World::World()
 	createHunter(Vec2(4.50f, 4.00f));
 	createHunter(Vec2(10.00f, 6.00f));
 	createHunter(Vec2(7.00f, 3.00f));
-
+	
 	// Create preys
 	for (int i = 0; i < 200; i++)
 		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
@@ -146,7 +121,6 @@ World::World()
 			type);
 	}
 		
-
 	// Set camera
 	Vec2 heading = _player_entity->getHeading();
 	Vec2 side = _player_entity->getSide();
@@ -195,20 +169,13 @@ void World::update()
 	updateEntity(_preys);
 
 	// Preys must maintain 100 units.
-	float screenX = Camera2D::instance->getScreenX();
-	float screenY = Camera2D::instance->getScreenY();
 	int create_num = 100 - _preys.size();
 	while (create_num-- > 0)
-		createPrey(Vec2(random(-screenX, 2 * screenX), random(-screenY, 2 * screenY)));
+		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 
 	// Camera position setting
 	if (_player_entity) {
 		Camera2D::instance->setOrigin(_player_entity->getPos());
-		/*Camera2D::instance->setCamera(
-			_player_entity->getPos(),
-			_player_entity->getHeading(),
-			_player_entity->getSide(),
-			Camera2D::instance->getScale());*/
 	}
 
 	if (_player_entity)

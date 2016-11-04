@@ -102,4 +102,13 @@ namespace
 		}
 	}
 
+	inline float degToRad(float degrees)
+	{
+		return (degrees * M_PI) / 180;
+	}
+
+	inline float radToDeg(float radians)
+	{
+		return (radians * 180) / M_PI;
+	}
 }

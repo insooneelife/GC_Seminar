@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------
 
 #include "Math\Transformations.h"
+#include "Utils.h"
 #include <iostream>
 
 class Camera2D
@@ -23,6 +24,7 @@ public:
 	inline Vec2 getAxisX() const { return _axisX; }
 	inline Vec2 getAxisY() const { return _axisY; }
 	inline Vec2 getScale() const { return _scale; }
+	inline float getRenderRadius() const { return _renderRadius; }
 	
 	inline void setScale(Vec2 scale) 
 	{
@@ -36,6 +38,7 @@ public:
 		_axisX = axisX;
 		_axisY = axisY;
 		_scale = scale;
+		_renderRadius = std::sqrt((_screenX * _screenX / 4) + (_screenY * _screenY / 4));
 	}
 
 	inline bool pointInScreen(const Vec2& screenPos)
@@ -44,6 +47,24 @@ public:
 			0 < screenPos.x && screenPos.x < _screenX &&
 			0 < screenPos.y && screenPos.y < _screenY;
 	}
+
+	inline bool segmentInScreen(const Vec2& world_a, const Vec2& world_b)
+	{
+		Vec2 screen_origin(_screenX / 2, _screenY / 2);
+		Vec2 screen_a = worldToScreen(world_a);
+		Vec2 screen_b = worldToScreen(world_b);
+		return distToSegmentSq(screen_a, screen_b, screen_origin) < _renderRadius * _renderRadius;
+	}
+
+	inline bool circleInScreen(const Vec2& world_pos, float world_radius)
+	{
+		Vec2 screen_origin(_screenX / 2, _screenY / 2);
+		Vec2 screen_pos = worldToScreen(world_pos);
+		float screen_radius = world_radius * _scale.x;
+
+		return screen_pos.distance(screen_origin) < _renderRadius + screen_radius;
+	}
+
 
 	inline float getScreenX() const { return _screenX; }
 	inline float getScreenY() const { return _screenY; }
@@ -62,4 +83,5 @@ private:
 	Vec2 _axisX;
 	Vec2 _axisY;
 	Vec2 _scale;
+	float _renderRadius;
 };

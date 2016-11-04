@@ -80,7 +80,7 @@ void Hunter::enterMovingState(const Vec2& desti)
 
 void Hunter::takeDamage(int damage, unsigned int who)
 {
-	_hp = std::max(0, _hp - damage);
+	_hp = max(0, _hp - damage);
 	if (_hp == 0)
 	{
 		setGarbage();

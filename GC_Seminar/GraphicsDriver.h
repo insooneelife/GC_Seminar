@@ -16,6 +16,9 @@
 #include "Math/Vec2.h"
 #include <Box2D/Common/b2Draw.h>
 
+#include <Windows.h>
+#include <GL/gl.h>
+
 class Renderable;
 class GraphicsDriver : public b2Draw
 {

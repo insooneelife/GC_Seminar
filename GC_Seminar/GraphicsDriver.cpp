@@ -4,6 +4,9 @@
 #include <iostream>
 #include "Renderable.h"
 
+
+
+
 std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
 
 SDL_Color GraphicsDriver::red;
@@ -57,6 +60,14 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 
 bool GraphicsDriver::init(SDL_Window* wnd)
 {
+	const int kWidth = 1280;
+	const int kHeight = 720;
+
+	_view_port.x = 0;
+	_view_port.y = 0;
+	_view_port.h = 100;
+	_view_port.w = 100;
+
 	_renderer = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED);
 	if( _renderer == nullptr )
 	{
@@ -68,7 +79,7 @@ bool GraphicsDriver::init(SDL_Window* wnd)
 	SDL_SetRenderDrawColor(_renderer, 100, 149, 237, SDL_ALPHA_OPAQUE);
 
 	// Set the logical size to 1280x720 so everything will just auto-scale
-	SDL_RenderSetLogicalSize(_renderer, 1280, 720);
+	SDL_RenderSetLogicalSize(_renderer, kWidth, kHeight);
 	
 
 	// Add font for use texts.
@@ -103,7 +114,12 @@ GraphicsDriver::~GraphicsDriver()
 }
 
 void GraphicsDriver::render()
-{}
+{
+	for (auto e : _renderables)
+	{
+		e->draw(_view_port);
+	}
+}
 
 void GraphicsDriver::clear()
 {
@@ -153,6 +169,9 @@ void GraphicsDriver::drawPoint(Vec2 p, SDL_Color color, bool on_ui)
 
 void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color, bool on_ui)
 {
+	if (!Camera2D::instance->segmentInScreen(a, b) && !on_ui)
+		return;
+
 	if (!on_ui)
 	{
 		a = Camera2D::instance->worldToScreen(a);
@@ -174,6 +193,7 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color, bool on
 	{
 		p = Camera2D::instance->worldToScreen(p);
 	}
+	
 
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect;
@@ -184,9 +204,11 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color, bool on
 	SDL_RenderDrawRect(_renderer, &rect);
 }
 
-
 void GraphicsDriver::drawCircle(Vec2 p, float r, SDL_Color color, float fragment, bool on_ui)
 {
+	if (!Camera2D::instance->circleInScreen(p, r) && !on_ui)
+		return;
+
 	float add = 360 / fragment;
 	Vec2 start = Vec2(r, 0) + p;
 	Vec2 end(0, 0);

@@ -15,9 +15,7 @@
 #include <vector>
 #include "Math/Vec2.h"
 #include <Box2D/Common/b2Draw.h>
-
-#include <Windows.h>
-#include <GL/gl.h>
+#include <Box2D/Box2D.h>
 
 class Renderable;
 class GraphicsDriver : public b2Draw
@@ -54,6 +52,13 @@ public:
 	void			drawRect(Vec2 p, float w, float h, SDL_Color color = red, bool on_ui = false);
 	void			drawCircle(Vec2 p, float r, SDL_Color color = red, float fragment = 10, bool on_ui = false);
 	void			drawText(const std::string& str, Vec2 p, const SDL_Color& color = red, bool on_ui = false);
+	void			drawSprite(Vec2 pos, Vec2 texture_origin, int width, int height, SDL_Texture* texture);
+
+	void			drawBox2DShape(b2Shape* shape);
+	void			addBox2DShape(b2Shape* shape);
+	void			addBox2DEdge(Vec2 a, Vec2 b);
+	void			addBox2DCircle(Vec2 a, float radius);
+	void			addBox2DPolygon(const std::vector<b2Vec2>& points);
 
 	virtual ~GraphicsDriver();
 
@@ -80,28 +85,6 @@ public:
 	/// Draw a point.
 	virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) override;
 
-	// Helper
-	template<typename Point>
-	static inline Vec2 toVec(const Point& p) { return Vec2(p.x, p.y); }
-
-	template<typename Point>
-	static inline b2Vec2 tob2Vec(const Point& p) { return b2Vec2(p.x, p.y); }
-
-	template<typename Color>
-	static inline b2Color tob2Color(const Color& sdl_color)
-	{
-		return b2Color(sdl_color.r, sdl_color.g, sdl_color.b, sdl_color.a);
-	}
-
-	template<typename Color>
-	static inline void toSdlColor(SDL_Color& sdl_color, const Color& b2_color)
-	{
-		sdl_color.r = (Uint8)(b2_color.r * 255.0f);
-		sdl_color.g = (Uint8)(b2_color.g * 255.0f);
-		sdl_color.b = (Uint8)(b2_color.b * 255.0f);
-		sdl_color.a = (Uint8)(b2_color.a * 255.0f);
-	}
-
 	void addRenderable(Renderable* renderable);
 	void removeRenderable(Renderable* renderable);
 	int getRenderableIndex(Renderable* renderable) const;
@@ -116,6 +99,7 @@ private:
 	TTF_Font*				_font;
 
 	std::vector<Renderable*> _renderables;
+	std::vector<b2Shape*> _draw_shapes;
 
 	SDL_Rect mViewTransform;
 };

@@ -1,6 +1,7 @@
 #include "GraphicsDriver.h"
 #include "EntityManager.h"
 #include "Camera2D.h"
+#include "Utils.h"
 #include <iostream>
 #include "Renderable.h"
 
@@ -119,6 +120,9 @@ void GraphicsDriver::render()
 	{
 		e->draw(_view_port);
 	}
+
+	for (auto e : _draw_shapes)
+		drawBox2DShape(e);
 }
 
 void GraphicsDriver::clear()
@@ -255,6 +259,97 @@ void GraphicsDriver::drawText(const std::string& str, Vec2 origin, const SDL_Col
 	SDL_FreeSurface(surface);
 }
 
+
+void GraphicsDriver::drawSprite(
+	Vec2 pos,
+	Vec2 texture_origin,
+	int width,
+	int height,
+	SDL_Texture* texture)
+{
+	pos = Camera2D::instance->worldToScreen(pos);
+	Vec2 renderPos = Vec2(-texture_origin.x, -texture_origin.y) + pos;
+
+	SDL_Rect dstRect;
+	dstRect.w = width;
+	dstRect.h = height;
+	dstRect.x = _view_port.x + static_cast<int>(renderPos.x);
+	dstRect.y = _view_port.y + static_cast<int>(renderPos.y);
+
+	SDL_Renderer* render = GraphicsDriver::instance->getRenderer();
+
+	// Blit the texture
+	SDL_RenderCopyEx(_renderer, texture, nullptr,
+		&dstRect, 0, nullptr, SDL_FLIP_NONE);
+}
+
+void GraphicsDriver::drawBox2DShape(b2Shape* shape)
+{
+	if (shape->GetType() == b2Shape::e_chain)
+	{
+		auto chain = static_cast<b2ChainShape*>(shape);
+		
+		for (int i = 0; i < chain->GetChildCount(); i++)
+		{
+			b2EdgeShape edge;
+			chain->GetChildEdge(&edge, i);
+			drawLine(toVec(edge.m_vertex1), toVec(edge.m_vertex2));
+		}
+	}
+
+	else if (shape->GetType() == b2Shape::e_circle)
+	{
+		auto circle = static_cast<b2CircleShape*>(shape);
+		drawCircle(toVec(circle->m_p), circle->m_radius);
+	}
+
+	else if (shape->GetType() == b2Shape::e_edge)
+	{
+		auto edge = static_cast<b2EdgeShape*>(shape);
+		drawLine(toVec(edge->m_vertex1), toVec(edge->m_vertex2));
+	}
+
+	else if (shape->GetType() == b2Shape::e_polygon)
+	{
+		auto polygon = static_cast<b2PolygonShape*>(shape);
+		
+		for (int i = 0; i < polygon->GetVertexCount(); i++)
+		{
+			int j = (i + 1) % polygon->GetVertexCount();
+			b2Vec2 a = polygon->GetVertex(i);
+			b2Vec2 b = polygon->GetVertex(j);
+			drawLine(toVec(a), toVec(b));
+		}
+	}
+}
+
+void GraphicsDriver::addBox2DShape(b2Shape* shape)
+{
+	_draw_shapes.push_back(shape);
+}
+
+void GraphicsDriver::addBox2DEdge(Vec2 a, Vec2 b)
+{
+	auto edge = new b2EdgeShape();
+	edge->m_vertex1 = b2Vec2(a.x, a.y);
+	edge->m_vertex2 = b2Vec2(b.x, b.y);
+	_draw_shapes.push_back(edge);
+}
+
+void GraphicsDriver::addBox2DCircle(Vec2 a, float radius)
+{
+	auto circle = new b2CircleShape();
+	circle->m_p = b2Vec2(a.x, a.y);
+	circle->m_radius = radius;
+	_draw_shapes.push_back(circle);
+}
+
+void GraphicsDriver::addBox2DPolygon(const std::vector<b2Vec2>& points)
+{
+	auto polygon = new b2PolygonShape();
+	polygon->Set(points.data(), points.size());
+	_draw_shapes.push_back(polygon);
+}
 
 
 /// Draw a closed polygon provided in CCW order.

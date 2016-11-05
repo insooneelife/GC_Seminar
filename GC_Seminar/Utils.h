@@ -8,7 +8,8 @@
 //  Author:		Insub Im (insooneelife@naver.com)
 //
 //------------------------------------------------------------------------
-#include <SDL\SDL.h>
+#include <SDL/SDL.h>
+#include <Box2D/Box2D.h>
 #include <random>
 
 namespace
@@ -110,5 +111,27 @@ namespace
 	inline float radToDeg(float radians)
 	{
 		return (radians * 180) / M_PI;
+	}
+
+	// Helper
+	template<typename Point>
+	static inline Vec2 toVec(const Point& p) { return Vec2(p.x, p.y); }
+
+	template<typename Point>
+	static inline b2Vec2 tob2Vec(const Point& p) { return b2Vec2(p.x, p.y); }
+
+	template<typename Color>
+	static inline b2Color tob2Color(const Color& sdl_color)
+	{
+		return b2Color(sdl_color.r, sdl_color.g, sdl_color.b, sdl_color.a);
+	}
+
+	template<typename Color>
+	static inline void toSdlColor(SDL_Color& sdl_color, const Color& b2_color)
+	{
+		sdl_color.r = (Uint8)(b2_color.r * 255.0f);
+		sdl_color.g = (Uint8)(b2_color.g * 255.0f);
+		sdl_color.b = (Uint8)(b2_color.b * 255.0f);
+		sdl_color.a = (Uint8)(b2_color.a * 255.0f);
 	}
 }

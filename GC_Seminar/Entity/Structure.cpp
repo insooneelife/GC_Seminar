@@ -39,13 +39,15 @@ Structure* Structure::createPolygon(World& world, unsigned int id, const Vec2& p
 	bd.position.Set(pos.x, pos.y);
 	b2Body* body = physics->CreateBody(&bd);
 
-	for (int i = 0; i < 6; i++)
-	{
-		int j = (i + 1) % 6;
-		b2EdgeShape shape;
-		shape.Set(points[i], points[j]);
-		body->CreateFixture(&shape, 0.0f);
-	}
+	b2ChainShape chain;
+	chain.CreateChain(points, 6);
+
+	b2FixtureDef groundFixture;
+	groundFixture.shape = &chain;
+	groundFixture.restitution = 0.1f;
+	groundFixture.friction = 0.0f;
+
+	body->CreateFixture(&groundFixture);
 
 	return new Structure(world, id, pos, StructureType::kPolygon, body);
 }

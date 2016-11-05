@@ -171,6 +171,21 @@ public:
 		const b2Transform& xfA, const b2Transform& xfB,
 		b2DistanceOutput& output);
 
+	static bool ShapeCollide(
+		b2Shape* shapeA, const b2Transform& xfA,
+		b2Shape* shapeB, const b2Transform& xfB);
+
+	// # check rotate
+	static bool ShapeCollide(
+		b2Shape* shapeA, const b2Vec2& posA, float rotateA,
+		b2Shape* shapeB, const b2Vec2& posB, float rotateB);
+
+	static bool BodyCollide(b2Body* bodyA, b2Body* bodyB);
+
+	static bool RayCast(
+		b2Shape* shape, const b2Transform& trans,
+		const b2Vec2& A, const b2Vec2& B, b2Vec2& hit);
+
 	static void ApplyBlastImpulse(
 		b2Body* body,
 		b2Vec2 blastCenter,

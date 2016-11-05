@@ -7,6 +7,7 @@
 #include "../World.h"
 #include "../TextureManager.h"
 #include "../Renderable.h"
+#include "../Utils.h"
 
 namespace
 {
@@ -80,7 +81,7 @@ void Hunter::enterMovingState(const Vec2& desti)
 
 void Hunter::takeDamage(int damage, unsigned int who)
 {
-	_hp = max(0, _hp - damage);
+	_hp = std::max(0, _hp - damage);
 	if (_hp == 0)
 	{
 		setGarbage();
@@ -111,6 +112,20 @@ void Hunter::shootRay()
 		b2Vec2 bodyCom = body->GetWorldCenter();
 		_world.getPhysicsMgr()->ApplyBlastImpulse(body, b2Vec2(_pos.x, _pos.y), bodyCom, 1000.0f);
 			
+
+		for (auto f = body->GetFixtureList(); f; f = f->GetNext())
+		{
+			std::cout << "hunter pos : " << _pos.x << " " << _pos.y << std::endl;
+			b2Vec2 hit;
+			_world.getPhysicsMgr()->RayCast(
+				f->GetShape(),
+				body->GetTransform(),
+				b2Vec2(_pos.x, _pos.y),
+				b2Vec2(_pos.x + _heading.x * 15.0f, _pos.y + _heading.y * 15.0f), hit);
+
+			GraphicsDriver::instance->addBox2DEdge(_pos, Vec2(_pos.x + _heading.x * 15.0f, _pos.y + _heading.y * 15.0f));
+		}
+
 
 		//Entity* ent = callback.foundEntities[i];
 		//int damage = 100;

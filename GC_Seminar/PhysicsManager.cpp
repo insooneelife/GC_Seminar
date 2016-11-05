@@ -30,6 +30,152 @@ bool PhysicsManager::CheckContact(
 	return output.distance < 10.0f * b2_epsilon;
 }
 
+
+bool PhysicsManager::ShapeCollide(
+	b2Shape* shapeA, const b2Transform& xfA,
+	b2Shape* shapeB, const b2Transform& xfB)
+{
+	b2DistanceOutput output;
+
+	if (shapeA->GetType() == b2Shape::e_chain && shapeB->GetType() == b2Shape::e_chain)
+	{
+		auto chainA = static_cast<b2ChainShape*>(shapeA);
+		auto chainB = static_cast<b2ChainShape*>(shapeB);
+		for (int i = 0; i < chainA->GetChildCount(); i++)
+		{
+			for (int j = 0; j < chainB->GetChildCount(); j++)
+			{
+				b2EdgeShape edgeA;
+				b2EdgeShape edgeB;
+				chainA->GetChildEdge(&edgeA, i);
+				chainB->GetChildEdge(&edgeB, j);
+				if (CheckContact(&edgeA, i, &edgeB, j, xfA, xfB, output))
+				{
+					std::cout << "chain && chain" << std::endl;
+					return true;
+				}
+			}
+		}
+	}
+	else if (shapeA->GetType() == b2Shape::e_chain && shapeB->GetType() != b2Shape::e_chain)
+	{
+		auto chain = static_cast<b2ChainShape*>(shapeA);
+		for (int i = 0; i < chain->GetChildCount(); i++)
+		{
+			b2EdgeShape edge;
+			chain->GetChildEdge(&edge, i);
+			if (CheckContact(&edge, i, shapeB, 0, xfA, xfB, output))
+			{
+				std::cout << "chain && !chain" << std::endl;
+				//std::cout << xfA.p.x << " " << xfA.p.y << " " << xfB.q.c << " " << xfB.q.s << std::endl;
+				
+				std::cout << acos(xfB.q.c) << " " << asin(xfB.q.s) << std::endl;
+				return true;
+			}
+		}
+	}
+	else if (shapeA->GetType() != b2Shape::e_chain && shapeB->GetType() == b2Shape::e_chain)
+	{
+		auto chain = static_cast<b2ChainShape*>(shapeB);
+		for (int i = 0; i < chain->GetChildCount(); i++)
+		{
+			b2EdgeShape edge;
+			chain->GetChildEdge(&edge, i);
+			if (CheckContact(shapeA, 0, &edge, i, xfA, xfB, output))
+			{
+				std::cout << "!chain && chain" << std::endl;
+				//std::cout << xfA.p.x << " " << xfA.p.y << " " << xfB.q.c << " " << xfB.q.s << std::endl;
+				std::cout << acos(xfB.q.c) << " " << asin(xfB.q.s) << std::endl;
+				return true;
+			}
+		}
+	}
+	else
+	{
+		if (CheckContact(shapeA, 0, shapeB, 0, xfA, xfB, output))
+		{
+			std::cout << "!chain && !chain" << std::endl;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool PhysicsManager::ShapeCollide(
+	b2Shape* shapeA, const b2Vec2& posA, float rotateA,
+	b2Shape* shapeB, const b2Vec2& posB, float rotateB)
+{
+	b2Transform tA;
+	tA.p = posA;
+	tA.q.c = cos(rotateA);
+	tA.q.s = sin(rotateA);
+
+	b2Transform tB;
+	tB.p = posB;
+	tB.q.c = cos(rotateB);
+	tB.q.s = sin(rotateB);
+
+	return ShapeCollide(shapeA, tA, shapeB, tB);
+}
+
+
+bool PhysicsManager::BodyCollide(b2Body* bodyA, b2Body* bodyB)
+{
+	for (auto hf = bodyA->GetFixtureList(); hf; hf = hf->GetNext())
+		for (auto sf = bodyB->GetFixtureList(); sf; sf = sf->GetNext())
+			if (ShapeCollide(
+				hf->GetShape(), bodyA->GetTransform(),
+				sf->GetShape(), bodyB->GetTransform()))
+				return true;
+	return false;
+}
+
+bool PhysicsManager::RayCast(
+	b2Shape* shape, const b2Transform& trans,
+	const b2Vec2& A, const b2Vec2& B, b2Vec2& hit)
+{
+	b2RayCastOutput output;
+	b2RayCastInput input;
+	input.p1 = A;
+	input.p2 = B;
+	input.maxFraction = 1.0f;
+
+	if (shape->GetType() == b2Shape::e_chain)
+	{
+		b2ChainShape* chain = static_cast<b2ChainShape*>(shape);
+		
+		float distance = FLT_MAX;
+		for (int i = 0; i < chain->GetChildCount(); i++)
+		{
+			b2EdgeShape edge;
+			chain->GetChildEdge(&edge, i);
+			if (edge.RayCast(&output, input, trans, i))
+			{
+				b2Vec2 tempHit = (A + output.fraction * (B - A));
+				if (distance > (tempHit - A).Length())
+				{
+					distance = (tempHit - A).Length();
+					hit = tempHit;
+				}
+			}
+		}
+		if (FLT_MAX - 0.01f > distance)
+		{
+			std::cout << hit.x << " " << hit.y << std::endl;
+			return true;
+		}
+	}
+	else
+	{
+		if (shape->RayCast(&output, input, trans, 0))
+		{
+			hit = (A + output.fraction * (B - A));
+			return true;
+		}
+	}
+	return false;
+}
+
 void PhysicsManager::ApplyBlastImpulse(
 	b2Body* body,
 	b2Vec2 blastCenter,

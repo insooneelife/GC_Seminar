@@ -99,7 +99,7 @@ World::World()
 	_hunters.push_back(_player_entity);
 
 	// Create hunters
-	createHunter(Vec2(2.50f, 2.00f));
+	/*createHunter(Vec2(2.50f, 2.00f));
 	createHunter(Vec2(1.50f, 5.00f));
 	createHunter(Vec2(3.00f, 4.50f));
 	createHunter(Vec2(5.00f, 2.00f));
@@ -110,9 +110,9 @@ World::World()
 	// Create preys
 	for (int i = 0; i < 200; i++)
 		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
-
+	*/	
 	// Create Structures
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		int type = random(0, 3);
 		createStructure(
@@ -169,9 +169,9 @@ void World::update()
 	updateEntity(_preys);
 
 	// Preys must maintain 100 units.
-	int create_num = 100 - _preys.size();
-	while (create_num-- > 0)
-		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
+	//int create_num = 100 - _preys.size();
+	//while (create_num-- > 0)
+	//	createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 
 	// Camera position setting
 	if (_player_entity) {
@@ -184,6 +184,19 @@ void World::update()
 	}
 
 	
+	for (auto h : _hunters)
+	{
+		for (auto s : _structures)
+		{
+			for (auto hf = h->getBody()->GetFixtureList(); hf; hf = hf->GetNext())
+				for (auto sf = s->getBody()->GetFixtureList(); sf; sf = sf->GetNext())
+					if (_physics->ShapeCollide(
+						hf->GetShape(), h->getBody()->GetTransform(),
+						sf->GetShape(), s->getBody()->GetTransform()))
+						;
+		}
+	}
+
 }
 
 void World::render()

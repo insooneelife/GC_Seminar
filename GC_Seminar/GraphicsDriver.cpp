@@ -5,9 +5,6 @@
 #include <iostream>
 #include "Renderable.h"
 
-
-
-
 std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
 
 SDL_Color GraphicsDriver::red;

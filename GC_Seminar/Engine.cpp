@@ -225,14 +225,12 @@ int Engine::run()
 
 void Engine::update()
 {
-	std::chrono::duration<double> start = std::chrono::system_clock::now().time_since_epoch();
+	
+	// now() 함수를 통해 현재 시간값을 구한다.
+	std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
 
 	// World의 update
 	_world->update();
-	
-	std::chrono::duration<double> end1 = std::chrono::system_clock::now().time_since_epoch();
-
-	//std::cout << "update : " << (end1 - start).count() << std::endl;
 
 	// 새 그래픽 버퍼를 준비한다.
 	GraphicsDriver::instance->clear();
@@ -242,11 +240,20 @@ void Engine::update()
 	GraphicsDriver::instance->render();
 	UIManager::instance->render();
 
-
-	std::chrono::duration<double> end2 = std::chrono::system_clock::now().time_since_epoch();
-
-	//std::cout << "render : " << (end2 - end1).count() <<  std::endl;
-
 	// 그래픽 버퍼를 화면에 출력한다.
 	GraphicsDriver::instance->present();
+
+	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
+
+	std::chrono::milliseconds milliSec =
+		std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+	if (milliSec.count() < 17)
+	{
+		SDL_Delay(17 - milliSec.count());
+	}
+	else
+	{
+		std::cout << milliSec.count() << std::endl;
+	}
 }

@@ -94,18 +94,6 @@ struct ContactPoint
 	float32 separation;
 };
 
-class MyQueryCallback : public b2QueryCallback 
-{
-public:
-	std::vector<b2Body*> foundBodies;
-
-	bool ReportFixture(b2Fixture* fixture) 
-	{
-		foundBodies.push_back(fixture->GetBody());
-		return true;//keep going to find all fixtures in the query area
-	}
-};
-
 class Entity;
 class EntityQueryCallback : public b2QueryCallback 
 {
@@ -114,29 +102,12 @@ public:
 
 	bool ReportFixture(b2Fixture* fixture)
 	{
-		if (fixture->GetBody()->GetUserData() == nullptr)
-			return true;
-
-		foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
+		if (fixture->GetBody()->GetUserData())
+			foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
 		return true;
 	}
 };
 
-class MyQueryRayCastCallback : public b2RayCastCallback
-{
-public:
-	std::vector<b2Body*> foundBodies;
-
-	virtual float32 ReportFixture(
-		b2Fixture* fixture,
-		const b2Vec2& point,
-		const b2Vec2& normal,
-		float32 fraction) override
-	{
-		foundBodies.push_back(fixture->GetBody());
-		return true;
-	}
-};
 
 class EntityRayCastCallback : public b2RayCastCallback 
 {
@@ -149,10 +120,8 @@ public:
 		const b2Vec2& normal,
 		float32 fraction) override
 	{
-		if (fixture->GetBody()->GetUserData() == nullptr)
-			return true;
-
-		foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
+		if (fixture->GetBody()->GetUserData())
+			foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
 		return true;
 	}
 };

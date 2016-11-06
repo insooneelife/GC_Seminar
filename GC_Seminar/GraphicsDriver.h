@@ -60,6 +60,10 @@ public:
 	void			addBox2DCircle(Vec2 a, float radius);
 	void			addBox2DPolygon(const std::vector<b2Vec2>& points);
 
+	void addRenderable(Renderable* renderable);
+	void removeRenderable(Renderable* renderable);
+	int getRenderableIndex(Renderable* renderable) const;
+
 	virtual ~GraphicsDriver();
 
 	// Box2D drawing functions.
@@ -85,9 +89,6 @@ public:
 	/// Draw a point.
 	virtual void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color) override;
 
-	void addRenderable(Renderable* renderable);
-	void removeRenderable(Renderable* renderable);
-	int getRenderableIndex(Renderable* renderable) const;
 
 private:
 

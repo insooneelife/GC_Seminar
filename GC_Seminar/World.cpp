@@ -124,28 +124,31 @@ World::World()
 	_hunters.push_back(_player_entity);
 
 	// Create hunters
-	createHunter(Vec2(2.50f, 2.00f));
+	/*createHunter(Vec2(2.50f, 2.00f));
 	createHunter(Vec2(1.50f, 5.00f));
 	createHunter(Vec2(3.00f, 4.50f));
 	createHunter(Vec2(5.00f, 2.00f));
 	createHunter(Vec2(4.50f, 4.00f));
 	createHunter(Vec2(10.00f, 6.00f));
-	createHunter(Vec2(7.00f, 3.00f));
+	createHunter(Vec2(7.00f, 3.00f));*/
 
 	// Create preys
-	for (int i = 0; i < 200; i++)
-		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
+	//for (int i = 0; i < 200; i++)
+	//	createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 
 	// Create Structures
-	for (int i = 0; i < 20; i++)
+	/*for (int i = 0; i < 20; i++)
 	{
 		int type = random(0, 3);
 		createStructure(
 			Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)),
 			random(1.0f, 4.0f),
 			type);
-	}
-		
+	}*/
+	createStructure(
+		Vec2(0, 0),
+		10.0f,
+		1);
 
 	// Set camera
 	Vec2 heading = _player_entity->getHeading();
@@ -198,8 +201,8 @@ void World::update()
 	float screenX = Camera2D::instance->getScreenX();
 	float screenY = Camera2D::instance->getScreenY();
 	int create_num = 100 - _preys.size();
-	while (create_num-- > 0)
-		createPrey(Vec2(random(-screenX, 2 * screenX), random(-screenY, 2 * screenY)));
+	//while (create_num-- > 0)
+	//	createPrey(Vec2(random(-screenX, 2 * screenX), random(-screenY, 2 * screenY)));
 
 	// Camera position setting
 	if (_player_entity) {

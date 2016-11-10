@@ -69,7 +69,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			break;
 
 		case SDLK_q:
-			_world->getPhysicsMgr()->test(player->getPos(), 1.0f);
+			_world->getPhysicsMgr()->test(player->getPos(), 0.001f);
 			break;
 			
 		case SDLK_SPACE:

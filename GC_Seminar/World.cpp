@@ -146,7 +146,7 @@ World::World()
 			type);
 	}*/
 	createStructure(
-		Vec2(0, 0),
+		Vec2(5.0f, 0),
 		10.0f,
 		1);
 

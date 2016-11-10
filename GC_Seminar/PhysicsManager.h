@@ -114,10 +114,8 @@ public:
 
 	bool ReportFixture(b2Fixture* fixture)
 	{
-		if (fixture->GetBody()->GetUserData() == nullptr)
-			return false;
-
-		foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
+		if (fixture->GetBody()->GetUserData())
+			foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
 		return true;
 	}
 };
@@ -138,6 +136,7 @@ public:
 	}
 };
 
+#include <algorithm>
 class EntityRayCastCallback : public b2RayCastCallback 
 {
 public:
@@ -149,10 +148,17 @@ public:
 		const b2Vec2& normal,
 		float32 fraction) override
 	{
-		if (fixture->GetBody()->GetUserData() == nullptr)
-			return false;
+		if (fixture->GetBody()->GetUserData())
+			foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
 
-		foundEntities.push_back(static_cast<Entity*>(fixture->GetBody()->GetUserData()));
+		std::sort(std::begin(foundEntities), std::end(foundEntities));
+
+		foundEntities.erase(
+			std::unique(
+				std::begin(foundEntities), 
+				std::end(foundEntities)),
+			std::end(foundEntities));
+
 		return true;
 	}
 };
@@ -170,6 +176,7 @@ public:
 			auto entity = static_cast<Entity*>(fixture->GetBody()->GetUserData());
 
 			entities.push_back(entity);
+
 		}
 			
 		return true;

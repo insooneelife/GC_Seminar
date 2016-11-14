@@ -254,6 +254,6 @@ void Engine::update()
 	}
 	else
 	{
-		std::cout << milliSec.count() << std::endl;
+		//std::cout << milliSec.count() << std::endl;
 	}
 }

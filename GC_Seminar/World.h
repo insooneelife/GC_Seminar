@@ -30,7 +30,6 @@ public:
 	static void collide(Hunter& h1, Hunter& h2);
 	static void collide(Hunter& h, Projectile& p);
 	static void collide(Projectile& h, Prey& p);
-	static void collide(Hunter& h, Wall& w);
 
 	// 모든 entity의 update 및, garbage 수집
 	template<class Container>

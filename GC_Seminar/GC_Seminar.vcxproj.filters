@@ -43,6 +43,9 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{6148365b-57ba-4a67-9622-4e3ebc73048d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entity\Triggers">
+      <UniqueIdentifier>{888c64ed-2bed-46e3-815e-29b786f5db02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -217,9 +220,6 @@
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="Entity\Projectile.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity\Wall.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="Camera2D.cpp">
@@ -425,9 +425,6 @@
     <ClInclude Include="Entity\Projectile.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\Wall.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Camera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -448,6 +445,18 @@
     </ClInclude>
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Triggers\Trigger.h">
+      <Filter>Entity\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Triggers\TriggerRespawning.h">
+      <Filter>Entity\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Triggers\TriggerLimitedLife.h">
+      <Filter>Entity\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Triggers\TriggerByCondition.h">
+      <Filter>Entity\Triggers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -23,7 +23,7 @@ public:
 		kHunter,
 		kPrey,
 		kProjectile,
-		kWall,
+		kTrigger,
 		kStructure,
 		kButton
 	};

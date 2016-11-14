@@ -11,7 +11,6 @@
 #include "Entity/Hunter.h"
 #include "Entity/Prey.h"
 #include "Entity/Projectile.h"
-#include "Entity/Wall.h"
 #include "Entity/Structure.h"
 
 namespace
@@ -48,17 +47,10 @@ void World::collide(Projectile& pro, Prey& prey)
 	pro.setGarbage();
 
 	int increase = 1;
+
+
 	EntityManager::instance->dispatchMsg(
-		prey.getID(), pro.getOwnerID(), Message::kIncrease, &increase);
-}
-
-void World::collide(Hunter& h, Wall& w)
-{
-	cout << "collide!  Hunter && Wall" << endl;
-
-	float distance = sqrt(distToSegmentSq(w.getBegin(), w.getEnd(), h.getPos()));
-	Vec2 force = w.getHeading() * distance;
-	h.setPos(h.getPos() + force);
+		5.0f, prey.getID(), pro.getOwnerID(), Message::kIncrease, &increase);
 }
 
 
@@ -99,7 +91,7 @@ World::World()
 	_hunters.push_back(_player_entity);
 
 	// Create hunters
-	/*createHunter(Vec2(2.50f, 2.00f));
+	createHunter(Vec2(2.50f, 2.00f));
 	createHunter(Vec2(1.50f, 5.00f));
 	createHunter(Vec2(3.00f, 4.50f));
 	createHunter(Vec2(5.00f, 2.00f));
@@ -110,7 +102,7 @@ World::World()
 	// Create preys
 	for (int i = 0; i < 200; i++)
 		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
-	*/	
+		
 	// Create Structures
 	for (int i = 0; i < 10; i++)
 	{
@@ -152,9 +144,6 @@ void World::update()
 		else if (ent->getType() == Entity::kProjectile)
 			_projectiles.push_back(static_cast<Projectile*>(ent));
 
-		else if (ent->getType() == Entity::kWall)
-			_walls.push_back(static_cast<Wall*>(ent));
-
 		else if (ent->getType() == Entity::kStructure)
 			_structures.push_back(static_cast<Structure*>(ent));
 
@@ -169,9 +158,9 @@ void World::update()
 	updateEntity(_preys);
 
 	// Preys must maintain 100 units.
-	//int create_num = 100 - _preys.size();
-	//while (create_num-- > 0)
-	//	createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
+	int create_num = 100 - _preys.size();
+	while (create_num-- > 0)
+		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 
 	// Camera position setting
 	if (_player_entity) {
@@ -183,6 +172,7 @@ void World::update()
 		UIManager::instance->update(_player_entity->getExp());
 	}
 
+	EntityManager::instance->dispatchDelayedMessages();
 	
 	for (auto h : _hunters)
 	{
@@ -192,8 +182,7 @@ void World::update()
 				for (auto sf = s->getBody()->GetFixtureList(); sf; sf = sf->GetNext())
 					if (_physics->ShapeCollide(
 						hf->GetShape(), h->getBody()->GetTransform(),
-						sf->GetShape(), s->getBody()->GetTransform()))
-						;
+						sf->GetShape(), s->getBody()->GetTransform()));
 		}
 	}
 
@@ -209,9 +198,6 @@ void World::render()
 
 	for (auto p : _preys)
 		p->render();
-
-	for (auto w : _walls)
-		w->render();
 
 	for (auto s : _structures)
 		s->render();
@@ -232,11 +218,6 @@ void World::createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2&
 void World::createPrey(const Vec2& pos)
 {
 	_created_entities.emplace(new Prey(*this, genID(), pos));
-}
-
-void World::createWall(const Vec2& begin, const Vec2& end, const Vec2& heading)
-{
-	_created_entities.emplace(new Wall(*this, genID(), begin, end, heading));
 }
 
 void World::createStructure(const Vec2& pos, float radius, int type)

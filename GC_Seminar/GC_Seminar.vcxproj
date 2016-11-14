@@ -74,7 +74,6 @@
     <ClCompile Include="Entity\Prey.cpp" />
     <ClCompile Include="Entity\Projectile.cpp" />
     <ClCompile Include="Entity\Structure.cpp" />
-    <ClCompile Include="Entity\Wall.cpp" />
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vec2.cpp" />
@@ -143,7 +142,10 @@
     <ClInclude Include="Entity\Prey.h" />
     <ClInclude Include="Entity\Projectile.h" />
     <ClInclude Include="Entity\Structure.h" />
-    <ClInclude Include="Entity\Wall.h" />
+    <ClInclude Include="Entity\Triggers\Trigger.h" />
+    <ClInclude Include="Entity\Triggers\TriggerByCondition.h" />
+    <ClInclude Include="Entity\Triggers\TriggerLimitedLife.h" />
+    <ClInclude Include="Entity\Triggers\TriggerRespawning.h" />
     <ClInclude Include="GraphicsDriver.h" />
     <ClInclude Include="Math\MathBase.h" />
     <ClInclude Include="Math\Vec2.h" />

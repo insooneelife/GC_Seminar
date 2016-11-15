@@ -19,8 +19,9 @@ class Entity;
 class Hunter;
 class Prey;
 class Projectile;
-class Wall;
 class Structure;
+class Trigger;
+
 class World
 {
 public:
@@ -30,6 +31,7 @@ public:
 	static void collide(Hunter& h1, Hunter& h2);
 	static void collide(Hunter& h, Projectile& p);
 	static void collide(Projectile& h, Prey& p);
+	static void collide(Trigger& t, Hunter& h);
 
 	// 모든 entity의 update 및, garbage 수집
 	template<class Container>
@@ -41,8 +43,8 @@ public:
 	inline const std::vector<Hunter*>& getHunters() const				{ return _hunters; }
 	inline const std::vector<Projectile*>& getProjectiles() const		{ return _projectiles; }
 	inline const std::vector<Prey*>& getPreys() const					{ return _preys; }
-	inline const std::vector<Wall*>& getWalls() const					{ return _walls; }
 	inline const std::vector<Structure*>& getStructures() const			{ return _structures; }
+	inline const std::vector<Trigger*>& getTriggers() const				{ return _triggers; }
 
 	// 플레이어의 entity를 참조하기 위한 getter
 	inline Hunter* getPlayerEntity() const								{ return _player_entity; }
@@ -57,22 +59,20 @@ public:
 	void createHunter(const Vec2& pos);
 	void createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading, int proj_speed);
 	void createPrey(const Vec2& pos);
-	void createWall(const Vec2& begin, const Vec2& end, const Vec2& heading);
 	void createStructure(const Vec2& pos, float radius, int type);
+	void createTrigger(const Vec2& pos, int condition);
 
 	void update();
 	void render();
-
-	// 충돌처리를 위한 함수
-	void checkCollision();
 	
 private:
 
 	std::vector<Hunter*> _hunters;
 	std::vector<Projectile*> _projectiles;
 	std::vector<Prey*> _preys;
-	std::vector<Wall*> _walls;
 	std::vector<Structure*> _structures;
+	std::vector<Trigger*> _triggers;
+
 	std::queue<Entity*> _created_entities;
 	
 	Hunter* _player_entity;

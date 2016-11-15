@@ -43,9 +43,6 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{6148365b-57ba-4a67-9622-4e3ebc73048d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entity\Triggers">
-      <UniqueIdentifier>{888c64ed-2bed-46e3-815e-29b786f5db02}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -242,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\Trigger.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -446,17 +446,11 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\Triggers\Trigger.h">
-      <Filter>Entity\Triggers</Filter>
+    <ClInclude Include="Entity\Trigger.h">
+      <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\Triggers\TriggerRespawning.h">
-      <Filter>Entity\Triggers</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Triggers\TriggerLimitedLife.h">
-      <Filter>Entity\Triggers</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Triggers\TriggerByCondition.h">
-      <Filter>Entity\Triggers</Filter>
+    <ClInclude Include="MessageData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -166,7 +166,6 @@ void Hunter::render()
 
 bool Hunter::handleMessage(const Message& msg) 
 {
-	std::cout << "@@@@@@@@@@@@@@@@@@@@ handleMessage @@@@@@@@@@@@@@@@@" << std::endl;
 	switch (msg.getMsg())
 	{
 	case Message::kDamage:

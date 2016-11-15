@@ -125,6 +125,7 @@ public:
 	// entity, pReceiver, with the newly created message
 	void discharge(Entity* receiver, const Message& msg);
 
+	// In world update!!!!!!!!!!!!!
 	void dispatchDelayedMessages();
 
 private:

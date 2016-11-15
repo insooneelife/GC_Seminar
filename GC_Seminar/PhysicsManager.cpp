@@ -6,6 +6,7 @@
 #include "Entity/Hunter.h"
 #include "Entity/Prey.h"
 #include "Entity/Projectile.h"
+#include "Entity/Trigger.h"
 
 
 bool PhysicsManager::CheckContact(
@@ -316,6 +317,12 @@ void PhysicsManager::BeginContact(b2Contact* contact)
 
 		else if (entA->getType() == Entity::Type::kPrey && entB->getType() == Entity::Type::kProjectile)
 			World::collide(*static_cast<Projectile*>(entB), *static_cast<Prey*>(entA));
+
+		else if (entA->getType() == Entity::Type::kTrigger && entB->getType() == Entity::Type::kHunter)
+			World::collide(*static_cast<Trigger*>(entA), *static_cast<Hunter*>(entB));
+
+		else if (entA->getType() == Entity::Type::kHunter && entB->getType() == Entity::Type::kTrigger)
+			World::collide(*static_cast<Trigger*>(entB), *static_cast<Hunter*>(entA));
 	}
 }
 

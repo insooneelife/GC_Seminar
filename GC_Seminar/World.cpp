@@ -12,6 +12,7 @@
 #include "Entity/Prey.h"
 #include "Entity/Projectile.h"
 #include "Entity/Structure.h"
+#include "Entity/Trigger.h"
 
 namespace
 {
@@ -48,9 +49,15 @@ void World::collide(Projectile& pro, Prey& prey)
 
 	int increase = 1;
 
+	EntityManager::instance->dispatchMsg(prey.getID(), pro.getOwnerID(), Message::kIncrease, &increase);
+}
 
-	EntityManager::instance->dispatchMsg(
-		5.0f, prey.getID(), pro.getOwnerID(), Message::kIncrease, &increase);
+void World::collide(Trigger& t, Hunter& h)
+{
+	cout << "collide!  Trigger && Hunter" << endl;
+
+	if(t.getCondition() == Trigger::Condition::kCollision)
+		t.activateOneSelf(h);
 }
 
 
@@ -91,27 +98,29 @@ World::World()
 	_hunters.push_back(_player_entity);
 
 	// Create hunters
-	createHunter(Vec2(2.50f, 2.00f));
+	/*createHunter(Vec2(2.50f, 2.00f));
 	createHunter(Vec2(1.50f, 5.00f));
 	createHunter(Vec2(3.00f, 4.50f));
 	createHunter(Vec2(5.00f, 2.00f));
 	createHunter(Vec2(4.50f, 4.00f));
 	createHunter(Vec2(10.00f, 6.00f));
-	createHunter(Vec2(7.00f, 3.00f));
+	createHunter(Vec2(7.00f, 3.00f));*/
 	
+	createTrigger(Vec2(10.0f, 10.0f), Trigger::Condition::kTimer);
+
 	// Create preys
 	for (int i = 0; i < 200; i++)
 		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 		
 	// Create Structures
-	for (int i = 0; i < 10; i++)
+	/*for (int i = 0; i < 10; i++)
 	{
 		int type = random(0, 3);
 		createStructure(
 			Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)),
 			random(1.0f, 4.0f),
 			type);
-	}
+	}*/
 		
 	// Set camera
 	Vec2 heading = _player_entity->getHeading();
@@ -147,6 +156,9 @@ void World::update()
 		else if (ent->getType() == Entity::kStructure)
 			_structures.push_back(static_cast<Structure*>(ent));
 
+		else if (ent->getType() == Entity::kTrigger)
+			_triggers.push_back(static_cast<Trigger*>(ent));
+
 		_created_entities.pop();
 	}
 
@@ -172,6 +184,7 @@ void World::update()
 		UIManager::instance->update(_player_entity->getExp());
 	}
 
+	// Dispatch delayed messages!!!!!!!!!!!!!!!!!!!!!!
 	EntityManager::instance->dispatchDelayedMessages();
 	
 	for (auto h : _hunters)
@@ -202,6 +215,9 @@ void World::render()
 	for (auto s : _structures)
 		s->render();
 
+	for (auto t : _triggers)
+		t->render();
+
 	_physics->Render();
 }
 
@@ -230,4 +246,15 @@ void World::createStructure(const Vec2& pos, float radius, int type)
 	
 	else if (type == Structure::StructureType::kAnchor)
 		_created_entities.emplace(Structure::createAnchor(*this, genID(), pos, pos + Vec2(2.0f, 0)));
+}
+
+void World::createTrigger(const Vec2& pos, int condition)
+{
+	
+	const float wait_time = 5.0f;
+	unsigned int id = genID();
+	_created_entities.emplace(
+		Trigger::createCreateEntityTrigger(
+			*this, id, pos, condition, (int)Entity::kHunter, 0, wait_time));
+	
 }

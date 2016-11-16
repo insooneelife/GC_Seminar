@@ -18,15 +18,7 @@ class World;
 class Entity
 {
 public:
-	enum Type
-	{
-		kHunter,
-		kPrey,
-		kProjectile,
-		kTrigger,
-		kStructure,
-		kButton
-	};
+	
 
 	inline World& getWorld() const					{ return _world; }
 	inline unsigned int getID() const				{ return _id; }

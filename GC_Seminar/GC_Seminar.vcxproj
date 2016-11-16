@@ -135,6 +135,8 @@
     <ClInclude Include="..\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Components\CollisionComponent.h" />
+    <ClInclude Include="Components\Interfaces.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Entity\Button.h" />

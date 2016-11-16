@@ -43,6 +43,9 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{6148365b-57ba-4a67-9622-4e3ebc73048d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{dabd6d02-5ddb-4bd3-b54a-a1bbb2e39d79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -451,6 +454,12 @@
     </ClInclude>
     <ClInclude Include="MessageData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Interfaces.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CollisionComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

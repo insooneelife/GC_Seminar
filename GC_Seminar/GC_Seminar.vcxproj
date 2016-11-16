@@ -70,6 +70,7 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Entity\Button.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
+    <ClCompile Include="Entity\GenericEntity.cpp" />
     <ClCompile Include="Entity\Hunter.cpp" />
     <ClCompile Include="Entity\Prey.cpp" />
     <ClCompile Include="Entity\Projectile.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Entity\Button.h" />
     <ClInclude Include="Entity\Entity.h" />
+    <ClInclude Include="Entity\GenericEntity.h" />
     <ClInclude Include="Entity\Hunter.h" />
     <ClInclude Include="Entity\Prey.h" />
     <ClInclude Include="Entity\Projectile.h" />

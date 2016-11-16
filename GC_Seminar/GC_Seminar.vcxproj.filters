@@ -246,6 +246,9 @@
     <ClCompile Include="Entity\Trigger.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Entity\GenericEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -460,6 +463,9 @@
     </ClInclude>
     <ClInclude Include="Components\CollisionComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\GenericEntity.h">
+      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

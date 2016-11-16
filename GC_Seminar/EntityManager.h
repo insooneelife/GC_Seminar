@@ -14,7 +14,7 @@
 #include <memory>
 #include <queue>
 #include <chrono>
-#include "Entity/Entity.h"
+#include "Entity/GenericEntity.h"
 
 
 class Message
@@ -98,10 +98,10 @@ public:
 	EntityManager();
 
 	// Methods related with entity querying.
-	Entity* getEntity(unsigned int id) const;
+	GenericEntity* getEntity(unsigned int id) const;
 	bool exists(unsigned int id) const;
-	void registerEntity(Entity* entity);
-	void unregisterEntity(Entity* entity);
+	void registerEntity(GenericEntity* entity);
+	void unregisterEntity(GenericEntity* entity);
 
 	// Methods related with message dispatching.
 	void dispatchMsg(
@@ -123,14 +123,14 @@ public:
 	// This method is utilized by DispatchMsg or DispatchDelayedMessages.
 	// This method calls the message handling member function of the receiving
 	// entity, pReceiver, with the newly created message
-	void discharge(Entity* receiver, const Message& msg);
+	void discharge(GenericEntity* receiver, const Message& msg);
 
-	// In world update!!!!!!!!!!!!!
+	// In world update
 	void dispatchDelayedMessages();
 
 private:
 
-	std::map <unsigned int, Entity*> _entities;
+	std::map <unsigned int, GenericEntity*> _entities;
 	std::priority_queue<Message, std::vector<Message>, Message::Compare> _pque;
 	std::chrono::duration<double> _start_time;
 };

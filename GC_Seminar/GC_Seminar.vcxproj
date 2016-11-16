@@ -66,21 +66,18 @@
     <ClCompile Include="..\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\Box2D\Rope\b2Rope.cpp" />
     <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="Components\AbstFsmComponent.cpp" />
+    <ClCompile Include="Components\CollisionComponent.cpp" />
+    <ClCompile Include="Components\MoveComponent.cpp" />
+    <ClCompile Include="Components\RenderComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="Entity\Button.cpp" />
-    <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\GenericEntity.cpp" />
-    <ClCompile Include="Entity\Hunter.cpp" />
-    <ClCompile Include="Entity\Prey.cpp" />
-    <ClCompile Include="Entity\Projectile.cpp" />
-    <ClCompile Include="Entity\Structure.cpp" />
-    <ClCompile Include="Entity\Trigger.cpp" />
+    <ClCompile Include="Entity\Unit.cpp" />
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vec2.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
-    <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -136,24 +133,21 @@
     <ClInclude Include="..\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Components\AbstFsmComponent.h" />
     <ClInclude Include="Components\CollisionComponent.h" />
     <ClInclude Include="Components\Interfaces.h" />
+    <ClInclude Include="Components\MoveComponent.h" />
+    <ClInclude Include="Components\RenderComponent.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="Entity\Button.h" />
-    <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\GenericEntity.h" />
-    <ClInclude Include="Entity\Hunter.h" />
-    <ClInclude Include="Entity\Prey.h" />
-    <ClInclude Include="Entity\Projectile.h" />
-    <ClInclude Include="Entity\Structure.h" />
-    <ClInclude Include="Entity\Trigger.h" />
+    <ClInclude Include="Entity\Unit.h" />
+    <ClInclude Include="FSM\StateMachine.h" />
     <ClInclude Include="GraphicsDriver.h" />
     <ClInclude Include="Math\MathBase.h" />
     <ClInclude Include="Math\Vec2.h" />
     <ClInclude Include="MessageData.h" />
     <ClInclude Include="PhysicsManager.h" />
-    <ClInclude Include="Renderable.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="UIManager.h" />
@@ -217,8 +211,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)deps/include;$(SolutionDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)deps/lib;$(SolutionDir);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)deps/include;$(SolutionDir);C:\boost_1_60_0\boost_1_60_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps/lib;$(SolutionDir);C:\boost_1_60_0\boost_1_60_0\stage\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

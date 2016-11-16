@@ -113,6 +113,15 @@ namespace
 		return (radians * 180) / M_PI;
 	}
 
+	inline float getRadFromZero(const Vec2& dir)
+	{
+		if (dir.y >= 0.0f)
+		{
+			return (acosf(dir.dot(Vec2::UNIT_X)));
+		}
+		return (acosf(dir.dot(-Vec2::UNIT_X)) + 3.141592f);
+	}
+
 	// Helper
 	template<typename Point>
 	static inline Vec2 toVec(const Point& p) { return Vec2(p.x, p.y); }

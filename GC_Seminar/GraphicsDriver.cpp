@@ -3,7 +3,7 @@
 #include "Camera2D.h"
 #include "Utils.h"
 #include <iostream>
-#include "Renderable.h"
+#include "Components/RenderComponent.h"
 
 std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
 
@@ -405,12 +405,12 @@ void GraphicsDriver::DrawPoint(const b2Vec2& p, float32 size, const b2Color& col
 }
 
 
-void GraphicsDriver::addRenderable(Renderable* renderable)
+void GraphicsDriver::addRenderable(RenderComponent* renderable)
 {
 	_renderables.push_back(renderable);
 }
 
-void GraphicsDriver::removeRenderable(Renderable* renderable)
+void GraphicsDriver::removeRenderable(RenderComponent* renderable)
 {
 	int index = getRenderableIndex(renderable);
 
@@ -427,7 +427,7 @@ void GraphicsDriver::removeRenderable(Renderable* renderable)
 
 
 
-int GraphicsDriver::getRenderableIndex(Renderable* renderable) const
+int GraphicsDriver::getRenderableIndex(RenderComponent* renderable) const
 {
 	for (int i = 0, c = static_cast<int>(_renderables.size()); i < c; ++i)
 	{

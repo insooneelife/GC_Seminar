@@ -10,10 +10,10 @@
 //------------------------------------------------------------------------
 
 #include <SDL/SDL.h>
-#include <SDL\SDL_ttf.h>
+#include <SDL/SDL_ttf.h>
 #include <memory>
-#include "Math\Vec2.h"
-#include "Entity\Button.h"
+#include "Math/Vec2.h"
+#include "Entity/Button.h"
 
 class UIManager
 {
@@ -24,17 +24,17 @@ public:
 
 	~UIManager() {}
 
-	void addButton(Button* const button);
-	void removeButton(Button* const button);
+	//void addButton(Button* const button);
+	//void removeButton(Button* const button);
 
-	Button* trySelect(Vec2 pos);
-	void update(int player_experience);
-	void render();
+	//Button* trySelect(Vec2 pos);
+	void update(int player_experience) {}
+	void render() {}
 
 
 private:
 	UIManager();
 
-	std::vector<Button*> _buttons;
+	//std::vector<Button*> _buttons;
 
 };

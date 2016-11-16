@@ -8,11 +8,8 @@
 
 #include "Math/Transformations.h"
 
-#include "Entity/Hunter.h"
-#include "Entity/Prey.h"
-#include "Entity/Projectile.h"
-#include "Entity/Structure.h"
-#include "Entity/Trigger.h"
+#include "Entity/GenericEntity.h"
+#include "Entity/Unit.h"
 
 namespace
 {
@@ -22,6 +19,7 @@ namespace
 
 using namespace std;
 
+/*
 void World::collide(Hunter& h1, Hunter& h2)
 {
 	cout << "collide!  Hunter && Hunter" << endl;
@@ -58,7 +56,7 @@ void World::collide(Trigger& t, Hunter& h)
 
 	if(t.getCondition() == Trigger::Condition::kCollision)
 		t.activateOneSelf(h);
-}
+}*/
 
 
 template<class Container>
@@ -76,9 +74,9 @@ void World::updateEntity(Container& entities)
 		}
 		else
 		{
-			if ((*e)->getWorld().getPlayerEntity() != nullptr &&
-				(*e)->getID() == (*e)->getWorld().getPlayerEntity()->getID())
-				(*e)->getWorld().setPlayerEntity(nullptr);
+			//if ((*e)->getWorld().getPlayerEntity() != nullptr &&
+			//	(*e)->getID() == (*e)->getWorld().getPlayerEntity()->getID())
+			//	(*e)->getWorld().setPlayerEntity(nullptr);
 
 			delete *e;
 			e = entities.erase(e);
@@ -93,9 +91,12 @@ World::World()
 	_next_validate_id(1),
 	_physics(new PhysicsManager(kWorldX, kWorldY))
 {
+	auto entity = Unit::create(*this, Vec2(10.0f, 10.0f));
+	_entities.push_back(entity);
+
 	// Create player with hunter
-	_player_entity = new Hunter(*this, genID(), Vec2(1.0f, 1.0f));
-	_hunters.push_back(_player_entity);
+	//_player_entity = new Hunter(*this, genID(), Vec2(1.0f, 1.0f));
+	//_hunters.push_back(_player_entity);
 
 	// Create hunters
 	/*createHunter(Vec2(2.50f, 2.00f));
@@ -106,11 +107,11 @@ World::World()
 	createHunter(Vec2(10.00f, 6.00f));
 	createHunter(Vec2(7.00f, 3.00f));*/
 	
-	createTrigger(Vec2(10.0f, 10.0f), Trigger::Condition::kTimer);
+	//createTrigger(Vec2(10.0f, 10.0f), Trigger::Condition::kTimer);
 
 	// Create preys
-	for (int i = 0; i < 200; i++)
-		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
+	//for (int i = 0; i < 200; i++)
+	//	createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 		
 	// Create Structures
 	/*for (int i = 0; i < 10; i++)
@@ -123,9 +124,9 @@ World::World()
 	}*/
 		
 	// Set camera
-	Vec2 heading = _player_entity->getHeading();
-	Vec2 side = _player_entity->getSide();
-	Vec2 pos = _player_entity->getPos();
+	Vec2 heading = entity->getHeading();
+	Vec2 side = entity->getHeading().getPerp();
+	Vec2 pos = entity->getPos();
 	Camera2D::instance->setCamera(pos, heading, side, Camera2D::instance->getScale());
 }
 
@@ -140,7 +141,8 @@ void World::update()
 	// and move them to vector after iteration has finished.
 	// If entities are inserted into vector when iterating,
 	// then it will make a big problem.
-	while (!_created_entities.empty())
+	
+	/*while (!_created_entities.empty())
 	{
 		Entity* ent = _created_entities.front();
 
@@ -160,50 +162,45 @@ void World::update()
 			_triggers.push_back(static_cast<Trigger*>(ent));
 
 		_created_entities.pop();
+	}*/
+
+	while (!_created_entities.empty())
+	{
+		GenericEntity* ent = _created_entities.front();
+		_entities.emplace_back(ent);
+		_created_entities.pop();
 	}
 
 	_physics->Step();
 
 	// Update entities and delete them if set garbage.
-	updateEntity(_hunters);
-	updateEntity(_projectiles);
-	updateEntity(_preys);
+	//updateEntity(_hunters);
+	//updateEntity(_projectiles);
+	//updateEntity(_preys);
+	updateEntity(_entities);
 
 	// Preys must maintain 100 units.
-	int create_num = 100 - _preys.size();
-	while (create_num-- > 0)
-		createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
+	//int create_num = 100 - _preys.size();
+	//while (create_num-- > 0)
+	//	createPrey(Vec2(random(-kWorldX, kWorldX), random(-kWorldY, kWorldY)));
 
 	// Camera position setting
-	if (_player_entity) {
-		Camera2D::instance->setOrigin(_player_entity->getPos());
-	}
+	//if (_player_entity) {
+	//	Camera2D::instance->setOrigin(_player_entity->getPos());
+	//}
 
-	if (_player_entity)
-	{
-		UIManager::instance->update(_player_entity->getExp());
-	}
+	//if (_player_entity)
+	//{
+	//	UIManager::instance->update(_player_entity->getExp());
+	//}
 
-	// Dispatch delayed messages!!!!!!!!!!!!!!!!!!!!!!
 	EntityManager::instance->dispatchDelayedMessages();
-	
-	for (auto h : _hunters)
-	{
-		for (auto s : _structures)
-		{
-			for (auto hf = h->getBody()->GetFixtureList(); hf; hf = hf->GetNext())
-				for (auto sf = s->getBody()->GetFixtureList(); sf; sf = sf->GetNext())
-					if (_physics->ShapeCollide(
-						hf->GetShape(), h->getBody()->GetTransform(),
-						sf->GetShape(), s->getBody()->GetTransform()));
-		}
-	}
 
 }
 
 void World::render()
 {
-	for (auto e : _hunters)
+	/*for (auto e : _hunters)
 		e->render();
 
 	for (auto p : _projectiles)
@@ -216,11 +213,15 @@ void World::render()
 		s->render();
 
 	for (auto t : _triggers)
-		t->render();
+		t->render();*/
+
+	for (auto e : _entities)
+		e->render();
 
 	_physics->Render();
 }
 
+/*
 void World::createHunter(const Vec2& pos)
 {
 	_created_entities.emplace(new Hunter(*this, genID(), pos));
@@ -258,3 +259,4 @@ void World::createTrigger(const Vec2& pos, int condition)
 			*this, id, pos, condition, (int)Entity::kHunter, 0, wait_time));
 	
 }
+*/

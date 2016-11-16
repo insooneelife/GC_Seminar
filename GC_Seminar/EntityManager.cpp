@@ -17,7 +17,7 @@ EntityManager::EntityManager()
 	_start_time = system_clock::now().time_since_epoch();
 }
 
-Entity* EntityManager::getEntity(unsigned int id) const
+GenericEntity* EntityManager::getEntity(unsigned int id) const
 {
 	auto ent = _entities.find(id);
 
@@ -41,12 +41,12 @@ bool EntityManager::exists(unsigned int id) const
 	return false;
 }
 
-void EntityManager::registerEntity(Entity* entity)
+void EntityManager::registerEntity(GenericEntity* entity)
 {
 	_entities.emplace(entity->getID(), entity);
 }
 
-void EntityManager::unregisterEntity(Entity* entity)
+void EntityManager::unregisterEntity(GenericEntity* entity)
 {
 	_entities.erase(entity->getID());
 }
@@ -59,7 +59,7 @@ void EntityManager::dispatchMsg(
 	void* extraInfo)
 {
 	// Get a pointer to the receiver
-	Entity* receiver = getEntity(receiverId);
+	GenericEntity* receiver = getEntity(receiverId);
 
 	// Make sure the receiver is valid
 	if (receiver == nullptr)
@@ -92,7 +92,7 @@ void EntityManager::dispatchMsg(
 // This method is utilized by DispatchMsg or DispatchDelayedMessages.
 // This method calls the message handling member function of the receiving
 // entity, pReceiver, with the newly created telegram
-void EntityManager::discharge(Entity* receiver, const Message& msg)
+void EntityManager::discharge(GenericEntity* receiver, const Message& msg)
 {
 	if (receiver == nullptr)
 		return;
@@ -119,7 +119,7 @@ void EntityManager::dispatchDelayedMessages()
 		const Message& msg = _pque.top();
 
 		//find the recipient
-		Entity* const receiver = getEntity(msg.getReceiver());
+		GenericEntity* const receiver = getEntity(msg.getReceiver());
 
 		//send the telegram to the recipient
 		discharge(receiver, msg);

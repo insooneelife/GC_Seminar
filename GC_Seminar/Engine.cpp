@@ -22,7 +22,7 @@ Engine::~Engine()
 
 void Engine::handleEvent(SDL_Event* inEvent)
 {
-	Hunter* player = _world->getPlayerEntity();
+	//Hunter* player = _world->getPlayerEntity();
 	Vec2 velocity;
 
 	static bool press[255] = { 0 };
@@ -36,7 +36,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	int mx = 0;
 	int my = 0;
 
-	Button* button = nullptr;
+	//Button* button = nullptr;
 
 	
 	switch (inEvent->type)
@@ -73,16 +73,16 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			break;
 			
 		case SDLK_SPACE:
-			_world->getPhysicsMgr()->Explosion(
-				b2Vec2(player->getPos().x, player->getPos().y), 5.0f, 100.0f);
+			//_world->getPhysicsMgr()->Explosion(
+			//	b2Vec2(player->getPos().x, player->getPos().y), 5.0f, 100.0f);
 			break;
 
 		default:
 			break;
 		}
 
-		if (player)
-			player->enterMovingState(player->getPos() + velocity);
+		//if (player)
+			//player->enterMovingState(player->getPos() + velocity);
 
 		break;
 	case SDL_KEYUP:
@@ -119,27 +119,27 @@ void Engine::handleEvent(SDL_Event* inEvent)
 		switch (inEvent->button.button)
 		{
 		case SDL_BUTTON_LEFT:
-			button = UIManager::instance->trySelect(Vec2(mx, my));
-			if (button)
-				button->update();
+			//button = UIManager::instance->trySelect(Vec2(mx, my));
+			//if (button)
+			//	button->update();
 
-			if (player)
-				player->shoot();
+			//if (player)
+			//	player->shoot();
 			break;
 
 		case SDL_BUTTON_RIGHT:
-			if (player)
-				player->shootRay();
+			//if (player)
+			//	player->shootRay();
 			break;
 		}
 		
 		break;
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&mx, &my);
-		if (player)
-			player->setHeading(
-				(Camera2D::instance->screenToWorld(Vec2(mx, my)) 
-					- player->getPos()).getNormalized());
+		//if (player)
+			//player->setHeading(
+			//	(Camera2D::instance->screenToWorld(Vec2(mx, my)) 
+			//		- player->getPos()).getNormalized());
 		break;
 	case SDL_MOUSEWHEEL:
 		if (inEvent->wheel.y > 0)
@@ -179,9 +179,9 @@ bool Engine::init()
 
 	_world.reset(new World());
 
-	UIManager::staticInit();
-	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(80, 70), "Damage"));
-	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(180, 70), "Range"));
+	//UIManager::staticInit();
+	//UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(80, 70), "Damage"));
+	//UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(180, 70), "Range"));
 
 	return true;
 }

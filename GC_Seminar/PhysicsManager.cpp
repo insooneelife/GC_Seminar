@@ -303,7 +303,7 @@ void PhysicsManager::BeginContact(b2Contact* contact)
 		Entity* entA = static_cast<Entity*>(bodyUserDataA);
 		Entity* entB = static_cast<Entity*>(bodyUserDataB);
 
-		if (entA->getType() == Entity::Type::kHunter && entB->getType() == Entity::Type::kHunter)
+		/*if (entA->getType() == Entity::Type::kHunter && entB->getType() == Entity::Type::kHunter)
 			World::collide(*static_cast<Hunter*>(entA), *static_cast<Hunter*>(entB));
 
 		else if (entA->getType() == Entity::Type::kHunter && entB->getType() == Entity::Type::kProjectile)
@@ -322,7 +322,7 @@ void PhysicsManager::BeginContact(b2Contact* contact)
 			World::collide(*static_cast<Trigger*>(entA), *static_cast<Hunter*>(entB));
 
 		else if (entA->getType() == Entity::Type::kHunter && entB->getType() == Entity::Type::kTrigger)
-			World::collide(*static_cast<Trigger*>(entB), *static_cast<Hunter*>(entA));
+			World::collide(*static_cast<Trigger*>(entB), *static_cast<Hunter*>(entA));*/
 	}
 }
 

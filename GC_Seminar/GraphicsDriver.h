@@ -17,7 +17,7 @@
 #include <Box2D/Common/b2Draw.h>
 #include <Box2D/Box2D.h>
 
-class Renderable;
+class RenderComponent;
 class GraphicsDriver : public b2Draw
 {
 public:
@@ -60,9 +60,9 @@ public:
 	void			addBox2DCircle(Vec2 a, float radius);
 	void			addBox2DPolygon(const std::vector<b2Vec2>& points);
 
-	void addRenderable(Renderable* renderable);
-	void removeRenderable(Renderable* renderable);
-	int getRenderableIndex(Renderable* renderable) const;
+	void addRenderable(RenderComponent* renderable);
+	void removeRenderable(RenderComponent* renderable);
+	int getRenderableIndex(RenderComponent* renderable) const;
 
 	virtual ~GraphicsDriver();
 
@@ -99,7 +99,7 @@ private:
 	SDL_Rect				_view_port;
 	TTF_Font*				_font;
 
-	std::vector<Renderable*> _renderables;
+	std::vector<RenderComponent*> _renderables;
 	std::vector<b2Shape*> _draw_shapes;
 
 	SDL_Rect mViewTransform;

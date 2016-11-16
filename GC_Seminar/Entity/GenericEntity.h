@@ -11,11 +11,12 @@
 
 #include "../Math/Vec2.h"
 #include "../Engine.h"
+#include "../Components/Interfaces.h"
 #include <Box2D/Box2D.h>
 
 class Message;
 class World;
-class GenericEntity
+class GenericEntity : public IMessageHandler
 {
 public:
 	enum Type
@@ -28,8 +29,6 @@ public:
 
 	inline World& getWorld() const					{ return _world; }
 	inline unsigned int getID() const				{ return _id; }
-	inline Vec2 getPos() const						{ return _pos; }
-	inline void setPos(const Vec2& pos)				{ _pos = pos; }
 	inline Type getType() const						{ return _type; }
 	inline bool isGarbage() const					{ return _is_garbage; }
 	inline void setGarbage()						{ _is_garbage = true; }
@@ -37,10 +36,7 @@ public:
 	GenericEntity(
 		World& world,
 		unsigned int id,
-		const Vec2& pos,
-		float radius,
-		Type type,
-		const SDL_Color& color);
+		Type type);
 
 	virtual ~GenericEntity();
 	virtual void update() = 0;
@@ -50,7 +46,6 @@ public:
 protected:
 	World& _world;
 	unsigned int _id;
-	Vec2 _pos;
 	Type _type;
 	bool _is_garbage;
 };

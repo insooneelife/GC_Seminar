@@ -1,11 +1,11 @@
-#include "Renderable.h"
-#include "GraphicsDriver.h"
-#include "Entity/Entity.h"
-#include "Texture.h"
-#include "Math/Vec2.h"
-#include "Camera2D.h"
+#include <SDL/SDL.h>
+#include "RenderComponent.h"
+#include "Interfaces.h"
+#include "../GraphicsDriver.h"
+#include "../Texture.h"
+#include "../Camera2D.h"
 
-Renderable::Renderable(Entity* entity, Texture* texture)
+RenderComponent::RenderComponent(IRenderComponent& entity, Texture* texture)
 	:
 	_owner(entity),
 	_texture(texture)
@@ -16,7 +16,7 @@ Renderable::Renderable(Entity* entity, Texture* texture)
 	GraphicsDriver::instance->addRenderable(this);
 }
 
-Renderable::~Renderable()
+RenderComponent::~RenderComponent()
 {
 	//don't render me, I'm dead!
 	GraphicsDriver::instance->removeRenderable(this);
@@ -25,15 +25,12 @@ Renderable::~Renderable()
 #include <iomanip>
 #include <iostream>
 
-void Renderable::draw(const SDL_Rect& veiw_transform)
+void RenderComponent::draw(const SDL_Rect& veiw_transform)
 {
 	if (_texture)
 	{
-		Vec2 pos = Camera2D::instance->worldToScreen(_owner->getPos());
+		Vec2 pos = Camera2D::instance->worldToScreen(_owner.getPos());
 		Vec2 renderPos = Vec2(-_origin.x, -_origin.y) + pos;
-
-		// Compute the destination rectangle
-		Vec2 location = _owner->getPos();
 
 		SDL_Rect dstRect;
 		dstRect.w = static_cast< int >(_texture->GetWidth());
@@ -43,7 +40,7 @@ void Renderable::draw(const SDL_Rect& veiw_transform)
 
 		SDL_Renderer* render = GraphicsDriver::instance->getRenderer();
 
-		
+
 		// Blit the texture
 		SDL_RenderCopyEx(render, _texture->GetData(), nullptr,
 			&dstRect, 0, nullptr, SDL_FLIP_NONE);

@@ -12,6 +12,7 @@
 
 #include <string>
 #include "../Math/Vec2.h"
+#include <Box2D/Box2D.h>
 
 class Message;
 class IMessageHandler
@@ -20,39 +21,46 @@ public:
 	virtual bool handleMessage(const Message& msg) = 0;
 };
 
-class ICollisionComponent
-{
-
-
-};
-
-class Renderable;
-class IRenderable
+class TransformComponent;
+class ITransformComponent
 {
 public:
-	virtual Renderable& getRenderable() const = 0;
-	virtual void setRenderable(Renderable* const render) = 0;
-	virtual Vec2 getPos() const = 0;
-};
-
-class Animation;
-class IAnimation : public IRenderable
-{
-public:
-	virtual Animation& getAnimation() const = 0;
-	virtual std::string getName() const = 0;
-};
-
-class Movable;
-class IMovable
-{
-public:
-	virtual Movable& getMove() const = 0;
-	virtual void setMove(Movable* const move) = 0;
 	virtual Vec2 getPos() const = 0;
 	virtual void setPos(const Vec2& pos) = 0;
 	virtual Vec2 getHeading() const = 0;
 	virtual void setHeading(const Vec2& heading) = 0;
+	virtual b2Transform getTransform() const = 0;
+	virtual void setTransform(const b2Transform& trans) = 0;
+};
+
+class CollisionComponent;
+class ICollisionComponent : public ITransformComponent
+{
+public:
+	virtual CollisionComponent& getCollision() const = 0;
+	virtual void setCollision(CollisionComponent* const collision) = 0;
+};
+
+class RenderComponent;
+class IRenderComponent : public ITransformComponent
+{
+public:
+	virtual RenderComponent& getRendering() const = 0;
+	virtual void setRendering(RenderComponent* const render) = 0;
+};
+
+class MoveComponent;
+class IMoveComponent : public ITransformComponent
+{
+public:
+	virtual MoveComponent& getMove() const = 0;
+	virtual void setMove(MoveComponent* const move) = 0;
+};
+
+/*class AbstFsmComponent;
+class IFsm
+{
+	virtual AbstFsmComponent& getFsm() const = 0;
 };
 
 class Hittable;
@@ -63,6 +71,18 @@ public:
 	virtual void setHittable(Hittable* const hit) = 0;
 	virtual bool isAlive() const = 0;
 };
+*/
+
+
+class Animation;
+class IAnimation : public IRenderComponent
+{
+public:
+	virtual Animation& getAnimation() const = 0;
+	virtual std::string getName() const = 0;
+};
+
+
 
 class TargetSystem;
 class ITargetable

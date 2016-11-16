@@ -15,6 +15,7 @@ void UIManager::staticInit()
 UIManager::UIManager()
 {}
 
+/*
 void UIManager::addButton(Button* const button) 
 {
 	_buttons.push_back(button); 
@@ -62,4 +63,4 @@ void UIManager::render()
 	{
 		b->render();
 	}
-}
+}*/

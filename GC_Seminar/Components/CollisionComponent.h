@@ -24,14 +24,18 @@ public:
 		b2Shape* shape,
 		b2BodyType type,
 		Vec2 pos,
-		bool sensor);
+		bool sensor,
+		float radius);
 
 	inline b2Body* getBody() const { return _body; }
+	inline float getBRadius() const { return _radius; }
 
-	CollisionComponent::CollisionComponent(ICollisionComponent& owner, b2Body* body)
+	CollisionComponent::CollisionComponent(
+		ICollisionComponent& owner, b2Body* body, float radius)
 		:
 		_owner(owner),
-		_body(body)
+		_body(body),
+		_radius(radius)
 	{}
 
 	~CollisionComponent()
@@ -43,4 +47,5 @@ public:
 protected:
 	ICollisionComponent& _owner;
 	b2Body* _body;
+	float _radius;
 };

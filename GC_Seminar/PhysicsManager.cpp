@@ -426,7 +426,7 @@ void PhysicsManager::RemoveBody(b2Body* body)
 void PhysicsManager::Explosion(const b2Vec2& center, float blastRadius, float blastPower)
 {
 	//find all bodies with fixtures in blast radius AABB
-	EntityQueryCallback queryCallback; //see "World querying topic"
+	EntityAABBCallback queryCallback; //see "World querying topic"
 	b2AABB aabb;
 	aabb.lowerBound = center - b2Vec2(blastRadius, blastRadius);
 	aabb.upperBound = center + b2Vec2(blastRadius, blastRadius);
@@ -434,9 +434,10 @@ void PhysicsManager::Explosion(const b2Vec2& center, float blastRadius, float bl
 	_world->QueryAABB(&queryCallback, aabb);
 
 	//check which of these bodies have their center of mass within the blast radius
+	/*
 	for (int i = 0; i < queryCallback.foundEntities.size(); i++)
 	{
-		Entity* ent = queryCallback.foundEntities[i];
+		GenericEntity* ent = queryCallback.foundEntities[i];
 		b2Vec2 bodyCom = ent->getBody()->GetWorldCenter();
 
 		//ignore bodies outside the blast range
@@ -445,6 +446,7 @@ void PhysicsManager::Explosion(const b2Vec2& center, float blastRadius, float bl
 
 		ApplyBlastImpulse(ent->getBody(), center, bodyCom, blastPower);
 	}
+	*/
 }
 
 

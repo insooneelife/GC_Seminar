@@ -6,9 +6,12 @@
 #include "../PhysicsManager.h"
 #include "../World.h"
 #include "../TextureManager.h"
+#include "../Components/Interfaces.h"
 #include "../Components/RenderComponent.h"
 #include "../Components/CollisionComponent.h"
 #include "../Components/MoveComponent.h"
+#include "../Components/TargetComponent.h"
+#include "../Components/AttackComponent.h"
 #include "../Utils.h"
 
 
@@ -27,7 +30,13 @@ namespace
 
 	const float kHunterRenderRadius = 0.25f;
 	const float kHunterBodyRadius = 0.20f;
-	const float kHunterSpeed = 5.0f;
+	const float kHunterSpeed = 0.01f;
+
+	const float kUnitAttackRange = 0.5f;
+	const float kUnitViewRange = 2.0f;
+
+	const int kUnitAttackDamage = 10;
+	const int kUnitAttackFrameDelay = 5;
 }
 
 Unit* Unit::create(World& world, const Vec2& pos)
@@ -45,7 +54,9 @@ Unit* Unit::create(World& world, const Vec2& pos)
 			&circle,
 			b2BodyType::b2_dynamicBody,
 			pos,
-			false);
+			false,
+			kHunterBodyRadius);
+
 	unit->setCollision(collision);
 
 	RenderComponent* rendering = 
@@ -55,6 +66,14 @@ Unit* Unit::create(World& world, const Vec2& pos)
 	MoveComponent* move = 
 		new MoveComponent(*unit, kHunterSpeed, Vec2(0, 0), true);
 	unit->setMove(move);
+	
+	TargetComponent* target =
+		new TargetComponent(*unit, kUnitAttackRange, kUnitViewRange);
+	unit->setTargetting(target);
+
+	AttackComponent* attack =
+		new MeleeAttack(*unit, kUnitAttackDamage, kUnitAttackFrameDelay);
+	unit->setAttack(attack);
 
 	return unit;
 }
@@ -135,8 +154,44 @@ void Unit::setRendering(RenderComponent* const render)
 	_rendering = (render); 
 }
 
+TargetComponent& Unit::getTargetting() const
+{
+	return *_target;
+}
+
+void Unit::setTargetting(TargetComponent* const target)
+{
+	_target = target;
+}
+
+bool Unit::isAlive() const
+{
+	return
+		_fsm.current_state()[0] != 5 &&
+		_fsm.current_state()[0] != 6;
+}
+
+unsigned int Unit::getID() const
+{
+	return GenericEntity::getID();
+}
+
+AttackComponent& Unit::getAttack() const
+{
+	return *_attack;
+}
+
+void Unit::setAttack(AttackComponent* const attack)
+{
+	_attack = attack;
+}
+
+
+
 void Unit::update()
-{}
+{
+	_fsm.visit_current_states(boost::ref(*this));
+}
 
 void Unit::render()
 {

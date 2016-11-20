@@ -8,7 +8,8 @@ CollisionComponent* CollisionComponent::create(
 	b2Shape* shape,
 	b2BodyType type,
 	Vec2 pos,
-	bool sensor)
+	bool sensor,
+	float radius)
 {
 	b2BodyDef bd;
 	bd.position.Set(pos.x, pos.y);
@@ -26,7 +27,7 @@ CollisionComponent* CollisionComponent::create(
 	body->SetLinearDamping(2.0f);
 	body->SetUserData(owner);
 
-	return new CollisionComponent(*owner, body);
+	return new CollisionComponent(*owner, body, radius);
 }
 
 

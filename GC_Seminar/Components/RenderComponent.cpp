@@ -29,20 +29,11 @@ void RenderComponent::draw(const SDL_Rect& veiw_transform)
 {
 	if (_texture)
 	{
-		Vec2 pos = Camera2D::instance->worldToScreen(_owner.getPos());
-		Vec2 renderPos = Vec2(-_origin.x, -_origin.y) + pos;
-
-		SDL_Rect dstRect;
-		dstRect.w = static_cast< int >(_texture->GetWidth());
-		dstRect.h = static_cast< int >(_texture->GetHeight());
-		dstRect.x = veiw_transform.x + static_cast< int >(renderPos.x);
-		dstRect.y = veiw_transform.y + static_cast< int >(renderPos.y);
-
-		SDL_Renderer* render = GraphicsDriver::instance->getRenderer();
-
-
-		// Blit the texture
-		SDL_RenderCopyEx(render, _texture->GetData(), nullptr,
-			&dstRect, 0, nullptr, SDL_FLIP_NONE);
+		GraphicsDriver::instance->drawSprite(
+			_owner.getPos(),
+			_origin,
+			_texture->GetWidth(),
+			_texture->GetHeight(),
+			_texture->GetData());
 	}
 }

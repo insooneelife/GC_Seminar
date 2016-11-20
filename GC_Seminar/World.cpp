@@ -93,6 +93,8 @@ World::World()
 {
 	auto entity = Unit::create(*this, Vec2(10.0f, 10.0f));
 	_entities.push_back(entity);
+	auto entity2 = Unit::create(*this, Vec2(10.5f, 10.5f));
+	_entities.push_back(entity2);
 
 	// Create player with hunter
 	//_player_entity = new Hunter(*this, genID(), Vec2(1.0f, 1.0f));

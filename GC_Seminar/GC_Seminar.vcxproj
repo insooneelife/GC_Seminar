@@ -66,10 +66,11 @@
     <ClCompile Include="..\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\Box2D\Rope\b2Rope.cpp" />
     <ClCompile Include="Camera2D.cpp" />
-    <ClCompile Include="Components\AbstFsmComponent.cpp" />
+    <ClCompile Include="Components\AttackComponent.cpp" />
     <ClCompile Include="Components\CollisionComponent.cpp" />
     <ClCompile Include="Components\MoveComponent.cpp" />
     <ClCompile Include="Components\RenderComponent.cpp" />
+    <ClCompile Include="Components\TargetComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Entity\GenericEntity.cpp" />
@@ -133,11 +134,12 @@
     <ClInclude Include="..\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="Camera2D.h" />
-    <ClInclude Include="Components\AbstFsmComponent.h" />
+    <ClInclude Include="Components\AttackComponent.h" />
     <ClInclude Include="Components\CollisionComponent.h" />
     <ClInclude Include="Components\Interfaces.h" />
     <ClInclude Include="Components\MoveComponent.h" />
     <ClInclude Include="Components\RenderComponent.h" />
+    <ClInclude Include="Components\TargetComponent.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Entity\GenericEntity.h" />

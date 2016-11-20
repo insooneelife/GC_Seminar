@@ -65,15 +65,23 @@ public:
 		return screen_pos.distance(screen_origin) < _renderRadius + screen_radius;
 	}
 
-
 	inline float getScreenX() const { return _screenX; }
 	inline float getScreenY() const { return _screenY; }
+
+	inline Vec2 getMoveVelocity() const { return _move_velocity; }
+	inline void setMoveVelocity(const Vec2& velocity) 
+	{
+		_move_velocity = velocity;
+	}
 
 	Camera2D(float screenX, float screenY);
 
 	Vec2 worldToScreen(const Vec2& pos);
 	Vec2 screenToWorld(const Vec2& mpos);
 
+	Vec2 worldToScreenScale(const Vec2& scale);
+
+	void update();
 
 private:
 	float _screenX;
@@ -84,4 +92,6 @@ private:
 	Vec2 _axisY;
 	Vec2 _scale;
 	float _renderRadius;
+
+	Vec2 _move_velocity;
 };

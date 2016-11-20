@@ -57,6 +57,8 @@ public:
 	void createStructure(const Vec2& pos, float radius, int type);
 	void createTrigger(const Vec2& pos, int condition);*/
 
+
+
 	void update();
 	void render();
 	

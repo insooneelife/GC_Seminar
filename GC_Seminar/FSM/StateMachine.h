@@ -141,10 +141,11 @@ namespace
 					return;
 				}
 
-				Entity* target = owner.getTargetSys().updateTarget();
-				if (owner.getTargetSys().isViewable())
+				owner.getTargetting().updateTarget(owner.getWorld());
+				if (owner.getTargetting().isViewable())
 				{
-					owner.getMove().setDestination(target->getPos());
+					Vec2 target = owner.getTargetting().getTarget()->getPos();
+					owner.getMove().setDestination(target);
 					owner.getFsm().process_event(enemyInView<Entity>(owner));
 				}
 
@@ -164,7 +165,7 @@ namespace
 			{
 				std::cout << "accept: [AttackToDestination]" << std::endl;
 
-				float arriveExpected = owner.getBRadius() * 2;
+				float arriveExpected = owner.getCollision().getBRadius() * 2;
 				if (owner.getMove().getDestination().distance(owner.getPos()) < arriveExpected)
 				{
 					owner.getMove().setHasDestination(false);
@@ -173,11 +174,12 @@ namespace
 					return;
 				}
 
-				Entity* target = owner.getTargetSys().updateTarget();
+				owner.getTargetting().updateTarget(owner.getWorld());
 
-				if (owner.getTargetSys().isViewable())
+				if (owner.getTargetting().isViewable())
 				{
-					owner.getMove().setDestination(target->getPos());
+					Vec2 target = owner.getTargetting().getTarget()->getPos();
+					owner.getMove().setDestination(target);
 					//_animate.SetAction("Walk");
 					owner.getFsm().process_event(enemyInView<Entity>(owner));
 					return;
@@ -204,23 +206,27 @@ namespace
 			{
 				std::cout << "accept: [ChaseEnemy]" << std::endl; 
 
-				Entity* target = owner.getTargetSys().updateTarget();
+				owner.getTargetting().updateTarget(owner.getWorld());
 
-				if (owner.getTargetSys().isAttackable())
+				if (owner.getTargetting().isAttackable())
 				{
+
 					//_animate.SetAction("Attack");
 					owner.getFsm().process_event(enemyInRange<Entity>(owner));
 					return;
 				}
 
-				if (!owner.getTargetSys().isViewable())
+				if (!owner.getTargetting().isViewable())
 				{
 					//_animate.SetAction("Walk");
 					owner.getFsm().process_event(enemyOutView<Entity>(owner));
 					return;
 				}
-				else 
-					owner.getMove().setDestination(target->getPos());
+				else
+				{
+					Vec2 target = owner.getTargetting().getTarget()->getPos();
+					owner.getMove().setDestination(target);
+				}
 
 				//_animate.UpdateAnimation(_owner.Renderer);
 				owner.getMove().updateMovement();
@@ -239,7 +245,7 @@ namespace
 			{
 				std::cout << "accept: [Attack]" << std::endl; 
 
-				owner.getAttackSys().updateAttack();
+				owner.getAttack().updateAttack();
 				owner.getFsm().process_event(doneAttack<Entity>(owner));
 			}
 		};
@@ -258,8 +264,8 @@ namespace
 
 				//if (_animate.UpdateAnimation(_owner.Renderer))
 				{
-					owner.getTargetSys().updateTarget();
-					if (owner.getTargetSys().isAttackable())
+					owner.getTargetting().updateTarget(owner.getWorld());
+					if (owner.getTargetting().isAttackable())
 					{
 						//_animate.SetAction("Attack");
 						owner.getFsm().process_event(readyToAttack<Entity>(owner));

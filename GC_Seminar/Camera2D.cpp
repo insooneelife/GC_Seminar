@@ -40,3 +40,13 @@ Vec2 Camera2D::screenToWorld(const Vec2& mpos)
 	Vec2 convertPos = Vec2(mpos.x - _screenX / 2, -mpos.y + _screenY / 2) + _origin;
 	return convertPos;
 }
+
+Vec2 Camera2D::worldToScreenScale(const Vec2& scale)
+{
+	return Vec2(scale.x * _scale.x * 0.01f, scale.y * _scale.y * 0.01f);
+}
+
+void Camera2D::update()
+{
+	_origin += _move_velocity;
+}

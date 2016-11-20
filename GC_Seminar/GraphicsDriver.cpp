@@ -114,9 +114,7 @@ GraphicsDriver::~GraphicsDriver()
 void GraphicsDriver::render()
 {
 	for (auto e : _renderables)
-	{
 		e->draw(_view_port);
-	}
 
 	for (auto e : _draw_shapes)
 		drawBox2DShape(e);
@@ -265,13 +263,16 @@ void GraphicsDriver::drawSprite(
 	SDL_Texture* texture)
 {
 	pos = Camera2D::instance->worldToScreen(pos);
+	texture_origin = Camera2D::instance->worldToScreenScale(texture_origin);
+
 	Vec2 renderPos = Vec2(-texture_origin.x, -texture_origin.y) + pos;
+	Vec2 text_size = Camera2D::instance->worldToScreenScale(Vec2(width, height));
 
 	SDL_Rect dstRect;
-	dstRect.w = width;
-	dstRect.h = height;
-	dstRect.x = _view_port.x + static_cast<int>(renderPos.x);
-	dstRect.y = _view_port.y + static_cast<int>(renderPos.y);
+	dstRect.w = static_cast<int>(text_size.x);
+	dstRect.h = static_cast<int>(text_size.y);
+	dstRect.x = static_cast<int>(renderPos.x);
+	dstRect.y = static_cast<int>(renderPos.y);
 
 	SDL_Renderer* render = GraphicsDriver::instance->getRenderer();
 

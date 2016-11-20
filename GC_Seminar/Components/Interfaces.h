@@ -14,11 +14,13 @@
 #include "../Math/Vec2.h"
 #include <Box2D/Box2D.h>
 
+
 class Message;
 class IMessageHandler
 {
 public:
 	virtual bool handleMessage(const Message& msg) = 0;
+	virtual unsigned int getID() const = 0;
 };
 
 class TransformComponent;
@@ -84,18 +86,23 @@ public:
 
 
 
-class TargetSystem;
-class ITargetable
+class TargetComponent;
+class ITargetComponent : public ITransformComponent
 {
-	virtual TargetSystem& getTargetSys() const = 0;
-	virtual void setTargetSys(TargetSystem* const target) = 0;
+public:
+	virtual TargetComponent& getTargetting() const = 0;
+	virtual void setTargetting(TargetComponent* const target) = 0;
+	virtual bool isAlive() const = 0;
+	virtual unsigned int getID() const = 0;
 };
 
-class AttackSystem;
-class IAttackable : public ITargetable, public IMessageHandler
+class AttackComponent;
+class IAttackComponent : public ITargetComponent, public IMessageHandler
 {
-	virtual AttackSystem& getAttackSys() const = 0;
-	virtual void setAttackSys(AttackSystem* const target) = 0;
+public:
+	virtual AttackComponent& getAttack() const = 0;
+	virtual void setAttack(AttackComponent* const attack) = 0;
+	virtual unsigned int getID() const = 0;
 };
 
 /*

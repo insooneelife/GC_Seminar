@@ -234,13 +234,16 @@
     <ClCompile Include="Entity\Unit.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Components\AbstFsmComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Components\MoveComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Components\RenderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\AttackComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\TargetComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -443,13 +446,16 @@
     <ClInclude Include="FSM\StateMachine.h">
       <Filter>FSM</Filter>
     </ClInclude>
-    <ClInclude Include="Components\AbstFsmComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Components\MoveComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\RenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\AttackComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\TargetComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

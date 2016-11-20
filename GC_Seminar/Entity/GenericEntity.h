@@ -28,7 +28,6 @@ public:
 	};
 
 	inline World& getWorld() const					{ return _world; }
-	inline unsigned int getID() const				{ return _id; }
 	inline Type getType() const						{ return _type; }
 	inline bool isGarbage() const					{ return _is_garbage; }
 	inline void setGarbage()						{ _is_garbage = true; }
@@ -37,6 +36,8 @@ public:
 		World& world,
 		unsigned int id,
 		Type type);
+
+	virtual unsigned int getID() const override { return _id; }
 
 	virtual ~GenericEntity();
 	virtual void update() = 0;

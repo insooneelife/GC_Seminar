@@ -54,35 +54,34 @@ void Engine::handleEvent(SDL_Event* inEvent)
 		case SDLK_d:
 			std::cout << "d" << std::endl;
 			press[SDLK_d] = true;
-			velocity = directionFromMultiKey(press[SDLK_s], press[SDLK_w], right) * distance;
+			velocity = directionFromMultiKey(press[SDLK_s], press[SDLK_w], right) * distance;			
 			break;
 
 		case SDLK_w:
 			std::cout << "w" << std::endl;
 			press[SDLK_w] = true;
 			velocity = directionFromMultiKey(press[SDLK_d], press[SDLK_a], up) * distance;
+			
 			break;
 
 		case SDLK_s:
 			std::cout << "s" << std::endl;
 			press[SDLK_s] = true;
 			velocity = directionFromMultiKey(press[SDLK_a], press[SDLK_d], down) * distance;
+			
 			break;
 
 		case SDLK_q:
 			break;
 			
 		case SDLK_SPACE:
-			//_world->getPhysicsMgr()->Explosion(
-			//	b2Vec2(player->getPos().x, player->getPos().y), 5.0f, 100.0f);
 			break;
 
 		default:
 			break;
 		}
 
-		//if (player)
-			//player->enterMovingState(player->getPos() + velocity);
+		Camera2D::instance->setMoveVelocity(velocity.getNormalized() / 10);
 
 		break;
 	case SDL_KEYUP:
@@ -119,6 +118,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 		switch (inEvent->button.button)
 		{
 		case SDL_BUTTON_LEFT:
+			
 			//button = UIManager::instance->trySelect(Vec2(mx, my));
 			//if (button)
 			//	button->update();
@@ -231,6 +231,7 @@ void Engine::update()
 
 	// World의 update
 	_world->update();
+	Camera2D::instance->update();
 
 	// 새 그래픽 버퍼를 준비한다.
 	GraphicsDriver::instance->clear();

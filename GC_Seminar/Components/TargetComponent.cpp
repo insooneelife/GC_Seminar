@@ -5,6 +5,7 @@
 #include "../Entity/Unit.h"
 #include "../EntityManager.h"
 #include "../PhysicsManager.h"
+#include "CollisionComponent.h"
 
 
 TargetComponent::TargetComponent(
@@ -33,7 +34,12 @@ void TargetComponent::updateTarget(World& world)
 	// Otherwise, we have to set a new target.
 	else
 	{
-		_target = getClosestTarget(world, _entity, _viewRange);
+		_target = getClosestTarget(
+			world, _entity, _viewRange,
+			[](unsigned int id1, unsigned int id2, bool dead) 
+		{ 
+			return id1 == id2 || dead; 
+		});
 		
 		if (_target == nullptr)
 		{
@@ -59,11 +65,11 @@ void TargetComponent::updateTarget(World& world)
 	}
 }
 
-
 ITargetComponent* TargetComponent::getClosestTarget(
 	World& world,
 	ITargetComponent& entity,
-	float range)
+	float range,
+	std::function<bool(unsigned int, unsigned int, bool)> filter)
 {
 	EntityAABBCallback callback;
 	world.getPhysicsMgr()->QueryAABB(
@@ -75,16 +81,19 @@ ITargetComponent* TargetComponent::getClosestTarget(
 	for (auto e : callback.foundEntities)
 	{
 		ITargetComponent* target = nullptr;
-		if (e->getType() == GenericEntity::kStructure)
+		if (e->getCollision().getOwnerType() == GenericEntity::kStructure)
 		{
-			//target = static_cast<Structure*>(target);
+			//target = static_cast<Structure*>(e);
 		}
-		else if (e->getType() == GenericEntity::kUnit)
+		else if (e->getCollision().getOwnerType() == GenericEntity::kUnit)
 		{
 			target = static_cast<Unit*>(e);
 		}
 
 		if (target == nullptr)
+			continue;
+
+		if (filter(entity.getID(), target->getID(), !target->isAlive()))
 			continue;
 
 		float dist = target->getPos().distance(entity.getPos());

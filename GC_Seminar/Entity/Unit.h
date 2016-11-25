@@ -9,6 +9,7 @@
 //
 //--------------------------------------------------------------------------
 
+#include <memory>
 #include "GenericEntity.h"
 #include "../FSM/StateMachine.h"
 
@@ -17,23 +18,27 @@ class CollisionComponent;
 class MoveComponent;
 class TargetComponent;
 class AttackComponent;
+class HitComponent;
+class AnimationComponent;
 
 class Unit : 
 	public GenericEntity,
 	public ICollisionComponent, 
 	public IMoveComponent,
-	public IRenderComponent,
-	public IAttackComponent
+	public IAttackComponent,
+	public IHitComponent,
+	public IAnimationComponent
 {
 public:
 	typedef msm::back::state_machine< Fsm_<Unit> > Fsm;
 
-	static Unit* create(World& world, const Vec2& pos);
+	static Unit* create(
+		World& world, const Vec2& pos, const std::string& name);
 
 	inline Fsm& getFsm() { return _fsm; }
 
-	Unit(World& world, unsigned int id, const Vec2& pos);
-	virtual ~Unit() {}
+	Unit(World& world, unsigned int id, const Vec2& pos, const std::string& name);
+	virtual ~Unit();
 
 	virtual Vec2 getPos() const;
 	virtual void setPos(const Vec2& pos);
@@ -59,17 +64,29 @@ public:
 	virtual AttackComponent& getAttack() const;
 	virtual void setAttack(AttackComponent* const attack);
 	
+	virtual HitComponent& getHit() const;
+	virtual void setHit(HitComponent* const hit);
+	virtual void setDead();
+
+	virtual AnimationComponent& getAnimation() const;
+	virtual void setAnimation(AnimationComponent* const animation);
+	virtual std::string getName() const;
+
 	virtual void update();
 	virtual void render();
 	virtual bool handleMessage(const Message& msg);
 
 private:
 
-	RenderComponent* _rendering;
-	CollisionComponent* _collision;
-	MoveComponent* _move;
-	TargetComponent* _target;
-	AttackComponent* _attack;
+	std::unique_ptr<RenderComponent> _rendering;
+	std::unique_ptr<CollisionComponent> _collision;
+	std::unique_ptr<MoveComponent> _move;
+	std::unique_ptr<TargetComponent> _targetting;
+	std::unique_ptr<AttackComponent> _attack;
+	std::unique_ptr<HitComponent> _hit;
+	std::unique_ptr<AnimationComponent> _animation;
 	Fsm _fsm;
+
+	std::string _name;
 
 };

@@ -91,9 +91,9 @@ World::World()
 	_next_validate_id(1),
 	_physics(new PhysicsManager(kWorldX, kWorldY))
 {
-	auto entity = Unit::create(*this, Vec2(10.0f, 10.0f));
+	auto entity = Unit::create(*this, Vec2(10.0f, 10.0f), "Zealot");
 	_entities.push_back(entity);
-	auto entity2 = Unit::create(*this, Vec2(10.5f, 10.5f));
+	auto entity2 = Unit::create(*this, Vec2(7.5f, 7.5f), "Zealot");
 	_entities.push_back(entity2);
 
 	// Create player with hunter

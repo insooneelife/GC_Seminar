@@ -5,12 +5,13 @@
 #include "../Texture.h"
 #include "../Camera2D.h"
 
-RenderComponent::RenderComponent(IRenderComponent& entity, Texture* texture)
+RenderComponent::RenderComponent(
+	IRenderComponent& entity, const Texture* texture)
 	:
 	_owner(entity),
 	_texture(texture)
 {
-	_origin = Vec2(texture->GetWidth() * 0.5f, texture->GetHeight() * 0.5f);
+	_origin = Vec2(texture->getWidth() * 0.5f, texture->getHeight() * 0.5f);
 
 	//and add yourself to the rendermanager...
 	GraphicsDriver::instance->addRenderable(this);
@@ -22,9 +23,6 @@ RenderComponent::~RenderComponent()
 	GraphicsDriver::instance->removeRenderable(this);
 }
 
-#include <iomanip>
-#include <iostream>
-
 void RenderComponent::draw(const SDL_Rect& veiw_transform)
 {
 	if (_texture)
@@ -32,8 +30,8 @@ void RenderComponent::draw(const SDL_Rect& veiw_transform)
 		GraphicsDriver::instance->drawSprite(
 			_owner.getPos(),
 			_origin,
-			_texture->GetWidth(),
-			_texture->GetHeight(),
-			_texture->GetData());
+			_texture->getWidth(),
+			_texture->getHeight(),
+			_texture->getData());
 	}
 }

@@ -6,16 +6,16 @@ class Texture;
 class TextureManager
 {
 public:
-	static void StaticInit();
+	static void staticInit();
 
-	static std::unique_ptr<TextureManager> sInstance;
+	static std::unique_ptr<TextureManager> instance;
 
-	Texture* GetTexture(const std::string& texture_name);
+	const Texture& getTexture(const std::string& texture_name);
 
 private:
 	TextureManager();
 
-	bool CacheTexture(std::string name, const char* file_name);
+	bool cacheTexture(std::string name, const char* file_name);
 
-	std::unordered_map<std::string, Texture*> _name_to_texture;
+	std::unordered_map<std::string, std::unique_ptr<Texture>> _name_to_texture;
 };

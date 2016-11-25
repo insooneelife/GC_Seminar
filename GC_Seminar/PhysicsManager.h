@@ -94,16 +94,16 @@ struct ContactPoint
 	float32 separation;
 };
 
-class GenericEntity;
+class ICollisionComponent;
 class EntityAABBCallback : public b2QueryCallback 
 {
 public:
-	std::vector<GenericEntity*> foundEntities;
+	std::vector<ICollisionComponent*> foundEntities;
 
 	bool ReportFixture(b2Fixture* fixture)
 	{
 		if (fixture->GetBody()->GetUserData())
-			foundEntities.push_back(static_cast<GenericEntity*>(fixture->GetBody()->GetUserData()));
+			foundEntities.push_back(static_cast<ICollisionComponent*>(fixture->GetBody()->GetUserData()));
 		return true;
 	}
 };
@@ -112,7 +112,7 @@ public:
 class EntityRayCastCallback : public b2RayCastCallback 
 {
 public:
-	std::vector<GenericEntity*> foundEntities;
+	std::vector<ICollisionComponent*> foundEntities;
 
 	virtual float32 ReportFixture(
 		b2Fixture* fixture,
@@ -121,7 +121,7 @@ public:
 		float32 fraction) override
 	{
 		if (fixture->GetBody()->GetUserData())
-			foundEntities.push_back(static_cast<GenericEntity*>(fixture->GetBody()->GetUserData()));
+			foundEntities.push_back(static_cast<ICollisionComponent*>(fixture->GetBody()->GetUserData()));
 		return true;
 	}
 };

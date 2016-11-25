@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------
 
 #include "../Math/Vec2.h"
+#include <SDL/SDL.h>
 
 class Texture;
 class IRenderComponent;
@@ -16,17 +17,15 @@ class RenderComponent
 {
 public:
 
-	RenderComponent(IRenderComponent& entity, Texture* texture);
-
+	RenderComponent(IRenderComponent& entity, const Texture* texture);
 	~RenderComponent();
 
-	void setTexture(Texture* inTexture) { _texture = inTexture; }
-
+	inline void setTexture(const Texture* texture) { _texture = texture; }
 	virtual void draw(const SDL_Rect& inViewTransform);
 
 private:
 
 	IRenderComponent& _owner;
-	Vec2								_origin;
-	Texture*							_texture;
+	Vec2 _origin;
+	const Texture* _texture;
 };

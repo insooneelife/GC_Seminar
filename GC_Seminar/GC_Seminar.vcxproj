@@ -66,8 +66,10 @@
     <ClCompile Include="..\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\Box2D\Rope\b2Rope.cpp" />
     <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\AttackComponent.cpp" />
     <ClCompile Include="Components\CollisionComponent.cpp" />
+    <ClCompile Include="Components\HitComponent.cpp" />
     <ClCompile Include="Components\MoveComponent.cpp" />
     <ClCompile Include="Components\RenderComponent.cpp" />
     <ClCompile Include="Components\TargetComponent.cpp" />
@@ -134,8 +136,10 @@
     <ClInclude Include="..\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\AttackComponent.h" />
     <ClInclude Include="Components\CollisionComponent.h" />
+    <ClInclude Include="Components\HitComponent.h" />
     <ClInclude Include="Components\Interfaces.h" />
     <ClInclude Include="Components\MoveComponent.h" />
     <ClInclude Include="Components\RenderComponent.h" />

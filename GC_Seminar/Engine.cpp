@@ -175,7 +175,7 @@ bool Engine::init()
 	Camera2D::staticInit(1280, 720);
 
 	EntityManager::staticInit();
-	TextureManager::StaticInit();
+	TextureManager::staticInit();
 
 	_world.reset(new World());
 

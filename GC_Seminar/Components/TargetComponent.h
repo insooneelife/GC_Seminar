@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 class World;
 class ITargetComponent;
 class TargetComponent
@@ -8,7 +10,8 @@ public:
 	static ITargetComponent* getClosestTarget(
 		World& world,
 		ITargetComponent& entity,
-		float range);
+		float range,
+		std::function<bool(unsigned int, unsigned int, bool)> filter);
 
 	ITargetComponent* getTarget()					{ return _target; }
 

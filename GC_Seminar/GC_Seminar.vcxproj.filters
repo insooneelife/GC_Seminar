@@ -246,6 +246,12 @@
     <ClCompile Include="Components\TargetComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Components\HitComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\AnimationComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -456,6 +462,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\TargetComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\HitComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\AnimationComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

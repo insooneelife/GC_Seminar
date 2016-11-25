@@ -14,7 +14,6 @@
 #include "../Math/Vec2.h"
 #include <Box2D/Box2D.h>
 
-
 class Message;
 class IMessageHandler
 {
@@ -35,6 +34,7 @@ public:
 	virtual void setTransform(const b2Transform& trans) = 0;
 };
 
+class GenericEntity;
 class CollisionComponent;
 class ICollisionComponent : public ITransformComponent
 {
@@ -59,31 +59,15 @@ public:
 	virtual void setMove(MoveComponent* const move) = 0;
 };
 
-/*class AbstFsmComponent;
-class IFsm
-{
-	virtual AbstFsmComponent& getFsm() const = 0;
-};
 
-class Hittable;
-class IHittable : public IMessageHandler
+class AnimationComponent;
+class IAnimationComponent : public IRenderComponent
 {
 public:
-	virtual Hittable& getHittable() const = 0;
-	virtual void setHittable(Hittable* const hit) = 0;
-	virtual bool isAlive() const = 0;
-};
-*/
-
-
-class Animation;
-class IAnimation : public IRenderComponent
-{
-public:
-	virtual Animation& getAnimation() const = 0;
+	virtual AnimationComponent& getAnimation() const = 0;
+	virtual void setAnimation(AnimationComponent* const animation) = 0;
 	virtual std::string getName() const = 0;
 };
-
 
 
 class TargetComponent;
@@ -103,6 +87,16 @@ public:
 	virtual AttackComponent& getAttack() const = 0;
 	virtual void setAttack(AttackComponent* const attack) = 0;
 	virtual unsigned int getID() const = 0;
+};
+
+class HitComponent;
+class IHitComponent
+{
+public:
+	virtual HitComponent& getHit() const = 0;
+	virtual void setHit(HitComponent* const hit) = 0;
+	virtual bool isAlive() const = 0;
+	virtual void setDead() = 0;
 };
 
 /*

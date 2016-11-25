@@ -7,9 +7,9 @@ public:
 	Texture(int width, int height, SDL_Texture* texture);
 	~Texture();
 
-	int	GetWidth()	const			{ return _width; }
-	int	GetHeight()	const			{ return _height; }
-	SDL_Texture* GetData() const	{ return _texture; }
+	int	getWidth()	const			{ return _width; }
+	int	getHeight()	const			{ return _height; }
+	SDL_Texture* getData() const	{ return _texture; }
 
 private:
 	int _width;			

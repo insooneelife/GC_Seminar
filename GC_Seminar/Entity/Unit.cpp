@@ -12,6 +12,8 @@
 #include "../Components/MoveComponent.h"
 #include "../Components/TargetComponent.h"
 #include "../Components/AttackComponent.h"
+#include "../Components/HitComponent.h"
+#include "../Components/AnimationComponent.h"
 #include "../Utils.h"
 
 
@@ -33,16 +35,16 @@ namespace
 	const float kHunterSpeed = 0.01f;
 
 	const float kUnitAttackRange = 0.5f;
-	const float kUnitViewRange = 2.0f;
+	const float kUnitViewRange = 5.0f;
 
 	const int kUnitAttackDamage = 10;
 	const int kUnitAttackFrameDelay = 5;
 }
 
-Unit* Unit::create(World& world, const Vec2& pos)
+Unit* Unit::create(World& world, const Vec2& pos, const std::string& name)
 {
 	unsigned int id = world.genID();
-	Unit* unit = new Unit(world, id, pos);
+	Unit* unit = new Unit(world, id, pos, name);
 
 	b2CircleShape circle;
 	circle.m_radius = kHunterBodyRadius;
@@ -55,16 +57,17 @@ Unit* Unit::create(World& world, const Vec2& pos)
 			b2BodyType::b2_dynamicBody,
 			pos,
 			false,
-			kHunterBodyRadius);
+			kHunterBodyRadius,
+			unit->getType());
 
 	unit->setCollision(collision);
 
 	RenderComponent* rendering = 
-		new RenderComponent(*unit, TextureManager::sInstance->GetTexture("ZealotAttack1"));
+		new RenderComponent(*unit, &TextureManager::instance->getTexture("ZealotAttack1"));
 	unit->setRendering(rendering);
 
 	MoveComponent* move = 
-		new MoveComponent(*unit, kHunterSpeed, Vec2(0, 0), true);
+		new MoveComponent(*unit, kHunterSpeed, Vec2(0, 0), false);
 	unit->setMove(move);
 	
 	TargetComponent* target =
@@ -75,6 +78,13 @@ Unit* Unit::create(World& world, const Vec2& pos)
 		new MeleeAttack(*unit, kUnitAttackDamage, kUnitAttackFrameDelay);
 	unit->setAttack(attack);
 
+	HitComponent* hit =new HitComponent(*unit, kDefaultMaxHP);
+	unit->setHit(hit);
+
+	AnimationComponent* animation = 
+		new BaseAnimation(*unit, 9);
+	unit->setAnimation(animation);
+
 	return unit;
 }
 
@@ -82,15 +92,26 @@ Unit* Unit::create(World& world, const Vec2& pos)
 Unit::Unit(
 	World& world,
 	unsigned int id,
-	const Vec2& pos)
+	const Vec2& pos,
+	const std::string& name)
 	:
 	GenericEntity(world, id, GenericEntity::Type::kUnit),
 	_move(nullptr),
 	_rendering(nullptr),
-	_collision(nullptr)
+	_collision(nullptr),
+	_targetting(nullptr),
+	_attack(nullptr),
+	_hit(nullptr),
+	_animation(nullptr),
+	_name(name)
+{
+	std::cout << "unit" << std::endl;
+}
+
+Unit::~Unit()
 {}
 
-
+// For ITransformComponent .. 
 Vec2 Unit::getPos() const
 {
 	return Vec2(_collision->getBody()->GetTransform().p.x, _collision->getBody()->GetTransform().p.y);
@@ -124,6 +145,7 @@ void Unit::setTransform(const b2Transform& trans)
 	_collision->getBody()->SetTransform(trans.p, trans.q.GetAngle());
 }
 
+// For ICollisionComponent .. 
 CollisionComponent& Unit::getCollision() const 
 {
 	return *_collision; 
@@ -131,9 +153,10 @@ CollisionComponent& Unit::getCollision() const
 
 void Unit::setCollision(CollisionComponent* const collision) 
 {
-	_collision = (collision); 
+	_collision.reset(collision); 
 }
 
+// For IMoveComponent .. 
 MoveComponent& Unit::getMove() const 
 {
 	return *_move; 
@@ -141,9 +164,10 @@ MoveComponent& Unit::getMove() const
 
 void Unit::setMove(MoveComponent* const move) 
 {
-	_move = (move); 
+	_move.reset(move); 
 }
 
+// For IRenderComponent .. 
 RenderComponent& Unit::getRendering() const 
 {
 	return *_rendering; 
@@ -151,17 +175,18 @@ RenderComponent& Unit::getRendering() const
 
 void Unit::setRendering(RenderComponent* const render)
 {
-	_rendering = (render); 
+	_rendering.reset(render); 
 }
 
+// For ITargetComponent .. 
 TargetComponent& Unit::getTargetting() const
 {
-	return *_target;
+	return *_targetting;
 }
 
 void Unit::setTargetting(TargetComponent* const target)
 {
-	_target = target;
+	_targetting.reset(target);
 }
 
 bool Unit::isAlive() const
@@ -176,6 +201,7 @@ unsigned int Unit::getID() const
 	return GenericEntity::getID();
 }
 
+// For IAttackComponent .. 
 AttackComponent& Unit::getAttack() const
 {
 	return *_attack;
@@ -183,9 +209,40 @@ AttackComponent& Unit::getAttack() const
 
 void Unit::setAttack(AttackComponent* const attack)
 {
-	_attack = attack;
+	_attack.reset(attack);
 }
 
+// For IHitComponent .. 
+HitComponent& Unit::getHit() const
+{
+	return *_hit;
+}
+
+void Unit::setHit(HitComponent* const hit)
+{
+	_hit.reset(hit);
+}
+
+void Unit::setDead()
+{
+	_fsm.process_event(Fsm::hasToDie<Unit>(*this));
+}
+
+// For IAnimationComponent .. 
+AnimationComponent& Unit::getAnimation() const 
+{
+	return *_animation;
+}
+
+void Unit::setAnimation(AnimationComponent* const animation)
+{
+	_animation.reset(animation);
+}
+
+std::string Unit::getName() const
+{
+	return _name;
+}
 
 
 void Unit::update()
@@ -217,7 +274,7 @@ bool Unit::handleMessage(const Message& msg)
 	switch (msg.getMsg())
 	{
 	case Message::kDamage:
-		//takeDamage(Message::voidToType<int>(msg.getExtraInfo()), msg.getSender());
+		_hit->takeDamaged(Message::voidToType<int>(msg.getExtraInfo()));
 		break;
 
 	case Message::kIncrease:

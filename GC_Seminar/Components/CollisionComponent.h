@@ -10,6 +10,7 @@
 
 #include "../Math/Vec2.h"
 #include "../Engine.h"
+#include "../Entity/GenericEntity.h"
 #include <Box2D/Box2D.h>
 
 class ICollisionComponent;
@@ -25,17 +26,23 @@ public:
 		b2BodyType type,
 		Vec2 pos,
 		bool sensor,
-		float radius);
+		float radius,
+		GenericEntity::Type owner_type);
 
 	inline b2Body* getBody() const { return _body; }
 	inline float getBRadius() const { return _radius; }
+	inline GenericEntity::Type getOwnerType() const { return _owner_type; }
 
 	CollisionComponent::CollisionComponent(
-		ICollisionComponent& owner, b2Body* body, float radius)
+		ICollisionComponent& owner,
+		b2Body* body,
+		float radius,
+		GenericEntity::Type type)
 		:
 		_owner(owner),
 		_body(body),
-		_radius(radius)
+		_radius(radius),
+		_owner_type(type)
 	{}
 
 	~CollisionComponent()
@@ -48,4 +55,5 @@ protected:
 	ICollisionComponent& _owner;
 	b2Body* _body;
 	float _radius;
+	GenericEntity::Type _owner_type;
 };

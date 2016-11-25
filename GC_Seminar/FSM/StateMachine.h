@@ -169,7 +169,7 @@ namespace
 				if (owner.getMove().getDestination().distance(owner.getPos()) < arriveExpected)
 				{
 					owner.getMove().setHasDestination(false);
-					//_animate.SetAction("Idle");
+					owner.getAnimation().setAction("Idle");
 					owner.getFsm().process_event(arrive<Entity>(owner));
 					return;
 				}
@@ -180,12 +180,12 @@ namespace
 				{
 					Vec2 target = owner.getTargetting().getTarget()->getPos();
 					owner.getMove().setDestination(target);
-					//_animate.SetAction("Walk");
+					owner.getAnimation().setAction("Walk");
 					owner.getFsm().process_event(enemyInView<Entity>(owner));
 					return;
 				}
 
-				//_animate.UpdateAnimation(_owner.Renderer);
+				owner.getAnimation().updateAnimation(owner.getRendering());
 				owner.getMove().updateMovement();
 			}
 
@@ -211,14 +211,14 @@ namespace
 				if (owner.getTargetting().isAttackable())
 				{
 
-					//_animate.SetAction("Attack");
+					owner.getAnimation().setAction("Attack");
 					owner.getFsm().process_event(enemyInRange<Entity>(owner));
 					return;
 				}
 
 				if (!owner.getTargetting().isViewable())
 				{
-					//_animate.SetAction("Walk");
+					owner.getAnimation().setAction("Walk");
 					owner.getFsm().process_event(enemyOutView<Entity>(owner));
 					return;
 				}
@@ -228,7 +228,7 @@ namespace
 					owner.getMove().setDestination(target);
 				}
 
-				//_animate.UpdateAnimation(_owner.Renderer);
+				owner.getAnimation().updateAnimation(owner.getRendering());
 				owner.getMove().updateMovement();
 			}
 		};
@@ -262,17 +262,17 @@ namespace
 			{
 				std::cout << "accept: [WaitForNextAttack]" << std::endl; 
 
-				//if (_animate.UpdateAnimation(_owner.Renderer))
+				if (owner.getAnimation().updateAnimation(owner.getRendering()))
 				{
 					owner.getTargetting().updateTarget(owner.getWorld());
 					if (owner.getTargetting().isAttackable())
 					{
-						//_animate.SetAction("Attack");
+						owner.getAnimation().setAction("Attack");
 						owner.getFsm().process_event(readyToAttack<Entity>(owner));
 					}
 					else
 					{
-						//_animate.SetAction("Idle");
+						owner.getAnimation().setAction("Idle");
 						owner.getFsm().process_event(enemyOutRange<Entity>(owner));
 					}
 				}

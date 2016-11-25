@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Components/RenderComponent.h"
 
-std::unique_ptr< GraphicsDriver > GraphicsDriver::instance = nullptr;
+std::unique_ptr<GraphicsDriver> GraphicsDriver::instance = nullptr;
 
 SDL_Color GraphicsDriver::red;
 SDL_Color GraphicsDriver::blue;
@@ -413,6 +413,7 @@ void GraphicsDriver::addRenderable(RenderComponent* renderable)
 
 void GraphicsDriver::removeRenderable(RenderComponent* renderable)
 {
+	std::cout << "remove" << std::endl;
 	int index = getRenderableIndex(renderable);
 
 	if (index != -1)
@@ -422,6 +423,7 @@ void GraphicsDriver::removeRenderable(RenderComponent* renderable)
 		{
 			_renderables[index] = _renderables[lastIndex];
 		}
+
 		_renderables.pop_back();
 	}
 }

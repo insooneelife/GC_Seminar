@@ -1,10 +1,7 @@
 #include "GraphicsDriver.h"
-<<<<<<< HEAD
 #include "EntityManager.h"
 #include "Camera2D.h"
 #include "Utils.h"
-=======
->>>>>>> fix
 #include <iostream>
 #include "Components/RenderComponent.h"
 
@@ -13,6 +10,8 @@ std::unique_ptr<GraphicsDriver> GraphicsDriver::instance = nullptr;
 SDL_Color GraphicsDriver::red;
 SDL_Color GraphicsDriver::blue;
 SDL_Color GraphicsDriver::yellow;
+SDL_Color GraphicsDriver::black;
+SDL_Color GraphicsDriver::white;
 
 SDL_Color GraphicsDriver::green;
 SDL_Color GraphicsDriver::indigo;
@@ -40,13 +39,9 @@ bool GraphicsDriver::staticInit(SDL_Window* wnd)
 	// Set color
 	red.r = 255;	red.g = 0;		red.b = 0;
 	blue.r = 0;		blue.g = 0;		blue.b = 255;
-<<<<<<< HEAD
 	yellow.r = 255;	yellow.g = 255;	yellow.b = 0;
 	black.r = 0;	black.g = 0;	black.b = 0;
 	white.r = 255;	white.g = 255;	white.b = 255;
-=======
-	yellow.r = 255;	yellow.g = 237;	yellow.b = 0;
->>>>>>> fix
 
 	green.r = 0;		green.g = 255;		green.b = 0;
 	indigo.r = 75;		indigo.g = 0;		indigo.b = 130;
@@ -116,7 +111,6 @@ GraphicsDriver::~GraphicsDriver()
 	}
 }
 
-<<<<<<< HEAD
 void GraphicsDriver::render()
 {
 	for (auto e : _renderables)
@@ -125,8 +119,6 @@ void GraphicsDriver::render()
 	for (auto e : _draw_shapes)
 		drawBox2DShape(e);
 }
-=======
->>>>>>> fix
 
 void GraphicsDriver::clear()
 {
@@ -176,7 +168,6 @@ void GraphicsDriver::drawPoint(Vec2 p, SDL_Color color, bool on_ui)
 
 void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color, bool on_ui)
 {
-<<<<<<< HEAD
 	if (!Camera2D::instance->segmentInScreen(a, b) && !on_ui)
 		return;
 
@@ -186,8 +177,6 @@ void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color, bool on_ui)
 		b = Camera2D::instance->worldToScreen(b);
 	}
 
-=======
->>>>>>> fix
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderDrawLine(
 		_renderer,
@@ -199,15 +188,12 @@ void GraphicsDriver::drawLine(Vec2 a, Vec2 b, SDL_Color color, bool on_ui)
 
 void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color, bool on_ui)
 {
-<<<<<<< HEAD
 	if (!on_ui)
 	{
 		p = Camera2D::instance->worldToScreen(p);
 	}
 
 
-=======
->>>>>>> fix
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 	SDL_Rect rect;
 	rect.x = static_cast<int>(p.x);
@@ -238,14 +224,11 @@ void GraphicsDriver::drawCircle(Vec2 p, float r, SDL_Color color, float fragment
 
 void GraphicsDriver::drawText(const std::string& str, Vec2 origin, const SDL_Color& color, bool on_ui)
 {
-<<<<<<< HEAD
 	if (!on_ui)
 	{
 		origin = Camera2D::instance->worldToScreen(origin);
 	}
 
-=======
->>>>>>> fix
 	// Convert the color
 	SDL_Color ccolor;
 	ccolor.r = color.r;

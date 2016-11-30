@@ -3,9 +3,10 @@
 #include "Interfaces.h"
 #include "../Entity/GenericEntity.h"
 #include "../EntityManager.h"
+#include "../World.h"
 
 
-void MeleeAttack::updateAttack()
+void MeleeAttack::updateAttack(World& world)
 {
 	EntityManager::instance->dispatchMsg(
 		_owner.getID(),
@@ -15,7 +16,7 @@ void MeleeAttack::updateAttack()
 }
 
 
-void RangeAttack::updateAttack()
+void RangeAttack::updateAttack(World& world)
 {
-	//_owner.Engine.World.CreateProjectile("Ball", _owner.PlayerId, _owner.LocalPos(), _targetSys.TargetId, 30);
+	world.createProjectile("Fire", _owner.getPos(), _owner.getID());
 }

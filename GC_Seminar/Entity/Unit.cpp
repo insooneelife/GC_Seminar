@@ -34,7 +34,7 @@ namespace
 	const float kHunterBodyRadius = 0.20f;
 	const float kHunterSpeed = 0.01f;
 
-	const float kUnitAttackRange = 0.5f;
+	const float kUnitAttackRange = 2.5f;
 	const float kUnitViewRange = 5.0f;
 
 	const int kUnitAttackDamage = 10;
@@ -44,7 +44,7 @@ namespace
 Unit* Unit::create(World& world, const Vec2& pos, const std::string& name)
 {
 	unsigned int id = world.genID();
-	Unit* unit = new Unit(world, id, pos, name);
+	Unit* unit = new Unit(world, id, name);
 
 	b2CircleShape circle;
 	circle.m_radius = kHunterBodyRadius;
@@ -88,25 +88,31 @@ Unit* Unit::create(World& world, const Vec2& pos, const std::string& name)
 	return unit;
 }
 
+Unit* Unit::createRange(
+	World& world, const Vec2& pos, const std::string& name)
+{
+	auto unit = create(world, pos, name);
+
+	AttackComponent* attack =
+		new RangeAttack(*unit, kUnitAttackDamage, kUnitAttackFrameDelay);
+	unit->setAttack(attack);
+	return unit;
+}
 
 Unit::Unit(
 	World& world,
 	unsigned int id,
-	const Vec2& pos,
 	const std::string& name)
 	:
-	GenericEntity(world, id, GenericEntity::Type::kUnit),
+	GenericEntity(world, id, GenericEntity::Type::kUnit, name),
 	_move(nullptr),
 	_rendering(nullptr),
 	_collision(nullptr),
 	_targetting(nullptr),
 	_attack(nullptr),
 	_hit(nullptr),
-	_animation(nullptr),
-	_name(name)
-{
-	std::cout << "unit" << std::endl;
-}
+	_animation(nullptr)
+{}
 
 Unit::~Unit()
 {}

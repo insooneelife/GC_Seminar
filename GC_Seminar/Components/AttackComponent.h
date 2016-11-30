@@ -1,5 +1,6 @@
 #pragma once
 
+class World;
 class IAttackComponent;
 class AttackComponent
 {
@@ -21,7 +22,7 @@ public:
 		_attackFrameDelay(attackFrameDelay)
 	{}
 
-	virtual void updateAttack() = 0;
+	virtual void updateAttack(World& world) = 0;
 
 protected:
 
@@ -40,7 +41,7 @@ public:
 		AttackComponent(entity, damage, attackFrameDelay)
 	{}
 
-	virtual void updateAttack() override;
+	virtual void updateAttack(World& world) override;
 };
 
 
@@ -52,5 +53,5 @@ public:
 		AttackComponent(entity, damage, attackFrameDelay)
 	{}
 
-	virtual void updateAttack() override;
+	virtual void updateAttack(World& world) override;
 };

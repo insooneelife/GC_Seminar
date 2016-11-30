@@ -245,7 +245,7 @@ namespace
 			{
 				std::cout << "accept: [Attack]" << std::endl; 
 
-				owner.getAttack().updateAttack();
+				owner.getAttack().updateAttack(owner.getWorld());
 				owner.getFsm().process_event(doneAttack<Entity>(owner));
 			}
 		};

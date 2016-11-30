@@ -16,6 +16,8 @@
 #include "Math/Vec2.h"
 
 class GenericEntity;
+class Unit;
+class Projectile;
 
 class World
 {
@@ -57,7 +59,8 @@ public:
 	void createStructure(const Vec2& pos, float radius, int type);
 	void createTrigger(const Vec2& pos, int condition);*/
 
-
+	Unit* createUnit(const std::string& name, const Vec2& pos);
+	Projectile* createProjectile(const std::string& name, const Vec2& pos, unsigned int owner_id);
 
 	void update();
 	void render();

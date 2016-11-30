@@ -68,6 +68,7 @@
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="Components\AnimationComponent.cpp" />
     <ClCompile Include="Components\AttackComponent.cpp" />
+    <ClCompile Include="Components\ClickComponent.cpp" />
     <ClCompile Include="Components\CollisionComponent.cpp" />
     <ClCompile Include="Components\HitComponent.cpp" />
     <ClCompile Include="Components\MoveComponent.cpp" />
@@ -76,6 +77,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Entity\GenericEntity.cpp" />
+    <ClCompile Include="Entity\Projectile.cpp" />
     <ClCompile Include="Entity\Unit.cpp" />
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
@@ -138,6 +140,7 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\AttackComponent.h" />
+    <ClInclude Include="Components\ClickComponent.h" />
     <ClInclude Include="Components\CollisionComponent.h" />
     <ClInclude Include="Components\HitComponent.h" />
     <ClInclude Include="Components\Interfaces.h" />
@@ -147,6 +150,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Entity\GenericEntity.h" />
+    <ClInclude Include="Entity\Projectile.h" />
     <ClInclude Include="Entity\Unit.h" />
     <ClInclude Include="FSM\StateMachine.h" />
     <ClInclude Include="GraphicsDriver.h" />

@@ -99,21 +99,14 @@ public:
 	virtual void setDead() = 0;
 };
 
-/*
-class ITrainable
+class ClickComponent;
+class IClickComponent : public ICollisionComponent
 {
-	TrainSystem TrainSys{ get; set; }
-}
+	virtual ClickComponent& getClick() const = 0;
+	virtual void setClick(ClickComponent* const click) = 0;
 
-
-class IClickable
-{
-	Clickable Click{ get; set; }
-	Point2D Pos{ get; }
-
-	bool Collide(Point2D clickedPos);
-	void EventOnSelected(uint playerId);
-	void EventOnDeselected();
-	void EventOnTrySelected(bool onOff);
-}
-*/
+	virtual bool isCollide(Vec2 clicked_pos) const = 0;
+	virtual void eventOnSelected(unsigned int pid) = 0;
+	virtual void eventOnDeselected() = 0;
+	virtual void eventOnTrySelect(bool touched) = 0;
+};

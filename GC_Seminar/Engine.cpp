@@ -8,8 +8,6 @@
 #include "TextureManager.h"
 #include "Utils.h"
 
-#include "Entity/Hunter.h"
-
 #include <Box2D/Common/b2Draw.h>
 #include <chrono>
 

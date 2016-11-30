@@ -2,11 +2,6 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <iostream>
 #include "World.h"
-#include "Entity/Entity.h"
-#include "Entity/Hunter.h"
-#include "Entity/Prey.h"
-#include "Entity/Projectile.h"
-#include "Entity/Trigger.h"
 
 
 bool PhysicsManager::CheckContact(
@@ -300,8 +295,8 @@ void PhysicsManager::BeginContact(b2Contact* contact)
 	void* bodyUserDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 	if (bodyUserDataA && bodyUserDataB)
 	{
-		Entity* entA = static_cast<Entity*>(bodyUserDataA);
-		Entity* entB = static_cast<Entity*>(bodyUserDataB);
+		//Entity* entA = static_cast<Entity*>(bodyUserDataA);
+		//Entity* entB = static_cast<Entity*>(bodyUserDataB);
 
 		/*if (entA->getType() == Entity::Type::kHunter && entB->getType() == Entity::Type::kHunter)
 			World::collide(*static_cast<Hunter*>(entA), *static_cast<Hunter*>(entB));

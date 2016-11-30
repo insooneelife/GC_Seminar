@@ -10,6 +10,7 @@
 
 #include "Entity/GenericEntity.h"
 #include "Entity/Unit.h"
+#include "Entity/Projectile.h"
 
 namespace
 {
@@ -91,10 +92,15 @@ World::World()
 	_next_validate_id(1),
 	_physics(new PhysicsManager(kWorldX, kWorldY))
 {
-	auto entity = Unit::create(*this, Vec2(10.0f, 10.0f), "Zealot");
-	_entities.push_back(entity);
-	auto entity2 = Unit::create(*this, Vec2(7.5f, 7.5f), "Zealot");
-	_entities.push_back(entity2);
+	//auto entity = Unit::create(*this, Vec2(10.0f, 10.0f), "Zealot");
+	//_entities.push_back(entity);
+
+	auto entity = createUnit("Zealot", Vec2(10.0f, 10.0f));
+
+	//auto entity2 = Unit::create(*this, Vec2(7.5f, 7.5f), "Zealot");
+	//_entities.push_back(entity2);
+
+	createUnit("Zealot", Vec2(7.0f, 7.0f));
 
 	// Create player with hunter
 	//_player_entity = new Hunter(*this, genID(), Vec2(1.0f, 1.0f));
@@ -124,7 +130,9 @@ World::World()
 			random(1.0f, 4.0f),
 			type);
 	}*/
-		
+	
+	
+	
 	// Set camera
 	Vec2 heading = entity->getHeading();
 	Vec2 side = entity->getHeading().getPerp();
@@ -144,27 +152,18 @@ void World::update()
 	// If entities are inserted into vector when iterating,
 	// then it will make a big problem.
 	
-	/*while (!_created_entities.empty())
+	while (!_created_entities.empty())
 	{
-		Entity* ent = _created_entities.front();
+		GenericEntity* ent = _created_entities.front();
 
-		if (ent->getType() == Entity::kHunter)
-			_hunters.push_back(static_cast<Hunter*>(ent));
+		if (ent->getType() == GenericEntity::kUnit)
+			_entities.push_back(static_cast<Unit*>(ent));
 
-		else if (ent->getType() == Entity::kPrey)
-			_preys.push_back(static_cast<Prey*>(ent));
-
-		else if (ent->getType() == Entity::kProjectile)
-			_projectiles.push_back(static_cast<Projectile*>(ent));
-
-		else if (ent->getType() == Entity::kStructure)
-			_structures.push_back(static_cast<Structure*>(ent));
-
-		else if (ent->getType() == Entity::kTrigger)
-			_triggers.push_back(static_cast<Trigger*>(ent));
+		else if (ent->getType() == GenericEntity::kProjectile)
+			_entities.push_back(static_cast<Projectile*>(ent));
 
 		_created_entities.pop();
-	}*/
+	}
 
 	while (!_created_entities.empty())
 	{
@@ -221,6 +220,20 @@ void World::render()
 		e->render();
 
 	_physics->Render();
+}
+
+Unit* World::createUnit(const std::string& name, const Vec2& pos)
+{
+	auto unit = Unit::createRange(*this, pos, name);
+	_created_entities.push(unit);
+	return unit;
+}
+
+Projectile* World::createProjectile(const std::string& name, const Vec2& pos, unsigned int owner_id)
+{
+	auto proj = Projectile::create(*this, pos, name, owner_id);
+	_created_entities.push(proj);
+	return proj;
 }
 
 /*

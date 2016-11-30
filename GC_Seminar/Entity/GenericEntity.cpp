@@ -7,11 +7,13 @@
 GenericEntity::GenericEntity(
 	World& world,
 	unsigned int id,
-	Type type)
+	Type type,
+	const std::string& name)
 	:
 	_world(world),
 	_id(id),
 	_type(type),
+	_name(name),
 	_is_garbage(false)
 {
 	EntityManager::instance->registerEntity(this);

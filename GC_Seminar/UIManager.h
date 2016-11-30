@@ -13,7 +13,6 @@
 #include <SDL/SDL_ttf.h>
 #include <memory>
 #include "Math/Vec2.h"
-#include "Entity/Button.h"
 
 class UIManager
 {

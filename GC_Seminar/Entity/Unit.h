@@ -35,9 +35,12 @@ public:
 	static Unit* create(
 		World& world, const Vec2& pos, const std::string& name);
 
+	static Unit* createRange(
+		World& world, const Vec2& pos, const std::string& name);
+
 	inline Fsm& getFsm() { return _fsm; }
 
-	Unit(World& world, unsigned int id, const Vec2& pos, const std::string& name);
+	Unit(World& world, unsigned int id, const std::string& name);
 	virtual ~Unit();
 
 	virtual Vec2 getPos() const;
@@ -86,7 +89,4 @@ private:
 	std::unique_ptr<HitComponent> _hit;
 	std::unique_ptr<AnimationComponent> _animation;
 	Fsm _fsm;
-
-	std::string _name;
-
 };

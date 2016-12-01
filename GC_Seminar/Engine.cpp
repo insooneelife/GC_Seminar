@@ -6,17 +6,46 @@
 #include "Camera2D.h"
 #include "UIManager.h"
 #include "Utils.h"
+#include "Network/Network/NetworkManagerClient.h"
 
 #include "Entity/Hunter.h"
 
 Engine::Engine()
+	:
+	_world(nullptr)
 {}
 
 Engine::~Engine()
 {}
 
-void Engine::handleEvent(SDL_Event* inEvent)
+void Engine::handleEvent(SDL_Event* ev)
 {
+	handleEventInLobby(ev);
+	handleEventInRoom(ev);
+	handleEventInGame(ev);
+}
+
+void Engine::handleEventInLobby(SDL_Event* ev)
+{
+	switch (ev->type)
+	{
+	case SDL_KEYDOWN:
+		// Details
+		NetworkManagerClient::instance->processInput(ev->key.keysym.sym);
+		
+		break;
+	}
+}
+
+void Engine::handleEventInRoom(SDL_Event* ev)
+{
+}
+
+void Engine::handleEventInGame(SDL_Event* ev)
+{
+	if (_world == nullptr)
+		return;
+
 	Hunter* player = _world->getPlayerEntity();
 	Vec2 velocity;
 
@@ -31,12 +60,12 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	int my = 0;
 
 	Button* button = nullptr;
-	
-	switch (inEvent->type)
+
+	switch (ev->type)
 	{
 	case SDL_KEYDOWN:
 		// Details
-		switch (inEvent->key.keysym.sym) 
+		switch (ev->key.keysym.sym)
 		{
 		case SDLK_a:
 			std::cout << "a" << std::endl;
@@ -61,7 +90,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 			press[SDLK_s] = true;
 			velocity = directionFromMultiKey(press[SDLK_a], press[SDLK_d], down) * distance;
 			break;
-			
+
 		case SDLK_SPACE:
 			break;
 
@@ -75,7 +104,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 		break;
 	case SDL_KEYUP:
 		// Details
-		switch (inEvent->key.keysym.sym)
+		switch (ev->key.keysym.sym)
 		{
 		case SDLK_a:
 			std::cout << "a up" << std::endl;
@@ -107,9 +136,9 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&mx, &my);
 
-		button = UIManager::instance->trySelect(Vec2(mx, my));
-		if(button)
-			button->update();
+		//button = UIManager::instance->trySelect(Vec2(mx, my));
+		//if(button)
+		//button->update();
 
 		if (player)
 			_world->createProjectile(
@@ -117,17 +146,17 @@ void Engine::handleEvent(SDL_Event* inEvent)
 				player->getPos(),
 				player->getHeading(),
 				player->getProjSpeed());
-		
+
 		break;
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&mx, &my);
 		if (player)
 			player->setHeading(
-				(Camera2D::instance->screenToWorld(Vec2(mx, my)) 
-					- player->getPos()).getNormalized());
+			(Camera2D::instance->screenToWorld(Vec2(mx, my))
+				- player->getPos()).getNormalized());
 		break;
 	case SDL_MOUSEWHEEL:
-		if (inEvent->wheel.y > 0)
+		if (ev->wheel.y > 0)
 		{
 			Camera2D::instance->setScale(
 				Camera2D::instance->getScale() + Vec2(0.1f, 0.1f));
@@ -143,8 +172,10 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	}
 }
 
-bool Engine::init()
+bool Engine::init(const std::string& server_addr, const std::string& client_name)
 {
+	NetworkManagerClient::staticInit(server_addr, client_name);
+
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
 	if (!WindowManager::staticInit())
@@ -158,16 +189,18 @@ bool Engine::init()
 	}
 	
 	Camera2D::staticInit(1280, 720);
-
 	EntityManager::staticInit();
 
+	return true;
+}
+
+void Engine::initWorld()
+{
 	_world.reset(new World(2400, 1400));
 
 	UIManager::staticInit();
 	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(80, 70), "Damage"));
 	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(180, 70), "Range"));
-
-	return true;
 }
 
 int Engine::run()
@@ -210,13 +243,17 @@ int Engine::run()
 void Engine::update()
 {
 	// World의 update
-	_world->update();
+	if(_world)
+		_world->update();
 	
+	NetworkManagerClient::instance->update();
+
 	// 새 그래픽 버퍼를 준비한다.
 	GraphicsDriver::instance->clear();
 	
 	// 화면에 그려질 모든 객체들을 그린다.
-	_world->render();
+	if (_world)
+		_world->render();
 	GraphicsDriver::instance->render();
 	//UIManager::instance->render();
 

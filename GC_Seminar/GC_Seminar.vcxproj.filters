@@ -15,6 +15,18 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{1005adeb-b612-4263-bf59-5849833fb9a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{4a0c1f72-c633-49ed-82bc-c27c5df20055}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Network">
+      <UniqueIdentifier>{5b62dc27-464a-44d5-8d8d-2e5cfa5e1a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Socket">
+      <UniqueIdentifier>{53afa915-1246-4384-a5d9-68d9c9f6cb20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\flatbuffers">
+      <UniqueIdentifier>{2f8f3f8c-e4a7-4bd9-b724-76bc6d9a6bd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -61,6 +73,27 @@
     </ClCompile>
     <ClCompile Include="Entity\Button.cpp">
       <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Network\NetworkManager.cpp">
+      <Filter>Network\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Network\NetworkManagerClient.cpp">
+      <Filter>Network\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Network\PacketFactory.cpp">
+      <Filter>Network\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Socket\SocketAddress.cpp">
+      <Filter>Network\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Socket\SocketUtil.cpp">
+      <Filter>Network\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Socket\TCPSocket.cpp">
+      <Filter>Network\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Socket\UDPSocket.cpp">
+      <Filter>Network\Socket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +150,30 @@
     </ClInclude>
     <ClInclude Include="Entity\Button.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\flatbuffers\GamePacket.hpp">
+      <Filter>Network\flatbuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Network\NetworkManager.h">
+      <Filter>Network\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Network\NetworkManagerClient.h">
+      <Filter>Network\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Network\PacketFactory.h">
+      <Filter>Network\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Socket\SocketAddress.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Socket\SocketUtil.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Socket\TCPSocket.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Socket\UDPSocket.h">
+      <Filter>Network\Socket</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

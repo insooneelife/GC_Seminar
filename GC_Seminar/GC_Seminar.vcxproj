@@ -31,6 +31,13 @@
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vec2.cpp" />
+    <ClCompile Include="Network\Network\NetworkManager.cpp" />
+    <ClCompile Include="Network\Network\NetworkManagerClient.cpp" />
+    <ClCompile Include="Network\Network\PacketFactory.cpp" />
+    <ClCompile Include="Network\Socket\SocketAddress.cpp" />
+    <ClCompile Include="Network\Socket\SocketUtil.cpp" />
+    <ClCompile Include="Network\Socket\TCPSocket.cpp" />
+    <ClCompile Include="Network\Socket\UDPSocket.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="World.cpp" />
@@ -50,6 +57,14 @@
     <ClInclude Include="Math\MathBase.h" />
     <ClInclude Include="Math\Transformations.h" />
     <ClInclude Include="Math\Vec2.h" />
+    <ClInclude Include="Network\flatbuffers\GamePacket.hpp" />
+    <ClInclude Include="Network\Network\NetworkManager.h" />
+    <ClInclude Include="Network\Network\NetworkManagerClient.h" />
+    <ClInclude Include="Network\Network\PacketFactory.h" />
+    <ClInclude Include="Network\Socket\SocketAddress.h" />
+    <ClInclude Include="Network\Socket\SocketUtil.h" />
+    <ClInclude Include="Network\Socket\TCPSocket.h" />
+    <ClInclude Include="Network\Socket\UDPSocket.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WindowManager.h" />
@@ -69,7 +84,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -134,7 +149,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2main.lib;SDL2test.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2main.lib;SDL2test.lib;zdll.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

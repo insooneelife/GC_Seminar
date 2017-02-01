@@ -22,7 +22,6 @@
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EntityManager.cpp" />
-    <ClCompile Include="Entity\Button.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\Hunter.cpp" />
     <ClCompile Include="Entity\Prey.cpp" />
@@ -39,7 +38,6 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityManager.h" />
-    <ClInclude Include="Entity\Button.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\Hunter.h" />
     <ClInclude Include="Entity\Prey.h" />

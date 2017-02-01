@@ -21,7 +21,7 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	Vec2 velocity;
 
 	static bool press[255] = { 0 };
-	const float distance = 1000;
+	const float distance = 100;
 	const Vec2 left(-1, 0);
 	const Vec2 right(1, 0);
 	const Vec2 up(0, 1);
@@ -30,8 +30,6 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	int mx = 0;
 	int my = 0;
 
-	Button* button = nullptr;
-	
 	switch (inEvent->type)
 	{
 	case SDL_KEYDOWN:
@@ -107,10 +105,6 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&mx, &my);
 
-		button = UIManager::instance->trySelect(Vec2(mx, my));
-		if(button)
-			button->update();
-
 		if (player)
 			_world->createProjectile(
 				player->getID(),
@@ -164,8 +158,6 @@ bool Engine::init()
 	_world.reset(new World(2400, 1400));
 
 	UIManager::staticInit();
-	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(80, 70), "Damage"));
-	UIManager::instance->addButton(new Button(*_world, _world->genID(), Vec2(180, 70), "Range"));
 
 	return true;
 }

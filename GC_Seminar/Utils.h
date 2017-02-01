@@ -102,4 +102,19 @@ namespace
 		}
 	}
 
+
+	inline bool circlesAmountOfOverlap(
+		Vec2 pos1, float radius1,
+		Vec2 pos2, float radius2,
+		Vec2& force)
+	{
+		force = Vec2::ZERO;
+		float amount_of_overlap = radius1 + radius2 - (pos1 - pos2).getLength();
+
+		if (amount_of_overlap < 0)
+			return false;
+
+		force = (pos1 - pos2).getNormalized() * amount_of_overlap;
+		return true;
+	}
 }

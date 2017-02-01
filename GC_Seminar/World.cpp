@@ -4,47 +4,37 @@
 #include "Camera2D.h"
 #include "Utils.h"
 #include "UIManager.h"
+#include "GraphicsDriver.h"
 
-#include "Math\Transformations.h"
+#include "Math/Transformations.h"
 
-#include "Entity/Hunter.h"
+#include "Entity/Snake.h"
 #include "Entity/Prey.h"
 #include "Entity/Projectile.h"
 #include "Entity/Wall.h"
 
 using namespace std;
 
-void World::collide(Hunter& h1, Hunter& h2)
+const float World::OneStep = 50.0f;
+const float World::SnakeSpeed = 1.0f;
+
+void World::collide(Snake& s1, Snake& s2)
 {
-	if ((h1.getPos().distance(h2.getPos()) < h1.getBRadius() + h2.getBRadius()))
+	if ((s1.getPos().distance(s2.getPos()) < s1.getBRadius() + s2.getBRadius()))
 	{
-		cout << "collide!  Hunter && Hunter" << endl;
-		/*if (h1.getBRadius() > h2.getBRadius())
-		{
-			h1.increase(h2.getIntake());
-			h2.setGarbage();
-		}
-		else if (h1.getBRadius() < h2.getBRadius())
-		{
-			h2.increase(h1.getIntake());
-			h1.setGarbage();
-		}
-		else
-		{}*/
+		cout << "collide!  Snake && Snake" << endl;
 	}
 }
 
-void World::collide(Hunter& h, Projectile& p)
+void World::collide(Snake& s, Projectile& p)
 {
-	if ((h.getPos().distance(p.getPos()) < h.getBRadius() + p.getBRadius()))
+	Vec2 collide_pos;
+	if(s.collideCircle(p.getPos(), p.getBRadius(), collide_pos))
+
+	//if ((s.getPos().distance(p.getPos()) < s.getBRadius() + p.getBRadius()))
 	{
-		cout << "collide!  Hunter && Projectile" << endl;
-
-		p.setGarbage();
-
-		int damage = h.getDamage();
-		EntityManager::instance->dispatchMsg(
-			p.getOwnerID(), h.getID(), Message::kDamage, &damage);
+		cout << "collide!  Snake && Projectile" << endl;
+		p.reflectCircle(collide_pos, s.getBRadius());
 	}
 }
 
@@ -53,29 +43,43 @@ void World::collide(Projectile& pro, Prey& prey)
 	if ((pro.getPos().distance(prey.getPos()) < pro.getBRadius() + prey.getBRadius()))
 	{
 		cout << "collide!  Projectile && Prey" << endl;
-		prey.setGarbage();
-		pro.setGarbage();
+		pro.reflectCircle(prey.getPos(), prey.getBRadius());
+	}
+}
+
+void World::collide(Projectile& p, Wall& w)
+{
+	if (segmentCircleOverlap(w.getBegin(), w.getEnd(), p.getPos(), p.getBRadius()))
+	{
+		cout << "collide!  Projectile && Wall" << endl;
+
+		float distance = sqrt(distToSegmentSq(w.getBegin(), w.getEnd(), p.getPos()));
+		p.reflect(w.getBegin(), w.getEnd());
+	}
+}
+
+void World::collide(Snake& s, Wall& w)
+{
+	if (segmentCircleOverlap(w.getBegin(), w.getEnd(), s.getPos(), s.getBRadius()))
+	{
+		cout << "collide!  Snake && Wall" << endl;
+
+		s.setGarbage();
+	}
+}
+
+void World::collide(Snake& s, Prey& p)
+{
+	if ((s.getPos().distance(p.getPos()) < s.getBRadius() + p.getBRadius()))
+	{
+		cout << "collide!  Snake && Prey" << endl;
+		p.setGarbage();
 
 		int increase = 1;
 		EntityManager::instance->dispatchMsg(
-			prey.getID(), pro.getOwnerID(), Message::kIncrease, &increase);
-
+			p.getID(), s.getID(), Message::kIncrease, &increase);
 	}
 }
-
-void World::collide(Hunter& h, Wall& w)
-{
-	if (segmentCircleOverlap(w.getBegin(), w.getEnd(), h.getPos(), h.getBRadius()))
-	{
-		cout << "collide!  Hunter && Wall" << endl;
-
-		float distance = sqrt(distToSegmentSq(w.getBegin(), w.getEnd(), h.getPos()));
-		Vec2 force = w.getHeading() * distance;
-		h.setPos(h.getPos() + force);
-	}
-}
-
-
 
 
 
@@ -113,17 +117,27 @@ World::World(float width, float height)
 	_height(height)
 {
 	// Create player with hunter
-	_player_entity = new Hunter(*this, genID(), Vec2(100.0f, 100.0f));
-	_hunters.push_back(_player_entity);
+	_player_entity = new Snake(*this, genID(), Vec2(100.0f, 100.0f));
+	_snakes.push_back(_player_entity);
 
 	// Create hunters
 	createHunter(Vec2(250.0f, 200.0f));
-	createHunter(Vec2(150.0f, 500.0f));
+	createHunter(Vec2(-150.0f, 500.0f));
 	createHunter(Vec2(300.0f, 450.0f));
-	createHunter(Vec2(500.0f, 200.0f));
+	createHunter(Vec2(-500.0f, 200.0f));
 	createHunter(Vec2(450.0f, 400.0f));
 	createHunter(Vec2(1000.0f, 600.0f));
 	createHunter(Vec2(700.0f, 300.0f));
+
+	for (int i = 0; i < 30; i++)
+	{
+		float headingX = random(-1, 1);
+		float headingY = 1 - sqrt(headingX * headingX);
+
+		createProjectile(
+			Vec2(random(-width / 2, width / 2), random(-height / 2, height / 2)),
+			Vec2(headingX, headingY), 3);
+	}
 
 	// Create preys
 	for (int i = 0; i < 100; i++)
@@ -163,7 +177,7 @@ void World::update()
 		Entity* ent = _created_entities.front();
 
 		if (ent->getType() == Entity::kHunter)
-			_hunters.push_back(static_cast<Hunter*>(ent));
+			_snakes.push_back(static_cast<Snake*>(ent));
 
 		else if (ent->getType() == Entity::kPrey)
 			_preys.push_back(static_cast<Prey*>(ent));
@@ -178,7 +192,7 @@ void World::update()
 	}
 	
 	// Update entities and delete them if set garbage.
-	updateEntity(_hunters);
+	updateEntity(_snakes);
 	updateEntity(_projectiles);
 	updateEntity(_preys);
 
@@ -192,23 +206,30 @@ void World::update()
 
 
 	// Process collide between entities.
-	for (auto h1 : _hunters)
-		for (auto h2 : _hunters)
-			if (h1->getID() != h2->getID())
-				collide(*h1, *h2);
+	for (auto s1 : _snakes)
+		for (auto s2 : _snakes)
+			if (s1->getID() != s2->getID())
+				collide(*s1, *s2);
 
-	for (auto h : _hunters)
+	for (auto s : _snakes)
 		for (auto p : _projectiles)
-			if (h->getID() != p->getOwnerID())
-			collide(*h, *p);
+			collide(*s, *p);
 
 	for (auto pro : _projectiles)
 		for (auto p : _preys)
 			collide(*pro, *p);
 
-	for (auto h : _hunters)
+	for (auto p : _projectiles)
 		for (auto w : _walls)
-			collide(*h, *w);
+			collide(*p, *w);
+
+	for (auto s : _snakes)
+		for (auto w : _walls)
+			collide(*s, *w);
+
+	for (auto s : _snakes)
+		for (auto p : _preys)
+			collide(*s, *p);
 
 	// Camera position setting
 	if (_player_entity) {
@@ -224,13 +245,11 @@ void World::update()
 	{
 		UIManager::instance->update(_player_entity->getExp());
 	}
-
-	
 }
 
 void World::render()
 {
-	for (auto e : _hunters)
+	for (auto e : _snakes)
 		e->render();
 
 	for (auto p : _projectiles)
@@ -241,17 +260,27 @@ void World::render()
 
 	for (auto p : _walls)
 		p->render();
+
+	for (float x = -_width; x < _width; x += OneStep)
+	{
+		GraphicsDriver::instance->drawLine(Vec2(x, -_width), Vec2(x, _width));
+	}
+
+	for (float y = -_width; y < _width; y += OneStep)
+	{
+		GraphicsDriver::instance->drawLine(Vec2(-_width, y), Vec2(_width, y));
+	}
 }
 
 
 void World::createHunter(const Vec2& pos)
 {
-	_created_entities.emplace(new Hunter(*this, genID(), pos));
+	_created_entities.emplace(new Snake(*this, genID(), pos));
 }
 
-void World::createProjectile(unsigned int owner_id, const Vec2& pos, const Vec2& heading, int proj_speed)
+void World::createProjectile(const Vec2& pos, const Vec2& heading, int proj_speed)
 {
-	_created_entities.emplace(new Projectile(*this, genID(), owner_id, pos, heading, proj_speed));
+	_created_entities.emplace(new Projectile(*this, genID(), pos, heading, proj_speed));
 }
 
 void World::createPrey(const Vec2& pos)

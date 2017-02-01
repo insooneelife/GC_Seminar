@@ -1,7 +1,7 @@
 #pragma once
 //------------------------------------------------------------------------
 //
-//  Name:   Hunter.h
+//  Name:   Snake.h
 //
 //  Desc:   The entity which intakes other entities and grows bigger.
 //
@@ -9,9 +9,10 @@
 //
 //--------------------------------------------------------------------------
 
+#include <vector>
 #include "Entity.h"
 
-class Hunter : public Entity
+class Snake : public Entity
 {
 public:
 	enum State
@@ -22,33 +23,24 @@ public:
 
 	inline int getExp() const			{ return _experience; }
 	inline void setExp(int exp)			{ _experience = exp; }
-	inline int getHp() const			{ return _hp; }
-
-	inline int getDamage() const		{ return _damage; }
-	inline void setDamage(int damage)	{ _damage = damage; }
-	inline int getProjSpeed() const		{ return _proj_speed; }
-	inline void setProjSpeed(int range)	{ _proj_speed = range; }
-
 	inline bool isPlayer() const		{ return _is_player; }
 
-	Hunter(World& world, unsigned int id, const Vec2& pos);
+	Snake(World& world, unsigned int id, const Vec2& pos);
 
-	bool upgradeDamage();
-	bool upgradeRange();
-	void enterMovingState(const Vec2& desti);
-	void takeDamage(int damage, unsigned int who);
-
-	virtual ~Hunter() {}
+	virtual ~Snake() {}
 	virtual void update();
 	virtual void render();
 	virtual bool handleMessage(const Message& msg);
 
+	bool collideCircle(Vec2 pos, float radius, Vec2& cpos);
+
 private:
 	State _state;
 	Vec2 _destination;
+
+	std::vector<Vec2> _body;
+	std::vector<Vec2> _destinations;
+
 	int _experience;
-	int _hp;
-	int _damage;
-	int _proj_speed;
 	bool _is_player;
 };

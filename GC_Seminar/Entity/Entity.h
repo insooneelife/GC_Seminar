@@ -29,7 +29,6 @@ public:
 	inline World& getWorld() const					{ return _world; }
 	inline unsigned int getID() const				{ return _id; }
 	inline Vec2 getPos() const						{ return _pos; }
-	inline void setPos(const Vec2& pos)				{ _pos = pos; }
 	inline Vec2 getHeading() const					{ return _heading; }
 	inline void setHeading(const Vec2& heading)		{ _heading = heading; }
 	inline Vec2 getSide() const						{ return _heading.getPerp(); }

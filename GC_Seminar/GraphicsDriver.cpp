@@ -77,8 +77,7 @@ GraphicsDriver::~GraphicsDriver()
 }
 
 void GraphicsDriver::render()
-{
-}
+{}
 
 void GraphicsDriver::clear()
 {

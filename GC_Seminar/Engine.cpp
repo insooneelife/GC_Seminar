@@ -7,7 +7,7 @@
 #include "UIManager.h"
 #include "Utils.h"
 
-#include "Entity/Hunter.h"
+#include "Entity/Snake.h"
 
 Engine::Engine()
 {}
@@ -17,8 +17,8 @@ Engine::~Engine()
 
 void Engine::handleEvent(SDL_Event* inEvent)
 {
-	Hunter* player = _world->getPlayerEntity();
-	Vec2 velocity;
+	Snake* player = _world->getPlayerEntity();
+	Vec2 heading;
 
 	static bool press[255] = { 0 };
 	const float distance = 100;
@@ -34,91 +34,44 @@ void Engine::handleEvent(SDL_Event* inEvent)
 	{
 	case SDL_KEYDOWN:
 		// Details
-		switch (inEvent->key.keysym.sym) 
-		{
-		case SDLK_a:
-			std::cout << "a" << std::endl;
-			press[SDLK_a] = true;
-			velocity = directionFromMultiKey(press[SDLK_w], press[SDLK_s], left) * distance;
-			break;
-
-		case SDLK_d:
-			std::cout << "d" << std::endl;
-			press[SDLK_d] = true;
-			velocity = directionFromMultiKey(press[SDLK_s], press[SDLK_w], right) * distance;
-			break;
-
-		case SDLK_w:
-			std::cout << "w" << std::endl;
-			press[SDLK_w] = true;
-			velocity = directionFromMultiKey(press[SDLK_d], press[SDLK_a], up) * distance;
-			break;
-
-		case SDLK_s:
-			std::cout << "s" << std::endl;
-			press[SDLK_s] = true;
-			velocity = directionFromMultiKey(press[SDLK_a], press[SDLK_d], down) * distance;
-			break;
-			
-		case SDLK_SPACE:
-			break;
-
-		default:
-			break;
-		}
-
 		if (player)
-			player->enterMovingState(player->getPos() + velocity);
-
-		break;
-	case SDL_KEYUP:
-		// Details
-		switch (inEvent->key.keysym.sym)
 		{
-		case SDLK_a:
-			std::cout << "a up" << std::endl;
-			press[SDLK_a] = false;
-			break;
+			switch (inEvent->key.keysym.sym)
+			{
+			case SDLK_a:
+					player->setHeading(left);
+				break;
 
-		case SDLK_d:
-			std::cout << "d up" << std::endl;
-			press[SDLK_d] = false;
-			break;
+			case SDLK_d:
+					player->setHeading(right);
+				break;
 
-		case SDLK_w:
-			std::cout << "w up" << std::endl;
-			press[SDLK_w] = false;
-			break;
+			case SDLK_w:
+					player->setHeading(up);
+				break;
 
-		case SDLK_s:
-			std::cout << "s up" << std::endl;
-			press[SDLK_s] = false;
-			break;
+			case SDLK_s:
+					player->setHeading(down);
+				break;
 
-		case SDLK_SPACE:
-			break;
+			case SDLK_SPACE:
+				break;
 
-		default:
-			break;
+			default:
+				break;
+			}
 		}
 		break;
+
+	case SDL_KEYUP:
+		break;
+
 	case SDL_MOUSEBUTTONDOWN:
 		SDL_GetMouseState(&mx, &my);
-
-		if (player)
-			_world->createProjectile(
-				player->getID(),
-				player->getPos(),
-				player->getHeading(),
-				player->getProjSpeed());
 		
 		break;
 	case SDL_MOUSEMOTION:
 		SDL_GetMouseState(&mx, &my);
-		if (player)
-			player->setHeading(
-				(Camera2D::instance->screenToWorld(Vec2(mx, my)) 
-					- player->getPos()).getNormalized());
 		break;
 	case SDL_MOUSEWHEEL:
 		if (inEvent->wheel.y > 0)

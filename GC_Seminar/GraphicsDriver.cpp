@@ -120,7 +120,7 @@ void GraphicsDriver::drawRect(Vec2 p, float w, float h, SDL_Color color)
 }
 
 
-void GraphicsDriver::drawCircle(Vec2 p, float r, float fragment, SDL_Color color)
+void GraphicsDriver::drawCircle(Vec2 p, float r, SDL_Color color, float fragment)
 {
 	SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
 

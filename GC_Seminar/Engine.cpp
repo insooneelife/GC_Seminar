@@ -4,7 +4,6 @@
 #include "EntityManager.h"
 #include "World.h"
 #include "Camera2D.h"
-#include "UIManager.h"
 #include "Utils.h"
 
 #include "Entity/Snake.h"
@@ -108,9 +107,7 @@ bool Engine::init()
 
 	EntityManager::staticInit();
 
-	_world.reset(new World(2400, 1400));
-
-	UIManager::staticInit();
+	_world.reset(new World(30000));
 
 	return true;
 }
@@ -152,10 +149,14 @@ int Engine::run()
 }
 
 
+#include <chrono>
 void Engine::update()
 {
+	std::chrono::duration<double> start = std::chrono::system_clock::now().time_since_epoch();
 	// World의 update
 	_world->update();
+
+	std::chrono::duration<double> end = std::chrono::system_clock::now().time_since_epoch();
 	
 	// 새 그래픽 버퍼를 준비한다.
 	GraphicsDriver::instance->clear();
@@ -163,8 +164,10 @@ void Engine::update()
 	// 화면에 그려질 모든 객체들을 그린다.
 	_world->render();
 	GraphicsDriver::instance->render();
-	//UIManager::instance->render();
 
 	// 그래픽 버퍼를 화면에 출력한다.
 	GraphicsDriver::instance->present();
+
+	std::chrono::duration<double> end2 = std::chrono::system_clock::now().time_since_epoch();
+	std::cout <<"u : "<< (end - start).count()<<"  r : "<< (end2 - end).count() << std::endl;
 }

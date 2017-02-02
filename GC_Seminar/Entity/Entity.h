@@ -19,7 +19,7 @@ class Entity
 public:
 	enum Type
 	{
-		kHunter,
+		kSnake,
 		kPrey,
 		kProjectile,
 		kWall,

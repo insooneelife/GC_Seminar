@@ -10,8 +10,10 @@
 //--------------------------------------------------------------------------
 
 #include <vector>
+#include <memory>
 #include "Entity.h"
 
+class RigidBody;
 class Snake : public Entity
 {
 public:
@@ -27,20 +29,25 @@ public:
 
 	Snake(World& world, unsigned int id, const Vec2& pos);
 
-	virtual ~Snake() {}
+	virtual ~Snake();
+
 	virtual void update();
 	virtual void render();
 	virtual bool handleMessage(const Message& msg);
 
-	bool collideCircle(Vec2 pos, float radius, Vec2& cpos);
+	bool checkCollideCircleToBody(Vec2 pos, float radius, Vec2& cpos);
 
 private:
 	State _state;
 	Vec2 _destination;
 
-	std::vector<Vec2> _body;
+	//std::vector<Vec2> _body;
+	std::vector<RigidBody*> _body;
 	std::vector<Vec2> _destinations;
 
 	int _experience;
 	bool _is_player;
+
+
+
 };

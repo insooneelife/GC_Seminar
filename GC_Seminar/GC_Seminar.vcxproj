@@ -25,22 +25,25 @@
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Entity\Prey.cpp" />
     <ClCompile Include="Entity\Projectile.cpp" />
+    <ClCompile Include="Entity\RigidBody.cpp" />
     <ClCompile Include="Entity\Snake.cpp" />
     <ClCompile Include="Entity\Wall.cpp" />
     <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math\Vec2.cpp" />
-    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBox2D.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="CellSpacePartition.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Entity\Prey.h" />
     <ClInclude Include="Entity\Projectile.h" />
+    <ClInclude Include="Entity\RigidBody.h" />
     <ClInclude Include="Entity\Snake.h" />
     <ClInclude Include="Entity\Wall.h" />
     <ClInclude Include="GraphicsDriver.h" />
@@ -48,7 +51,6 @@
     <ClInclude Include="Math\MathBase.h" />
     <ClInclude Include="Math\Transformations.h" />
     <ClInclude Include="Math\Vec2.h" />
-    <ClInclude Include="UIManager.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="World.h" />

@@ -1,13 +1,14 @@
 #include <iostream>
 #include <sstream>
 #include "Snake.h"
+#include "RigidBody.h"
 #include "../World.h"
 #include "../EntityManager.h"
 #include "../GraphicsDriver.h"
 
 Snake::Snake(World& world, unsigned int id, const Vec2& pos)
 	:
-	Entity(world, id, pos, 25.0f, Entity::Type::kHunter, GraphicsDriver::black),
+	Entity(world, id, pos, 25.0f, Entity::Type::kSnake, GraphicsDriver::black),
 	_state(kIdle),
 	_experience(8),
 	_is_player(true)
@@ -21,9 +22,15 @@ Snake::Snake(World& world, unsigned int id, const Vec2& pos)
 
 	for (int i = 0; i < _experience; ++i)
 	{
-		_body.push_back(pos + arr[i]);
+		_body.push_back(new RigidBody(*this, Vec2(pos + arr[i]), _radius));
 		_destinations.push_back(pos + arr[i]);
 	}
+}
+
+Snake::~Snake()
+{
+	for (auto e : _body)
+		delete e;
 }
 
 void Snake::update()
@@ -38,7 +45,7 @@ void Snake::update()
 			if (i == 0)
 				_destinations[i] = _destination;
 			else
-				_destinations[i] = _body[i - 1];
+				_destinations[i] = _body[i - 1]->getPos();
 		}
 	}
 	else if (_state == kMoving)
@@ -52,7 +59,12 @@ void Snake::update()
 			_pos += (_destination - _pos).getNormalized() * World::SnakeSpeed;
 
 			for (int i = 0; i < _body.size(); ++i)
-				_body[i] += (_destinations[i] - _body[i]).getNormalized() * World::SnakeSpeed;
+			{
+				Vec2 pos = _body[i]->getPos();
+				_body[i]->updateMovement((_destinations[i] - pos).getNormalized() * World::SnakeSpeed);
+				//_body[i]->setPos(pos + (_destinations[i] - pos).getNormalized() * World::SnakeSpeed);
+				//_body[i] += (_destinations[i] - _body[i]).getNormalized() * World::SnakeSpeed;
+			}
 		}
 	}
 }
@@ -71,7 +83,7 @@ void Snake::render()
 
 	GraphicsDriver::instance->drawCircle(_pos, _radius, _color);
 	for (auto e : _body)
-		GraphicsDriver::instance->drawCircle(e, _radius, _color);
+		GraphicsDriver::instance->drawCircle(e->getPos(), _radius, _color);
 }
 
 
@@ -97,15 +109,15 @@ bool Snake::handleMessage(const Message& msg)
 	return false; 
 }
 
-bool Snake::collideCircle(Vec2 pos, float radius, Vec2& cpos)
+bool Snake::checkCollideCircleToBody(Vec2 pos, float radius, Vec2& cpos)
 {
-	for (auto e : _body)
+	/*for (auto e : _body)
 	{
 		if (e.distance(pos) < _radius + radius)
 		{
 			cpos = e;
 			return true;
 		}
-	}
+	}*/
 	return false;
 }

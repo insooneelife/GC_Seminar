@@ -13,12 +13,14 @@
 #include <memory>
 #include <queue>
 #include "Math\Vec2.h"
+#include "CellSpacePartition.h"
 
 class Entity;
 class Snake;
 class Prey;
 class Projectile;
 class Wall;
+class RigidBody;
 class World
 {
 public:
@@ -26,6 +28,7 @@ public:
 
 	static const float OneStep;
 	static const float SnakeSpeed;
+	static const float Dummy;
 
 	// Entity 조합에 맞는 충돌판별 및 처리
 	static void collide(Snake& s1, Snake& s2);
@@ -45,6 +48,8 @@ public:
 	inline const std::vector<Prey*>& getPreys() const				{ return _preys; }
 	inline const std::vector<Wall*>& getWalls() const				{ return _walls; }
 
+	inline CellSpacePartition<RigidBody*>& getCellSpace()			{ return _cell_space; }
+
 	// 플레이어의 entity를 참조하기 위한 getter
 	inline Snake* getPlayerEntity() const							{ return _player_entity; }
 	inline void setPlayerEntity(Snake* const hunter)				{ _player_entity = hunter; }
@@ -52,7 +57,7 @@ public:
 	// 유일한 id를 생성해 준다.
 	inline unsigned int genID()										{ return _next_validate_id++; }
 
-	World(float width, float height);
+	World(float width);
 	~World();
 	
 	void createHunter(const Vec2& pos);
@@ -63,7 +68,11 @@ public:
 	// world의 logic
 	// 모든 entity의 update 호출
 	void update();
+	void solveCollide();
+
 	void render();
+	void renderGrid();
+	void renderCellSpace();
 
 private:
 	// entities
@@ -73,9 +82,11 @@ private:
 	std::vector<Wall*> _walls;
 	std::queue<Entity*> _created_entities;
 	
+	// for space query
+	CellSpacePartition<RigidBody*> _cell_space;
+
 	Snake* _player_entity;
 	unsigned int _next_validate_id;
 
 	float _width;
-	float _height;
 };

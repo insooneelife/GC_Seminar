@@ -53,10 +53,10 @@
     <ClCompile Include="Entity\Wall.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\Snake.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\RigidBody.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
   </ItemGroup>
@@ -106,11 +106,17 @@
     <ClInclude Include="Entity\Wall.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Entity\Snake.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\RigidBody.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="AABBox2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CellSpacePartition.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

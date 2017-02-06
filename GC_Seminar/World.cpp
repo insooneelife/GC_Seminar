@@ -275,7 +275,8 @@ void World::render()
 	for (auto p : _walls)
 		p->render();
 
-	renderCellSpace();
+	//renderGrid()
+	//renderCellSpace();
 }
 
 void World::renderGrid()

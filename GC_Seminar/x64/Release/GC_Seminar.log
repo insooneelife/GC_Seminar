@@ -1,0 +1,89 @@
+﻿  Camera2D.cpp
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(120): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(122): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(135): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(137): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\Math\Transformations.h(234): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Engine.cpp
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(47): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(49): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(120): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(122): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(135): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(137): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\Math\Transformations.h(234): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  EntityManager.cpp
+  Entity.cpp
+  Prey.cpp
+  Projectile.cpp
+  RigidBody.cpp
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(47): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(49): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(280): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(266): note: 클래스 템플릿 멤버 함수 'int CellSpacePartition<RigidBody *>::positionToIndex(Vec2) const'을(를) 컴파일하고 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(292): note: 컴파일 중인 함수 템플릿 인스턴스화 'int CellSpacePartition<RigidBody *>::positionToIndex(Vec2) const'에 대한 참조를 확인하십시오.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(291): note: 클래스 템플릿 멤버 함수 'void CellSpacePartition<RigidBody *>::addEntity(const Entity &)'을(를) 컴파일하고 있습니다.
+          with
+          [
+              Entity=RigidBody *
+          ]
+  Entity\RigidBody.cpp(11): note: 컴파일 중인 함수 템플릿 인스턴스화 'void CellSpacePartition<RigidBody *>::addEntity(const Entity &)'에 대한 참조를 확인하십시오.
+          with
+          [
+              Entity=RigidBody *
+          ]
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\entity\../World.h(86): note: 컴파일 중인 클래스 템플릿 인스턴스화 'CellSpacePartition<RigidBody *>'에 대한 참조를 확인하십시오.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(98): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(97): note: 클래스 템플릿 멤버 함수 'Vec2 CellSpacePartition<RigidBody *>::toCellSpacePos(Vec2) const'을(를) 컴파일하고 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(267): note: 컴파일 중인 함수 템플릿 인스턴스화 'Vec2 CellSpacePartition<RigidBody *>::toCellSpacePos(Vec2) const'에 대한 참조를 확인하십시오.
+  Snake.cpp
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(47): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(49): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Wall.cpp
+  GraphicsDriver.cpp
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(120): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(122): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(135): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(137): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\Math\Transformations.h(234): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  main.cpp
+  Vec2.cpp
+Math\Vec2.cpp(168): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Math\Vec2.cpp(169): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Math\Vec2.cpp(177): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+Math\Vec2.cpp(178): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WindowManager.cpp
+  World.cpp
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(47): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\AABBox2D.h(49): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(120): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(122): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(135): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\math\C2DMatrix.h(137): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\Math\Transformations.h(234): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+World.cpp(128): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+World.cpp(132): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+World.cpp(136): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+World.cpp(142): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+World.cpp(195): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+World.cpp(199): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(103): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(102): note: 클래스 템플릿 멤버 함수 'Vec2 CellSpacePartition<RigidBody *>::toWorldPos(Vec2) const'을(를) 컴파일하고 있습니다.
+  World.cpp(299): note: 컴파일 중인 함수 템플릿 인스턴스화 'Vec2 CellSpacePartition<RigidBody *>::toWorldPos(Vec2) const'에 대한 참조를 확인하십시오.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\World.h(86): note: 컴파일 중인 클래스 템플릿 인스턴스화 'CellSpacePartition<RigidBody *>'에 대한 참조를 확인하십시오.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(164): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(142): note: 클래스 템플릿 멤버 함수 'CellSpacePartition<RigidBody *>::CellSpacePartition(double,double,int,int,int)'을(를) 컴파일하고 있습니다.
+  World.cpp(114): note: 컴파일 중인 함수 템플릿 인스턴스화 'CellSpacePartition<RigidBody *>::CellSpacePartition(double,double,int,int,int)'에 대한 참조를 확인하십시오.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(98): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(97): note: 클래스 템플릿 멤버 함수 'Vec2 CellSpacePartition<RigidBody *>::toCellSpacePos(Vec2) const'을(를) 컴파일하고 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(234): note: 컴파일 중인 함수 템플릿 인스턴스화 'Vec2 CellSpacePartition<RigidBody *>::toCellSpacePos(Vec2) const'에 대한 참조를 확인하십시오.
+d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(280): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(266): note: 클래스 템플릿 멤버 함수 'int CellSpacePartition<RigidBody *>::positionToIndex(Vec2) const'을(를) 컴파일하고 있습니다.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(235): note: 컴파일 중인 함수 템플릿 인스턴스화 'int CellSpacePartition<RigidBody *>::positionToIndex(Vec2) const'에 대한 참조를 확인하십시오.
+  d:\technicbank\game\seminar 2016-09-01\client\gc_seminar\gc_seminar\CellSpacePartition.h(142): note: 클래스 템플릿 멤버 함수 'CellSpacePartition<RigidBody *>::CellSpacePartition(double,double,int,int,int)'을(를) 컴파일하고 있습니다.
+  World.cpp(114): note: 컴파일 중인 함수 템플릿 인스턴스화 'CellSpacePartition<RigidBody *>::CellSpacePartition(double,double,int,int,int)'에 대한 참조를 확인하십시오.
+  코드를 생성하고 있습니다.
+  All 1322 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+  GC_Seminar.vcxproj -> D:\TechnicBank\game\Seminar 2016-09-01\client\GC_Seminar\x64\Release\GC_Seminar.exe
+  GC_Seminar.vcxproj -> D:\TechnicBank\game\Seminar 2016-09-01\client\GC_Seminar\x64\Release\GC_Seminar.pdb (Full PDB)
